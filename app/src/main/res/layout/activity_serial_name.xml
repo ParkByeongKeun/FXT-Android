@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SerialNameActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/rlMain"
+    android:background="@color/main_color">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rlRoot">
+
+
+            <TextView
+                android:id="@+id/tvLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="100dp"
+                android:text="Edit Device Name"
+                android:textColor="@color/black"
+                android:textSize="27dp" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvLogin"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="100dp"
+                android:padding="10dp"
+                android:text="ijoon"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
+                android:paddingLeft="32dp"
+                android:paddingRight="32dp"
+                android:id="@+id/llLogin">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#96000000">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etRename"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawablePadding="16dp"
+                        android:background="@color/white"
+                        android:hint="New Device Name"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:maxLength="18"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="#96000000"/>
+
+
+            </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@+id/llLogin"
+            android:padding="32dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnUpdateUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Ok"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvWeb"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_below="@+id/btnUpdateUser"
+                    android:text="Logout"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/blue" />
+            </RelativeLayout>
+        </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
+

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color">
+
+        <com.example.fxt.widget.XListView
+            android:id="@+id/listView_"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:measureAllChildren="true"
+            android:divider="@color/transparent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:dividerHeight="5dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+
+        </com.example.fxt.widget.XListView>
+        <TextView
+            android:id="@+id/ble_list_tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="No Bluetooth Device"
+            android:gravity="center"
+            android:paddingBottom="150dp"
+            android:layout_gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvNeedHelp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Need help?"
+        android:textColor="@color/base_color"
+        android:textSize="15dp"
+        android:layout_margin="40dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlProgress"
+        android:clickable="true"
+        android:visibility="visible"
+        android:background="#66666666"
+        android:focusable="true">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

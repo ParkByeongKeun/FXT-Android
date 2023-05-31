@@ -1,0 +1,79 @@
+<resources>
+    <string name="app_name">FXT</string>
+
+
+    <string name="title_home">Devices</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">User</string>
+
+    <string name= "textCheckInformation">Check Information.</string>
+    <string name="request_permissions_rationale">Without read and write permissions, this application may not work properly.</string>
+
+
+    <!--label-->
+    <string name="label_bluetooth_le_status">Bluetooth LE:</string>
+    <string name="label_bluetooth_status">Bluetooth:</string>
+    <!--label-->
+
+    <!--MainActivity-->
+    <string name="not_supported">Not supported</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="supported">Supported</string>
+
+    <!--BleConnectActivity-->
+    <string name="connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+
+    <!--FusionDetailActivity-->
+    <string name="success">Success</string>
+    <string name="failure">Failure</string>
+
+    <string name="common_ok">common_ok</string>
+    <string name="common_cancel">common_cancel</string>
+
+    <string name="ble_support_4">Your lockDevice does not support the Bluetooth 4.0 protocol</string>
+
+    <string name="ble_command_send_success">Instruction sent successfully</string>
+    <string name="ble_command_send_timeout">Instruction timeout</string>
+    <string name="ble_command_send_error">Instruction failed to send</string>
+    <string name="ble_command_notify_timeout">Command return timeout, please wake up the lock and try again!</string>
+    <string name="ble_command_running">Bluetooth operation is still in progress. Please try again later</string>
+    <string name="ble_command_format_error">Incorrect instruction format</string>
+    <string name="ble_command_null_or_format_error">Wrong instruction format or empty instruction</string>
+    <string name="ble_command_error_not_connect">The instruction failed to execute and the Bluetooth connection was disconnected</string>
+
+    <string name="ble_connect_error">Bluetooth connection failed</string>
+    <string name="ble_disconnect">Bluetooth disconnected</string>
+    <string name="ble_connect_timeout">Bluetooth connection timeout, please make sure the lockDevice is active and nearby</string>
+
+    <string name="ble_state_bootloader">The lockDevice is currently in bootloader mode</string>
+
+    <string name="ble_not_init">Bluetooth is not initialized！</string>
+
+    <string name="device_address_null">Device address cannot be empty</string>
+    <string name="device_channel_null">The channel password is empty</string>
+    <string name="device_cmd_null">Instruction cannot be empty</string>
+    <string name="device_notify_failure">The lockDevice feedback instruction failed to execute. Please check the parameters</string>
+
+    <string name="temp_password_status_1">send successfully</string>
+    <string name="temp_password_status_2">Instruction overdue</string>
+    <string name="temp_password_status_3">Being sent</string>
+    <string name="ble_notification_timeout">Bluetooth Notification timeout</string>
+    <string name="public_send_packages">Update package being sent...</string>
+    <string name="public_connect_update">Connecting device...</string>
+    <string name="public_wait_update">Wait for lock upgrade to complete</string>
+    <string name="lock_detail_device_update_success">Successful equipment upgrade</string>
+    <string name="lock_detail_device_update_fail">Equipment upgrade failed</string>
+    <string name="device_is_new_version">Locks have been updated to the latest version</string>
+    <string name="firmware_upgrade_file_length_error">Firmware Upgrade file length exception</string>
+    <string name="lock_firmware_verification_error">Door lock firmware verification error, please try again!</string>
+    <string name="the_firmware_length_is_incorrect">The firmware length is incorrect. Please contact customer service!</string>
+    <string name="the_app_version_is_too_low">The APP version is too low, please upgrade the APP first and try again!</string>
+    <string name="update_file_not_exist">The update file does not exist.</string>
+    <string name="failed_to_enter_dfu_mode">Failed to enter DFU mode</string>
+    <string name="open_the_application_location_permission">Open the application location permission</string>
+    <string name="please_open_location">In order to improve the positioning accuracy and better serve you, please open the location information</string>
+
+    <string name="Loading_Complete">Loading Complete, button is disabled</string>
+</resources>

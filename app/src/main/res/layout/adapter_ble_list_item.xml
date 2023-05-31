@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/rounded_ofi_main"
+    android:padding="12dp">
+    <ImageView
+        android:layout_marginEnd="5dp"
+        android:layout_width="40dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_bt"/>
+    <LinearLayout
+        android:layout_marginStart="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/adapter_ble_list_item_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="device name"
+                android:textColor="@color/white"
+                android:textSize="15dp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/adapter_ble_list_item_tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:text="mac"
+            android:textSize="14dp"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/adapter_ble_list_item_tv_rssi"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/black"
+            android:text="rssi"
+            android:layout_weight="1.1"
+            android:textSize="14dp" />
+    </LinearLayout>
+</LinearLayout>

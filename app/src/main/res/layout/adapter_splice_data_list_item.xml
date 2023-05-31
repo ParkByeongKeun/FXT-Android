@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.example.fxt.utils.CheckableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/purple_500"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:descendantFocusability="blocksDescendants">
+
+
+            <TextView
+                android:id="@+id/adapter_splice_data_list_item_tv_id"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="id"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
+                android:padding="10sp"
+                android:layout_weight="0.4"
+                android:gravity="right"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="10sp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.1"
+                android:gravity="left"
+                android:textSize="14dp"
+                android:textColor="@color/black"
+                android:text="update date" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="10sp"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="14dp"
+            android:textColor="@color/white"
+            android:text="update date" />
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ivPdf"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.1"
+            android:src="@drawable/ic_pdf"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/ivExcel"
+            android:layout_marginLeft="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.1"
+            android:src="@drawable/ic_excel_100"/>
+
+        <CheckBox
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/checkBox1"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:visibility="invisible"
+            android:focusable="false"
+            android:clickable="false"/>
+    </LinearLayout>
+</com.example.fxt.utils.CheckableLinearLayout>

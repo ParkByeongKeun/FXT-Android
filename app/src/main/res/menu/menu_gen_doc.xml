@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity"
+    >
+
+
+    <item android:id="@+id/menu_gen"
+        android:title=""
+        android:icon="@drawable/ic_print"
+        app:showAsAction="always" />
+</menu>

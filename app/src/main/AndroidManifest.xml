@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.fxt">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:name=".CustomApplication"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/ic_main"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_main"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.FXT"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="n">
+    <activity
+        android:name=".LoadingActivity"
+        android:exported="true"
+        android:label="@string/app_name"
+        android:screenOrientation="portrait">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+    <activity android:name=".MainActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".AddDeviceActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".OfiInfoActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".OfiHistoryActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".FusionDetailActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".OFIFNMSActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".SignInActivity"
+        android:screenOrientation="portrait"/>
+    <activity android:name=".FNMSTAGActivity"
+        android:screenOrientation="portrait"/>
+        <activity android:name=".SerialNameActivity"
+        android:screenOrientation="portrait"/>
+        <activity android:name=".AddSpliceDeviceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SpliceInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SpliceHistoryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".FusionSpliceDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SpliceActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".TutorialActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SpliceSerialNameActivity"
+            android:screenOrientation="portrait"/>
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyC2o46gM_QGsj9eMVDzW6TrGkHeJU1X1z0" />
+
+    <provider
+        android:name="androidx.core.content.FileProvider"
+        android:authorities="${applicationId}.fileprovider"
+        android:exported="false"
+        android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_provider" />
+    </provider>
+
+    <service android:name=".ble.BLeSerialPortService"
+        android:enabled="true" />
+    </application>
+
+
+</manifest>

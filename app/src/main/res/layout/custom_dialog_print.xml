@@ -1,0 +1,109 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_popup"
+    android:paddingBottom="20dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/llTop">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/iv"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_print"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create doc"
+            android:textSize="20dp"
+            android:textColor="@color/purple_700"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/iv"
+            android:id="@+id/tvTitle"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/purple_500"
+        android:text="Select Create doc"
+        android:id="@+id/tvSubTitle"
+        android:layout_below="@+id/llTop"/>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvSubTitle"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/llTopBtn"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+
+        <Button
+            android:id="@+id/btnPDF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/btn_pdf"
+            android:gravity="center"
+            android:text="PDF" />
+
+        <Button
+            android:id="@+id/btnExcel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/btn_excel"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Excel" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llTopBtn"
+        android:orientation="horizontal"
+        android:id="@+id/llBottomBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+        <Button
+            android:id="@+id/btnAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ALL" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llBottomBtn"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+        <Button
+            android:id="@+id/btnNo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CANCEL" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,83 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_popup">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/llTop">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:id="@+id/iv"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_connected" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/llMid"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/llTop">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/purple_500"
+            android:text="-26.3"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:id="@+id/tvValue"
+            android:textSize="30dp"
+            android:layout_below="@+id/llTop"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/purple_500"
+            android:text="  dBm"
+            android:id="@+id/tvSubTitle"
+            android:layout_below="@+id/llTop"/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tvtitleChecker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llMid"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:text="Sending your reminder list request to"
+        android:textColor="@color/purple_500" />
+
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvtitleChecker"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp">
+
+        <Button
+            android:id="@+id/btnOk"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="YES" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/main_color"
+    android:background="@color/light_gray">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlList"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:id="@+id/llMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="152dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:listSelector="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.481"
+            app:layout_constraintStart_toStartOf="parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="155dp"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:padding="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/rounded_ofi_main">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="INFO"
+                    android:id="@+id/tvInfo"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/white"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:orientation="vertical">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Telegraph ID"
+                                android:gravity="right"
+                                android:textSize="16dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_weight="0.3"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="16dp"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/white"
+                                android:text=" 391R393"
+                                android:layout_weight="0.3"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:text=" Enclosure ID"
+                                android:gravity="right"
+                                android:layout_marginRight="5dp"
+                                android:textSize="16dp"
+                                android:layout_weight="0.3"/>
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:textSize="16dp"
+                                android:layout_marginLeft="5dp"
+                                android:textColor="@color/white"
+                                android:text=" 526459930"
+                                android:layout_weight="0.3"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:background="@drawable/rounded_ofi_main"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:padding="5dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CORE"
+                    android:id="@+id/tvCore"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/white"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/llBottom"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:textSize="15dp"
+                            android:text=" Cable No. Left"
+                            android:layout_marginBottom="10dp"
+
+                            android:layout_weight="0.3"/>
+                        <com.example.fxt.spinner.NiceSpinner
+                            android:id="@+id/spinnerCable1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.6"
+                            android:textAlignment="center"
+                            android:layout_margin="3dp"
+                            app:arrowTint="@color/purple_700"
+                            app:backgroundSelector="@drawable/background_selector"
+                            app:textTint="@color/purple_700" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.11"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:text=" Cable No. Right"
+                            android:gravity="right"
+                            android:textSize="14dp"
+                            android:layout_marginRight="3dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_weight="0.3"/>
+                        <com.example.fxt.spinner.NiceSpinner
+                            android:id="@+id/spinnerCable2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="0.6"
+                            android:layout_margin="3dp"
+                            android:textAlignment="center"
+                            app:arrowTint="@color/purple_700"
+                            app:backgroundSelector="@drawable/background_selector"
+                            app:textTint="@color/purple_700" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_below="@+id/llBottom"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
+                    <com.example.fxt.spinner.NiceSpinner
+                        android:id="@+id/spinnerUnit"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:layout_margin="3dp"
+                        android:textAlignment="center"
+                        app:arrowTint="@color/purple_700"
+                        app:backgroundSelector="@drawable/background_selector"
+                        app:textTint="@color/purple_700" />
+                    <com.example.fxt.spinner.NiceSpinner
+                        android:id="@+id/spinnerLeft"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        app:arrowTint="@color/purple_700"
+                        android:layout_margin="3dp"
+                        android:textAlignment="center"
+                        app:backgroundSelector="@drawable/background_selector"
+                        app:textTint="@color/purple_700" />
+                    <com.example.fxt.spinner.NiceCoreSpinner
+                        android:id="@+id/spinnerRight"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.11"
+                        android:textAlignment="center"
+                        android:layout_margin="3dp"
+                        app:arrowTint="@color/purple_700"
+                        app:backgroundSelector="@drawable/background_selector"
+                        app:textTint="@color/purple_700" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/butEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onClickEdit"
+                    android:layout_marginRight="20dp"
+                    android:drawableLeft="@drawable/ic_check"
+                    android:text="CHECK"/>
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_write"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:onClick="onClickWrite"
+                    android:text="Write" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/tvWrite"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_tag_select"
+            android:text="Put the Tag close to write."
+            android:gravity="center"
+            android:padding="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/llMain"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.793"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rlReadTag"
+        android:visibility="visible">
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="70dp"
+            android:text="Digital Line Number Management"
+            android:textColor="@color/purple_700"
+            android:textSize="18dp"/>
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/icon_tagnfc"
+            android:layout_below="@id/tvTitle"
+            android:id="@+id/ivTag"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:id="@+id/tvSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Put the Tag close to read."
+            android:textColor="@color/purple_500"
+            android:textSize="15dp"
+            android:layout_below="@+id/ivTag"/>
+
+        <com.skyfishjy.library.RippleBackground xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            app:rb_color="@color/purple_500"
+            app:rb_duration="3000"
+            app:rb_radius="32dp"
+            app:rb_rippleAmount="4"
+            app:rb_scale="6">
+
+            <ImageView
+                android:id="@+id/centerImage"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_nfc" />
+        </com.skyfishjy.library.RippleBackground>
+
+        <TextView
+            android:id="@+id/tvNeedHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Need help?"
+            android:textColor="@color/base_color"
+            android:textSize="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="40dp"/>
+    </RelativeLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

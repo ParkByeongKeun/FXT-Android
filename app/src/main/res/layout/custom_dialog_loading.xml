@@ -1,0 +1,49 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg_popup"
+    android:paddingBottom="20dp">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"
+        android:id="@+id/llTop">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="70dp"
+            android:id="@+id/iv"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_ai"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/purple_500"
+        android:text="AI Analysis Proceeding"
+        android:id="@+id/tvSubTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/llTop"/>
+
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:id="@+id/progress"
+        android:progress="50"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/loading_progressbar"
+        android:layout_below="@+id/tvSubTitle"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        />
+
+</RelativeLayout>
