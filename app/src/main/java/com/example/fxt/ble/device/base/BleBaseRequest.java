@@ -14,14 +14,13 @@ import com.example.fxt.ble.api.event.WriteEvent;
 import com.example.fxt.ble.api.event.base.BaseEvent;
 import com.example.fxt.ble.api.util.BleHexConvert;
 import com.example.fxt.ble.device.splicer.BleSplicerCallback;
-import com.example.fxt.ble.device.splicer.bean.FeedbackBean;
 import com.example.fxt.utils.StringUtil;
 import com.google.gson.Gson;
 
 
 public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdCallback {
 
-    private static final String TAG = "LYJ BleBaseRequest";
+    private static final String TAG = "yot132";
 
     private BleSplicerCallback mBleSplicerCallback;
 
@@ -65,6 +64,7 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
 
     public void setCommandStr(String commandStr) {
         mCommandStr = commandStr;
+//        Log.d("yot1132","12 = " + mCommandStr);
     }
 
     public String getAddress() {
@@ -119,9 +119,10 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
      */
     private void sendCmd(String cmd, String address, BleCmdCallback bleCmdCallback) {
         try {
+            Log.d("yot132","asde = " + cmd);
             BleAPI.getBleWrapper().sendCmd(new BleCmdBean(cmd), address, bleCmdCallback);
         } catch (Exception e) {
-            Log.e(TAG, "设置new BleCmdBean()错误：" + e.toString());
+            Log.e("yot132", "设置new BleCmdBean()错误：" + e.toString());
             BleAPI.getBleWrapper().sendCmd(null, address, bleCmdCallback);
         }
     }
@@ -170,7 +171,6 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
         if (mBleSplicerCallback == null) {
             return;
         }
-
         BleAPI.setAcceptBleCommand(event.getResultBean().getCommandStr());
 
         if (event.getCode() == BaseEvent.CODE_SUCCESS) {
@@ -178,6 +178,8 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
 
             T resultBean = getResultBean(event.getResultBean());
             byte[] newData = resultBean.getPayload();
+            Log.d("yot132","new dada = " + BleHexConvert.bytesToHexString(newData));
+
             int total = getShortByLittleMode(resultBean.getTotalPackage(), 0);
             int current = getShortByLittleMode(resultBean.getCurrentPackage(), 0);
             Log.i(TAG, "total:" + total);
@@ -191,11 +193,11 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
                 if (gson == null){
                     gson = new Gson();
                 }
-                FeedbackBean feedbackBean = new FeedbackBean();
-                String json = gson.toJson(feedbackBean);
-                Log.i(TAG, "反馈 json: "+ json);
-                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
-                sendCmd(mCommandStr, mAddress, this);
+//                FeedbackBean feedbackBean = new FeedbackBean();
+//                String json = gson.toJson(feedbackBean);
+//                Log.i(TAG, "反馈 json: "+ json);
+//                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
+//                sendCmd(mCommandStr, mAddress, this);
                 return;
             }
 
@@ -215,16 +217,27 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
                 if (gson == null){
                     gson = new Gson();
                 }
-                FeedbackBean feedbackBean = new FeedbackBean();
-                String json = gson.toJson(feedbackBean);
-                Log.i(TAG, "反馈 json: "+ json);
-                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
-                sendCmd(mCommandStr, mAddress, this);
+//                FeedbackBean feedbackBean = new FeedbackBean();
+//                String json = gson.toJson(feedbackBean);
+//                Log.i(TAG, "反馈 json: "+ json);
+//                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
+//                sendCmd(mCommandStr, mAddress, this);
             }
 
-            Log.i(TAG, "allData length:" + allData.length);
+            if(resultBean.getType() == 2) {
+                mBleSplicerCallback.onReceiveSuccess(getResultBean(resultBean, allData));
+            }
 
-            if (current == total){
+            if (200 > allData.length){
+                String res = BleHexConvert.bytesToHexString(allData);
+                Log.e(TAG, "所有数据 allData(hex string)：" + res);
+
+                mBleSplicerCallback.onReceiveSuccess(getResultBean(resultBean, allData));
+                allData = null;
+                currentIndex = 0;
+            }
+
+            if (total == current){
                 String res = BleHexConvert.bytesToHexString(allData);
                 Log.e(TAG, "所有数据 allData(hex string)：" + res);
 
@@ -240,11 +253,11 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
                 if (gson == null){
                     gson = new Gson();
                 }
-                FeedbackBean feedbackBean = new FeedbackBean(1);
-                String json = gson.toJson(feedbackBean);
-                Log.i(TAG, "发送失败的回调 json: "+ json);
-                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
-                sendCmd(mCommandStr, mAddress, this);
+//                FeedbackBean feedbackBean = new FeedbackBean(1);
+//                String json = gson.toJson(feedbackBean);
+//                Log.i(TAG, "发送失败的回调 json: "+ json);
+//                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
+//                sendCmd(mCommandStr, mAddress, this);
 
                 mBleSplicerCallback.onFailed(event.getCode(), event.getMsg());
                 allData = null;

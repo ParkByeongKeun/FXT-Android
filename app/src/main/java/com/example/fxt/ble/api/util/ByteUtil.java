@@ -13,12 +13,23 @@ public class ByteUtil {
 
     public static int getIntByLittleMode(byte[] b, int index) {
         int res = 0;
-        for (int i = 3; i >= 0; i--){
+        for (int i = 1; i >= 0; i--){
             res = res << 8 | b[i + index] & 0xff;
         }
         return res;
     }
 
+    public static int getIntByDec(byte[] b, int index) {
+        int value = ((b[1] & 0xFF) << 8) | (b[0] & 0xFF);
+        return value;
+    }
+    public static int byteArrayToHex(byte[] a) {
+        StringBuilder sb = new StringBuilder();
+        for(final byte b: a)
+            sb.append(String.format("%02x", b/*&0xff*/));
+
+        return Integer.parseInt(sb.toString(),16);
+    }
     /**
      * 转换short为byte(大端模式：高位在前)
      */

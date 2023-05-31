@@ -33,4 +33,43 @@ public class BleCmdUtil {
         }
         return cmds;
     }
+
+
+    /**
+     * 给命令增加CRC 16进制
+     */
+    public static String getCRCCmd(String hex) {
+        String hexTemp = hex;
+        if (hex.toLowerCase().startsWith("0x")) {
+            hexTemp = hex.substring(4);
+        } else if (hex.toLowerCase().startsWith("aa")) {
+            hexTemp = hex.substring(2);
+        }
+        return hex + getCRCStr(hexTemp);
+    }
+
+    /**
+     * 获取CRC 16进制
+     */
+    public static String getCRCStr(String data) {
+        byte[] bytes = BleHexConvert.parseHexStringToBytes(data);
+        return getCRCStr(bytes);
+    }
+
+    /**
+     * 获取CRC 16进制
+     */
+    public static String getCRCStr(byte[] data) {
+        int crc = CRC16.calcCrc16(data);
+        return String.format("%04X", crc);
+    }
+
+    /**
+     * 根据指令获取到crc
+     */
+    public static byte[] getCRCBytes(byte[] src) {
+        String crcStr = getCRCStr(src);
+        return BleHexConvert.parseHexStringToBytes(crcStr);
+    }
+
 }

@@ -1,5 +1,7 @@
 package com.example.fxt.ble.api.core;
 
+import static com.example.fxt.ble.api.util.BleHexConvert.parseHexStringToBytes;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -27,17 +29,19 @@ import com.example.fxt.ble.api.event.ResultEvent;
 import com.example.fxt.ble.api.event.WriteEvent;
 import com.example.fxt.ble.api.event.base.BaseEvent;
 import com.example.fxt.ble.api.util.ArrayUtils;
+import com.example.fxt.ble.api.util.BleCmdUtil;
 import com.example.fxt.ble.api.util.BleHexConvert;
-import com.example.fxt.ble.api.util.ByteUtil;
 import com.example.fxt.utils.StringUtil;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public class BleWrapper {
 
-    public static final String TAG = "LYJ BleWrapper";
+    public static final String TAG = "yot132";
     private Context mContext;
     private static Handler mTimerHandler = new Handler();
 
@@ -320,7 +324,7 @@ public class BleWrapper {
             return;
         }
         // 将16进制命令转换成byte[] 后发送
-        mCharacteristicWrite.setValue(BleHexConvert.parseHexStringToBytes(cmd));
+        mCharacteristicWrite.setValue(parseHexStringToBytes(cmd));
         mBluetoothGatt.writeCharacteristic(mCharacteristicWrite);
 
 //        if (mCurrentCmdBean != null && mCurrentCmdBean.getCmd() == BleCmd.OLD_DEVICE_UPDATE) {
@@ -503,6 +507,7 @@ public class BleWrapper {
                             UUID charUid = chara.getUuid();
                             if (charUid.equals(BleDefinedUUIDs.SpliceCharacter.WRITE)) {
                                 mCharacteristicWrite = chara;
+//                                Log.d("yot132","zz = " + chara.getValue().toString());
                             } else if (charUid.equals(BleDefinedUUIDs.SpliceCharacter.NOTIFY)) {
                                 arrayNtfCharList.add(chara);
                             }
@@ -512,11 +517,45 @@ public class BleWrapper {
                     }
                 }
 
-                Log.i(TAG, "连接成功 并初始化 Characteristic.");
+                Log.i(TAG, "calllll");
                 // 连接成功
                 if (mBleConnectionCallback != null) {
                     mTimerHandler.removeCallbacks(connectTimeoutRun);
                     mBleConnectionCallback.onConnectSuccess(mBluetoothGatt);
+
+                    /**
+                     *
+                     *
+                     * **/
+                    mTimerHandler.postDelayed(() -> {
+                        mCharacteristicWrite.setValue(parseHexStringToBytes("BE" + "00010000" + BleCmdUtil.getCRCStr("00010000") + "EB"));
+                        gatt.writeCharacteristic(mCharacteristicWrite);
+//                        String encodedData = "226d616368696e65547970654d61726b6574223a09224d494e493130304841222c0a09226d616368696e65536f667456657273696f6e223a092274312e303633222c0a0922534e223a09223030303034333235303033222c0a0922626c7565546f6f74684d4143223a092239343a65363a38363a31623a61363a3636222c0a09226163746976617465537461747573223a0922756e616374697661746564220a7d88eaeb";
+//                        Log.d("yot132","123 = " + com.example.fiberfoxbluetooth.ble.api.util.ByteUtil.convertToASCII16(encodedData));
+//                        try {
+//                            byte[] decodedBytes = new byte[encodedData.length() / 2];
+//                            for (int i = 0; i < decodedBytes.length; i++) {
+//                                int index = i * 2;
+//                                int value = Integer.parseInt(encodedData.substring(index, index + 2), 16);
+//                                decodedBytes[i] = (byte) value;
+//                            }
+//
+//                            for (byte b : decodedBytes) {
+//                                int ascii = b & 0xFF;
+//                                System.out.println("ASCII: " + ascii + ", Character: " + (char) ascii);
+//                            }
+//                        } catch (NumberFormatException e) {
+//                            e.printStackTrace();
+//                        }
+
+                    }, 100);
+
+                    /**
+                     *
+                     *
+                     * **/
+
+
                 }
             }
         }
@@ -533,7 +572,17 @@ public class BleWrapper {
             新方案每次特征值写入都要到此回调方法执行下一步，否则无法确保特征值写入完成
             新方案特征值不写完会造成接收不到蓝牙返回数据
              */
+
             Log.i(TAG, "onDescriptorWrite status:" + status + ": " + BleHexConvert.bytesToHexString(descriptor.getValue()));
+
+//            mTimerHandler.postDelayed(() -> {
+//                mCharacteristicWrite.setValue(BleHexConvert.parseHexStringToBytes("BE" + "00040006" + BleCmdUtil.getCRCStr( "00040006") + "EB"));
+//                gatt.writeCharacteristic(mCharacteristicWrite);
+//            }, 1000);
+//            mTimerHandler.postDelayed(() -> {
+//                mCharacteristicWrite.setValue(BleHexConvert.parseHexStringToBytes("aa11b8000000c9"));
+//                gatt.writeCharacteristic(mCharacteristicWrite);
+//            }, 1000);
         }
 
         /**
@@ -567,11 +616,16 @@ public class BleWrapper {
             if (mCurrentCmdBean != null) {
                 mCurrentCmdBean = null;
             }
-            if (status == BluetoothGatt.GATT_SUCCESS) {
-                mBleSendCallback.onSuccess();
-            } else {
-                mBleSendCallback.onFail(BaseEvent.CODE_ERROR_SEND, mContext.getString(R.string.ble_command_send_error));
-            }
+            mBleCmdCallback.onSend(BleHexConvert.bytesToHexString(characteristic.getValue()));
+//                        mTimerHandler.postDelayed(() -> {
+//                mCharacteristicWrite.setValue(BleHexConvert.parseHexStringToBytes("BE" + "00010000" + BleCmdUtil.getCRCStr( "00010000") + "EB"));
+//                gatt.writeCharacteristic(mCharacteristicWrite);
+//            }, 1000);
+//            if (status == BluetoothGatt.GATT_SUCCESS) {
+//                mBleSendCallback.onSuccess();
+//            } else {
+//                mBleSendCallback.onFail(BaseEvent.CODE_ERROR_SEND, mContext.getString(R.string.ble_command_send_error));
+//            }
         }
 
         /**
@@ -582,53 +636,69 @@ public class BleWrapper {
          */
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            Log.i(TAG, "<--接收设备发的数据-->");
-
+            Log.d("yot132","?ASd?ADS?DSA?DSA?");
+            receiveBytes = null;
             byte[] rawValue = characteristic.getValue();
-            String data = BleHexConvert.bytesToHexString(rawValue);
-            Log.i(TAG, "设备发送的数据:" + data);
-
             if (rawValue == null || rawValue.length <= 0) {
                 return;
             }
-
-            // 判断指令头 CMD, 开始收新一包数据
-            if (rawValue.length > 3){
-                byte[] headerBytes = new byte[]{rawValue[0], rawValue[1], rawValue[2]};
-                String header = ByteUtil.getAsciiString(headerBytes,0,headerBytes.length);
-
-                if(StringUtil.isNotBlank(header) && StringUtil.equals(header,"CMD")){
-                    receiveBytes = null;
-                }
-            }
+            Log.i(TAG, "prev 返回：" + BleHexConvert.bytesToHexString(rawValue));
 
             receiveBytes = ArrayUtils.addAll(receiveBytes, rawValue);
 
-            // 数据长度，小端模式
-            byte[] length = new byte[]{receiveBytes[16], receiveBytes[17], receiveBytes[18], receiveBytes[19]};
-            int lengthInt = ByteUtil.getIntByLittleMode(length, 0);
-
-            // 如果一包数据不完整，则继续接收
-            if (receiveBytes.length < (lengthInt + 22)) {
-                return;
-            }
-
-            if (receiveBytes.length > (lengthInt + 22)){
-                ResultEvent resultEvent = new ResultEvent(BaseEvent.CODE_RECEIVE_DATA_LENGTH_ERROR,"Wrong data length");
-                onReceiveResult(resultEvent);
-                receiveBytes = null;
-                return;
-            }
-
             String res = BleHexConvert.bytesToHexString(receiveBytes);
-            Log.i(TAG, "设备发送的所有数据:" + res);
-
-            byte[] realData = new byte[lengthInt + 22];
-            System.arraycopy(receiveBytes, 0, realData, 0, lengthInt + 22);
-
+            byte[] realData = new byte[rawValue.length];
+            System.arraycopy(receiveBytes, 0, realData, 0, rawValue.length);
             ResultEvent resultEvent = new ResultEvent(realData);
             onReceiveResult(resultEvent);
-            receiveBytes = null;
+            boolean isLock = false;
+            if (isLock) {
+                if (res != null && !res.startsWith("aa19")) {
+                    if (res.contains("aa19")) {
+                        int index = res.indexOf("aa19");
+                        receiveBytes = Arrays.copyOfRange(receiveBytes, index / 2, receiveBytes.length);
+                    } else {
+                        return;
+                    }
+                }
+
+                // 接收完成时 发送通知
+                while (receiveBytes != null && receiveBytes.length >= 5) {
+                    short length = ByteBuffer.wrap(receiveBytes, 3, 2).getShort();
+                    // 接收完成时 发送通知
+                    if (receiveBytes.length >= 7 + length) {
+                        receiveBytes = null;
+                        mCharacteristicWrite.setValue(parseHexStringToBytes("aa11b8000000c9"));
+                        mBluetoothGatt.writeCharacteristic(mCharacteristicWrite);
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if (res.contains("be11")) {
+                    int index = res.indexOf("BE11");
+                    receiveBytes = Arrays.copyOfRange(receiveBytes, index / 2, receiveBytes.length);
+                    // 接收完成时 发送通知
+                    while (receiveBytes != null && receiveBytes.length >= 5) {
+                        short length = ByteBuffer.wrap(receiveBytes, 3, 2).getShort();
+                        // 接收完成时 发送通知
+                        if (receiveBytes.length >= 8 + length) {
+                            String cmd = "";
+                            String cmdType = BleHexConvert.bytesToHexString(new byte[]{receiveBytes[1], receiveBytes[2]});
+                            cmd = cmd + cmdType + "0004" + "0006";
+                            String currentPackage = BleHexConvert.bytesToHexString(new byte[]{receiveBytes[7], receiveBytes[8]});
+                            cmd = cmd + currentPackage;
+
+                            receiveBytes = null;
+                            Log.d("yot132","img call  =" + currentPackage);
+                            mCharacteristicWrite.setValue(parseHexStringToBytes("BE" + cmd + BleCmdUtil.getCRCStr(cmd) + "EB"));
+                            gatt.writeCharacteristic(mCharacteristicWrite);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         /**

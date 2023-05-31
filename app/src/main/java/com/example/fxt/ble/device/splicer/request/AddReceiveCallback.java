@@ -9,4 +9,9 @@ public class AddReceiveCallback extends BleBaseRequest {
     public AddReceiveCallback(String address, BleSplicerCallback bleSplicerCallback) {
         super(address, bleSplicerCallback);
     }
+
+    @Override
+    public void onSend(String str) {
+
+    }
 }

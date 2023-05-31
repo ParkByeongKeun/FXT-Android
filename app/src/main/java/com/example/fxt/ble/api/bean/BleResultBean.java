@@ -38,24 +38,50 @@ public class BleResultBean extends BleBaseBean {
      * header 命令头；type数据类型；
      */
     private boolean resolveResult(byte[] command) {
-        this.header = new byte[]{command[0], command[1], command[2]};
-        this.type = command[3];
+        this.header = new byte[]{command[0]};
+        byte[] t = new byte[]{command[1],command[2]};
+        String encodedData = BleHexConvert.bytesToHexString(t);
         this.id = new byte[8];
-        System.arraycopy(command, 4, id, 0, 8);
-        this.totalPackage = new byte[]{command[12], command[13]};
-        this.currentPackage = new byte[]{command[14], command[15]};
-        this.length = new byte[4];
-        System.arraycopy(command, 16, length, 0, 4);
+        this.id =  Integer.toHexString(1).getBytes();
+        this.idStr = String.valueOf(id);
 
-        this.lengthInt = ByteUtil.getIntByLittleMode(length, 0);
-        this.payload = new byte[lengthInt];
-
-        if (isGetFull()) {
-            System.arraycopy(command, 20, payload, 0, lengthInt);
-            return true;
-        } else {
-            return false;
+        if(encodedData.contains("0001")) {
+            this.type = 4;
+        }else if (encodedData.contains("1101")){
+            this.type = 2;
+        }else {
+            this.type = 1;
         }
+
+        this.totalPackage = new byte[]{command[5], command[6]};
+        this.currentPackage = new byte[]{command[7], command[8]};
+        this.length = new byte[]{command[3], command[4]};
+
+
+        this.lengthInt = ByteUtil.byteArrayToHex(length);
+
+
+
+        if(encodedData.equals("1102")) {
+            byte[] newByte = lastElementRemove(command);
+            this.payload = newByte;
+        }else {
+            this.payload = new byte[lengthInt];
+            System.arraycopy(command, 5, payload, 0, lengthInt);
+        }
+        return true;
+    }
+
+    public static byte[] lastElementRemove(byte[] srcArray) {
+        byte[] newArray = new byte[srcArray.length - 3]; //2byte = CRC16 //1byte = tail
+        for(int index = 0; index < srcArray.length - 3; index++) {
+            newArray[index] = srcArray[index];
+        }
+        byte[] tempArray = new byte[newArray.length - 11]; //1byte = header, 2byte cmd, 2byte = length, 2byte = total num, 2byte = current num, 2byte = img index
+        for(int i = 11 ; i < newArray.length ; i ++) {
+            tempArray[i-11] = newArray[i];
+        }
+        return tempArray;
     }
 
     /**

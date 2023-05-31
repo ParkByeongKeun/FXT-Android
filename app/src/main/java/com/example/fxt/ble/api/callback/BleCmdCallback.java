@@ -23,4 +23,6 @@ public interface BleCmdCallback {
 	 * 蓝牙设备回馈是否结束（主要在指纹录入时会有多条反馈）
      */
 	 boolean isNeedReceiveMore(ResultEvent event);
+
+	void onSend(String str);
 }
