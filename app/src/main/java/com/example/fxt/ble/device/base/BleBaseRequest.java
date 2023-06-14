@@ -184,10 +184,10 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
             int current = getShortByLittleMode(resultBean.getCurrentPackage(), 0);
             Log.i(TAG, "total:" + total);
             Log.i(TAG, "current:" + current);
-            if (current == 1){
-                allData = null;
-                currentIndex = 0;
-            }
+//            if (current == 1){
+//                allData = null;
+//                currentIndex = 0;
+//            }
 
             if (currentIndex == current){
                 if (gson == null){

@@ -1,5 +1,7 @@
 package com.example.fxt;
 
+import static com.example.fxt.ble.api.util.ByteUtil.getAsciiString;
+
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
@@ -37,6 +39,7 @@ import com.example.fxt.widget.XListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -286,16 +289,27 @@ public class AddSpliceDeviceActivity extends MainAppcompatActivity implements XL
                 if (bleResultBean.getType() == 1){
                     mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceImage(getApplicationContext(), mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 0){
-                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(mSpliceDataBeanMap.get(id), bleResultBean));
+                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(getApplicationContext(),mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 2){
-                    String SN = ByteUtil.getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);
-                    rlProgress.setVisibility(View.GONE);
-                    customApplication.arrSpliceBleAddress.add(connectBLE);
-                    customApplication.arrSpliceBleSerial.add(SN);
-                    setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
-                    setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
-                    onDisconnectClick();
-                    finish();
+                }else {
+                    String strJson = getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);
+                    try {
+                        // 最外层的JSONObject对象
+                        JSONObject object = new JSONObject(strJson);
+
+                        Log.d("yot132","sn = " + object.getString("SN"));
+                        String SN = object.getString("SN");
+                        rlProgress.setVisibility(View.GONE);
+                        customApplication.arrSpliceBleAddress.add(connectBLE);
+                        customApplication.arrSpliceBleSerial.add(SN);
+                        setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
+                        setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
+                        onDisconnectClick();
+                        finish();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

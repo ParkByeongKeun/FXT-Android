@@ -277,7 +277,7 @@ public class SpliceInfoActivity extends MainAppcompatActivity implements XListVi
                 if (bleResultBean.getType() == 1){
                     mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceImage(getApplicationContext(), mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 0){
-                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(mSpliceDataBeanMap.get(id), bleResultBean));
+                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(getApplicationContext(),mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 2){
                     if(!isFirstStart) {
                         String SN = ByteUtil.getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);

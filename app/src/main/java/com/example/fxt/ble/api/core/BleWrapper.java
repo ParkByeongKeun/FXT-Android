@@ -495,8 +495,9 @@ public class BleWrapper {
             if (status == BluetoothGatt.GATT_SUCCESS && mBluetoothGatt != null) {
                 arrayNtfCharList = new ArrayList<>();
                 // 发现设备，遍历服务，初始化特征
+                UUID uuid = null;
                 for (BluetoothGattService service : mBluetoothGatt.getServices()) {
-                    UUID uuid = service.getUuid();
+                    uuid = service.getUuid();
 
                     Log.i(TAG, " 服务uuid: "+ uuid);
                     if (uuid.toString().equals(BleDefinedUUIDs.spliceUUID)) {
@@ -527,9 +528,10 @@ public class BleWrapper {
                      *
                      *
                      * **/
-                    mTimerHandler.postDelayed(() -> {
-                        mCharacteristicWrite.setValue(parseHexStringToBytes("BE" + "00010000" + BleCmdUtil.getCRCStr("00010000") + "EB"));
-                        gatt.writeCharacteristic(mCharacteristicWrite);
+                    if (uuid.toString().equals(BleDefinedUUIDs.spliceUUID)) {
+                        mTimerHandler.postDelayed(() -> {
+                            mCharacteristicWrite.setValue(parseHexStringToBytes("BE" + "00010000" + BleCmdUtil.getCRCStr("00010000") + "EB"));
+                            gatt.writeCharacteristic(mCharacteristicWrite);
 //                        String encodedData = "226d616368696e65547970654d61726b6574223a09224d494e493130304841222c0a09226d616368696e65536f667456657273696f6e223a092274312e303633222c0a0922534e223a09223030303034333235303033222c0a0922626c7565546f6f74684d4143223a092239343a65363a38363a31623a61363a3636222c0a09226163746976617465537461747573223a0922756e616374697661746564220a7d88eaeb";
 //                        Log.d("yot132","123 = " + com.example.fiberfoxbluetooth.ble.api.util.ByteUtil.convertToASCII16(encodedData));
 //                        try {
@@ -548,8 +550,8 @@ public class BleWrapper {
 //                            e.printStackTrace();
 //                        }
 
-                    }, 100);
-
+                        }, 100);
+                    }
                     /**
                      *
                      *

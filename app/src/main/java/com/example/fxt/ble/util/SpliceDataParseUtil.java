@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.example.fxt.CustomApplication;
 import com.example.fxt.ble.api.bean.BleResultBean;
 import com.example.fxt.ble.api.util.BleHexConvert;
 import com.example.fxt.ble.device.splicer.bean.FiberBean;
@@ -63,10 +64,13 @@ public class SpliceDataParseUtil {
         return spliceDataBean;
     }
 
-    public static SpliceDataBean parseSpliceData(SpliceDataBean spliceDataBean, BleResultBean bleDataBean) {
+    private static CustomApplication customApplication;
+
+    public static SpliceDataBean parseSpliceData(Context context,SpliceDataBean spliceDataBean, BleResultBean bleDataBean) {
         if (spliceDataBean == null){
             spliceDataBean = new SpliceDataBean();
         }
+        customApplication = (CustomApplication) context.getApplicationContext();
 
         String strJson = getAsciiString(bleDataBean.getPayload(),0,bleDataBean.getPayload().length);
         if (strJson == null){
@@ -86,11 +90,11 @@ public class SpliceDataParseUtil {
             // 通过MINFO字段获取其所包含的JSONObject对象
 //            JSONObject minfo = object.getJSONObject("MINFO");
             spliceDataBean.setSn(object.getString("serial_num"));
-            spliceDataBean.setAppVer(object.getString("module"));//@@@@@@
+            spliceDataBean.setAppVer(customApplication.swVersion);//@@@@@@
             spliceDataBean.setFpgaVer(object.getString("module"));//@@@@@@
             spliceDataBean.setManufacturer(object.getString("cur_arc_cnt"));
             spliceDataBean.setBrand(object.getString("total_arc_cnt"));
-            spliceDataBean.setModel(object.getString("splice_mode"));//@@@@@@
+            spliceDataBean.setModel(object.getString("module"));//@@@@@@
 
             FiberBean fiberBean = new FiberBean();
             // 通过RESULT字段获取其所包含的JSONObject对象
@@ -100,13 +104,13 @@ public class SpliceDataParseUtil {
 
             // 通过FUSION字段获取其所包含的JSONObject对象
             JSONObject fiber_1 = object.getJSONObject("fiber_1");
-            spliceDataBean.setSpliceName(object.getString("serial_num"));
+            spliceDataBean.setSpliceName(object.getString("splice_mode"));
             spliceDataBean.setDataTime(object.getString("splice_time"));
             fiberBean.setLoss(fiber_1.getString("loss"));
             fiberBean.setLeftAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("left_angle"))));
             fiberBean.setRightAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("right_angle"))));
-            fiberBean.setCoreAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("right_angle"))));//@@@@@@
-            fiberBean.setCoreOffset(Float.parseFloat(Double.toString(fiber_1.getDouble("right_angle"))));//@@@@@@
+            fiberBean.setCoreAngle(Float.parseFloat("0.0"));//@@@@@@
+            fiberBean.setCoreOffset(Float.parseFloat("0.0"));//@@@@@@
             spliceDataBean.setFiberBean(fiberBean);
 
             // 新增

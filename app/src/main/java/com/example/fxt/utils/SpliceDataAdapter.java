@@ -72,19 +72,25 @@ public class SpliceDataAdapter extends BaseAdapter {
         if(mSpliceDataBeanList.get(position).getUpdateTime() == null) {
             return convertView;
         }
-        if(mSpliceDataBeanList.get(position).getFpgaVer().equals("0")) {
-            holder.ivPdf.setVisibility(View.VISIBLE);
-            holder.ivExcel.setVisibility(View.INVISIBLE);
-        }else if(mSpliceDataBeanList.get(position).getFpgaVer().equals("1")) {
+        if( mSpliceDataBeanList.get(position).getFpgaVer() == null) {
             holder.ivPdf.setVisibility(View.INVISIBLE);
-            holder.ivExcel.setVisibility(View.VISIBLE);
-        }else if(mSpliceDataBeanList.get(position).getFpgaVer().equals("2")) {
-            holder.ivPdf.setVisibility(View.VISIBLE);
-            holder.ivExcel.setVisibility(View.VISIBLE);
+            holder.ivExcel.setVisibility(View.INVISIBLE);
         }else {
-            holder.ivPdf.setVisibility(View.INVISIBLE);
-            holder.ivExcel.setVisibility(View.INVISIBLE);
+            if(mSpliceDataBeanList.get(position).getFpgaVer().equals("0")) {
+                holder.ivPdf.setVisibility(View.VISIBLE);
+                holder.ivExcel.setVisibility(View.INVISIBLE);
+            }else if(mSpliceDataBeanList.get(position).getFpgaVer().equals("1")) {
+                holder.ivPdf.setVisibility(View.INVISIBLE);
+                holder.ivExcel.setVisibility(View.VISIBLE);
+            }else if(mSpliceDataBeanList.get(position).getFpgaVer().equals("2")) {
+                holder.ivPdf.setVisibility(View.VISIBLE);
+                holder.ivExcel.setVisibility(View.VISIBLE);
+            }else {
+                holder.ivPdf.setVisibility(View.INVISIBLE);
+                holder.ivExcel.setVisibility(View.INVISIBLE);
+            }
         }
+
         String date = "";
         String time = "";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

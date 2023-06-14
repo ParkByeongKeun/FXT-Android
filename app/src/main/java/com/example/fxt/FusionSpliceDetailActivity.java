@@ -1,5 +1,6 @@
 package com.example.fxt;
 
+import static com.example.fxt.ble.api.util.ByteUtil.getAsciiString;
 import static com.example.fxt.utils.ConstantUtil.StrConstant.BEAN;
 import static com.example.fxt.utils.FileUtil.getLocalBitmap;
 
@@ -76,6 +77,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -123,6 +125,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     private Timer timer;
     private final android.os.Handler handler = new android.os.Handler();
     int num = 1;
+    boolean isFirstStart = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,7 +173,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                     ToastUtil.showToast(getApplicationContext(), "Server disconnected");
                     rlProgress.setVisibility(View.GONE);
                     FusionSpliceDetailActivity.super.activityFinish();
-                    Intent intent = new Intent(FusionSpliceDetailActivity.this, MainActivity.class);
+                    Intent intent = new Intent(FusionSpliceDetailActivity.this, OFIFNMSActivity.class);
                     startActivity(intent);
                     finish();
                 });
@@ -183,12 +186,32 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
 
             @Override
             public void onReceiveSuccess(BleResultBean bleResultBean) {
+                rlProgress.setVisibility(View.VISIBLE);
                 String id = bleResultBean.getIdStr();
                 if (bleResultBean.getType() == 1){
                     mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceImage(getApplicationContext(), mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 0){
-                    rlProgress.setVisibility(View.VISIBLE);
-                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(mSpliceDataBeanMap.get(id), bleResultBean));
+                }else if (bleResultBean.getType() == 2) {
+                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(getApplicationContext(),mSpliceDataBeanMap.get(id), bleResultBean));
+                }else if (bleResultBean.getType() == 4) {
+                    if(!isFirstStart) {
+                        String strJson = getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);
+                        try {
+                            // 最外层的JSONObject对象
+                            JSONObject object = new JSONObject(strJson);
+                            String SN = object.getString("SN");
+                            customApplication.swVersion = object.getString("machineSoftVersion");
+                            rlProgress.setVisibility(View.GONE);
+                            customApplication.connectSerial = SN;
+                            mSpliceDataBeanList.clear();
+                            for (Map.Entry<String, SpliceDataBean> map : mSpliceDataBeanMap.entrySet()) {
+                                mSpliceDataBeanList.add(map.getValue());
+                            }
+                            isFirstStart = true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 mSpliceDataBeanList.clear();
                 for (Map.Entry<String, SpliceDataBean> map : mSpliceDataBeanMap.entrySet()) {

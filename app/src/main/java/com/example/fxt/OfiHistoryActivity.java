@@ -459,6 +459,7 @@ public class OfiHistoryActivity extends MainAppcompatActivity implements XListVi
             mOFIDataBeanList.clear();
             showData(customApplication.connectSerial);
             setDoc();
+            custom_delete_dialog.dismiss();
         });
     }
 }

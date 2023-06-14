@@ -351,7 +351,7 @@ public class MainActivity extends MainAppcompatActivity implements XListView.IXL
                     }, 800);
                 }
             }
-            custom_dialog.dismiss();
+            custom_delete_dialog.dismiss();
         });
     }
 }

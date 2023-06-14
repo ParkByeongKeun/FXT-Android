@@ -1,5 +1,6 @@
 package com.example.fxt;
 
+import static com.example.fxt.ble.api.util.ByteUtil.getAsciiString;
 import static com.example.fxt.utils.ConstantUtil.StrConstant.BEAN;
 
 import android.Manifest;
@@ -50,6 +51,8 @@ import com.example.fxt.utils.SpliceDataAdapter;
 import com.example.fxt.utils.ToastUtil;
 import com.example.fxt.widget.XListView;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,6 +82,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
     RelativeLayout rlProgress;
     Dialog custom_dialog;
     Dialog custom_delete_dialog;
+    boolean isFirstStart = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -172,7 +176,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
                     ToastUtil.showToast(getApplicationContext(), "Server disconnected");
                     rlProgress.setVisibility(View.GONE);
                     SpliceHistoryActivity.super.activityFinish();
-                    Intent intent = new Intent(SpliceHistoryActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SpliceHistoryActivity.this, OFIFNMSActivity.class);
                     startActivity(intent);
                     finish();
                 });
@@ -185,15 +189,33 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
 
             @Override
             public void onReceiveSuccess(BleResultBean bleResultBean) {
+                rlProgress.setVisibility(View.VISIBLE);
                 String id = bleResultBean.getIdStr();
                 if (bleResultBean.getType() == 1){
                     mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceImage(getApplicationContext(), mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 0){
-                    rlProgress.setVisibility(View.VISIBLE);
-                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 2){
-                    String SN = ByteUtil.getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);
-                    customApplication.connectSerial = SN;
+                    mSpliceDataBeanMap.put(id, SpliceDataParseUtil.parseSpliceData(getApplicationContext(),mSpliceDataBeanMap.get(id), bleResultBean));
+                }else if (bleResultBean.getType() == 4) {
+                    if(!isFirstStart) {
+                        String strJson = getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);
+                        try {
+                            // 最外层的JSONObject对象
+                            JSONObject object = new JSONObject(strJson);
+                            String SN = object.getString("SN");
+                            customApplication.swVersion = object.getString("machineSoftVersion");
+                            rlProgress.setVisibility(View.GONE);
+                            customApplication.connectSerial = SN;
+                            mSpliceDataBeanList.clear();
+                            for (Map.Entry<String, SpliceDataBean> map : mSpliceDataBeanMap.entrySet()) {
+                                mSpliceDataBeanList.add(map.getValue());
+                            }
+                            showData(customApplication.connectSerial);
+                            isFirstStart = true;
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 mSpliceDataBeanList.clear();
                 for (Map.Entry<String, SpliceDataBean> map : mSpliceDataBeanMap.entrySet()) {
@@ -494,7 +516,19 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             showData(customApplication.connectSerial);
             setDoc();
         }else {
+            onDisconnectClick();
+            customApplication.connectSerial = null;
             this.finish();
+        }
+    }
+
+    public void onDisconnectClick(){
+        if (customApplication.arrSpliceBleAddress.size() == 0){
+            ToastUtil.showToast(getApplicationContext(),"No bluetooth device, please go back");
+            return;
+        }
+        if (BleAPI.bleIsConnected()){
+            BleAPI.disconnectBle();
         }
     }
 
@@ -596,6 +630,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             mSpliceDataBeanList.clear();
             showData(customApplication.connectSerial);
             setDoc();
+            custom_dialog.dismiss();
         });
     }
 
@@ -631,6 +666,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             mSpliceDataBeanList.clear();
             showData(customApplication.connectSerial);
             setDoc();
+            custom_delete_dialog.dismiss();
         });
     }
 }

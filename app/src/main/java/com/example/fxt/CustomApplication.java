@@ -47,6 +47,7 @@ public class CustomApplication extends Application {
     public SpliceDataDao database;
     ForegroundService foregroundService;
     public final String SERVER = "http://118.67.142.85:8000";
+    public String swVersion;
 
     @Override
     public void onCreate() {

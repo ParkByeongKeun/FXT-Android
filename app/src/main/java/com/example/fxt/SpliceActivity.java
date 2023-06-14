@@ -148,10 +148,17 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                 if(serial == null) {
                     serial = "No Device Name";
                 }
-                CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"Core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
-                mItems.add(customDevice2);
-                mAdapter = new DeviceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
-                listView.setAdapter(mAdapter);
+                if(getFirstCharacter(customApplication.arrSpliceBleSerial.get(i)).equals("1")) {
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini6s,"core Alignment Splicer","MINI6S+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    mItems.add(customDevice2);
+                    mAdapter = new DeviceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
+                    listView.setAdapter(mAdapter);
+                }else {
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    mItems.add(customDevice2);
+                    mAdapter = new DeviceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
+                    listView.setAdapter(mAdapter);
+                }
             }
         }else {
             mAdapter = new DeviceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
@@ -179,10 +186,17 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                 if(serial == null) {
                     serial = "No Device Name";
                 }
-                CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"Core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
-                mItems.add(customDevice2);
-                mAdapter = new DeviceSpliceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
-                listView.setAdapter(mAdapter);
+                if(getFirstCharacter(customApplication.arrSpliceBleSerial.get(i)).equals("1")) {
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini6s,"core Alignment Splicer","MINI6S+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    mItems.add(customDevice2);
+                    mAdapter = new DeviceSpliceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
+                    listView.setAdapter(mAdapter);
+                }else {
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    mItems.add(customDevice2);
+                    mAdapter = new DeviceSpliceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
+                    listView.setAdapter(mAdapter);
+                }
             }
         }else {
             mAdapter = new DeviceSpliceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
@@ -200,6 +214,13 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
             menuDelete.setVisible(true);
             menuCancel.setVisible(false);
         }
+    }
+
+    public static String getFirstCharacter(String s) {
+        if(s == null || s.length() == 0)
+            return null;
+        else
+            return s.substring(0, 1);
     }
 
     @Override
@@ -314,7 +335,7 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                     }, 800);
                 }
             }
-            custom_dialog.dismiss();
+            custom_delete_dialog.dismiss();
         });
     }
 
