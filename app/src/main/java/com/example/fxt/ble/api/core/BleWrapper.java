@@ -528,7 +528,7 @@ public class BleWrapper {
                      *
                      *
                      * **/
-                    if (uuid.toString().equals(BleDefinedUUIDs.spliceUUID)) {
+                    if (uuid.toString().equals(BleDefinedUUIDs.spliceUUID) || uuid.toString().equals("0000a003-0000-1000-8000-00805f9b34fb")) {
                         mTimerHandler.postDelayed(() -> {
                             mCharacteristicWrite.setValue(parseHexStringToBytes("BE" + "00010000" + BleCmdUtil.getCRCStr("00010000") + "EB"));
                             gatt.writeCharacteristic(mCharacteristicWrite);

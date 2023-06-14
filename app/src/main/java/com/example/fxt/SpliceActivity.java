@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 
+import com.example.fxt.ble.device.splicer.bean.OFIDataBean;
 import com.example.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.example.fxt.utils.BackPressCloseHandler;
 import com.example.fxt.utils.CustomDevice;
@@ -108,12 +109,12 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
         listView.setXListViewListener(this);
         listView.setRefreshTime(getTime());
         listView.setOnItemClickListener((parent, view, position, id) -> {
+            customApplication.connectSerial = customApplication.arrSpliceBleSerial.get(position -1);
+            customApplication.connectBLEAddress = customApplication.arrSpliceBleAddress.get(position -1);
             if(isDelete) {
                 showDeleteDialog();
             }else {
                 rlProgress.setVisibility(View.VISIBLE);
-                customApplication.connectSerial = customApplication.arrSpliceBleSerial.get(position -1);
-                customApplication.connectBLEAddress = customApplication.arrSpliceBleAddress.get(position -1);
                 Intent intent = new Intent(SpliceActivity.this, SpliceHistoryActivity.class);
                 startActivity(intent);
             }
@@ -324,6 +325,13 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
             custom_delete_dialog.dismiss();
         });
         custom_delete_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            List<SpliceDataBean> dataList = new ArrayList<>();
+            dataList.addAll(customApplication.database.selectAllSpliceData());
+            for(int i = 0 ; i < dataList.size() ; i ++) {
+                if(dataList.get(i).getSn().equals(customApplication.connectSerial)) {
+                    customApplication.database.deleteById(Integer.parseInt(dataList.get(i).getId()));
+                }
+            }
             for(int i = 0 ; i < customApplication.arrSpliceBleAddress.size() ; i ++) {
                 if(customApplication.arrSpliceBleAddress.get(i).equals(customApplication.connectBLEAddress)) {
                     customApplication.arrSpliceBleAddress.remove(i);

@@ -340,6 +340,13 @@ public class MainActivity extends MainAppcompatActivity implements XListView.IXL
             custom_delete_dialog.dismiss();
         });
         custom_delete_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            List<OFIDataBean> dataList = new ArrayList<>();
+            dataList.addAll(customApplication.ofiDatabase.selectAllSpliceData());
+            for(int i = 0 ; i < dataList.size() ; i ++) {
+                if(dataList.get(i).getSerial().equals(customApplication.connectBLEAddress)) {
+                    customApplication.ofiDatabase.deleteById(Integer.parseInt(dataList.get(i).getId()));
+                }
+            }
             for(int i = 0 ; i < customApplication.arrBleAddress.size() ; i ++) {
                 if(customApplication.arrBleAddress.get(i).equals(customApplication.connectBLEAddress)) {
                     customApplication.arrBleAddress.remove(i);
