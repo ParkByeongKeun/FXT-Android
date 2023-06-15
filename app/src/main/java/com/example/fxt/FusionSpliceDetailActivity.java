@@ -46,6 +46,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.fxt.RestApi.ApiService;
+import com.example.fxt.RestApi.ResponseImage;
 import com.example.fxt.ble.api.BleAPI;
 import com.example.fxt.ble.api.bean.BleResultBean;
 import com.example.fxt.ble.api.callback.BleConnectionCallBack;
@@ -55,6 +57,8 @@ import com.example.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.example.fxt.ble.util.SpliceDataParseUtil;
 import com.example.fxt.utils.ToastUtil;
 import com.example.fxt.utils.excelItem;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.tom_roush.pdfbox.android.PDFBoxResourceLoader;
 import com.tom_roush.pdfbox.io.IOUtils;
 import com.tom_roush.pdfbox.pdmodel.PDDocument;
@@ -87,11 +91,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FusionSpliceDetailActivity extends MainAppcompatActivity {
 
@@ -126,6 +142,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     private final android.os.Handler handler = new android.os.Handler();
     int num = 1;
     boolean isFirstStart = false;
+    boolean isAnomaly = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -275,12 +292,18 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         }
         Bitmap bitmap = getLocalBitmap(mSpliceDataBean.getFiberBean().getFuseImagePath());
         mFusionImage.setImageBitmap(bitmap);
-
+        File imageFile = null;
+        try {
+            imageFile = createFileFromBitmap(bitmap);
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        updateImage(imageFile);
         float loss = Float.parseFloat(mSpliceDataBean.getFiberBean().getLoss());
         float leftAngle = mSpliceDataBean.getFiberBean().getLeftAngle();
         float rightAngle = mSpliceDataBean.getFiberBean().getRightAngle();
         float coreAngle = mSpliceDataBean.getFiberBean().getCoreAngle();
-        if(loss >=  0.2 | leftAngle >= 3.0 | rightAngle >= 3.0 | coreAngle >= 1.0) {
+        if(loss >=  0.2 | leftAngle >= 3.0 | rightAngle >= 3.0 | coreAngle >= 1.0 | isAnomaly) {
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);
             boolean checkDialog = false;
 
@@ -728,5 +751,50 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             }
         };
         handler.post(runnable);
+    }
+
+    boolean updateImage(final File file) {
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file);
+        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("image", file.getName(), requestBody);
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(chain -> {
+            Request request = chain.request().newBuilder().addHeader("Content-Type", "multipart/form-data").build();
+            return chain.proceed(request);
+        });
+        Gson gson = new GsonBuilder().setLenient().create();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://123.142.5.131:25410")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(httpClient.build())
+                .build();
+        ApiService service = retrofit.create(ApiService.class);
+        service.upload(fileToUpload).enqueue(new Callback<ResponseImage>() {
+            @Override
+            public void onResponse(Call<ResponseImage> call, Response<ResponseImage> response) {
+                ResponseImage result = response.body();
+                Log.d("yot132","isAnomaly = " + result.getAnomaly()+", loss = " + result.getLoss());
+                isAnomaly = result.getAnomaly();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseImage> call, Throwable t) {
+            }
+        });
+        return isAnomaly;
+    }
+
+    private File createFileFromBitmap(Bitmap bitmap) throws IOException {
+        File newFile = new File(this.getFilesDir(), makeImageFileName());
+        FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+        fileOutputStream.close();
+        return newFile;
+    }
+
+    private String makeImageFileName() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd_hhmmss");
+        Date date = new Date();
+        String strDate = simpleDateFormat.format(date);
+        return strDate + ".png";
     }
 }

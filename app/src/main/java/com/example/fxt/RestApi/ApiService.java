@@ -1,9 +1,12 @@
 package com.example.fxt.RestApi;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface ApiService {
     @FormUrlEncoded
@@ -87,4 +90,8 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("/web/deleteRecord")
     Call<ResponseDeleteRecord> deleteRecord(@Field("token") String token, @Field("ids") String ids);
+
+    @Multipart
+    @POST("/image")
+    Call<ResponseImage> upload(@Part MultipartBody.Part image);
 }
