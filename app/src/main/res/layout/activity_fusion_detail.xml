@@ -24,7 +24,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="190dp"
+                    android:layout_height="240dp"
                     android:orientation="vertical"
                     android:background="@drawable/rounded_ofi_main">
                     <TextView
@@ -66,6 +66,81 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginTop="20dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="Work User"/>
+
+                        <TextView
+                            android:id="@+id/fusion_work_user_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:text="--"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="Work Location"/>
+
+                        <TextView
+                            android:id="@+id/fusion_work_location_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:text="--"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="Work Time"/>
+
+                        <TextView
+                            android:id="@+id/fusion_work_time_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:text="--"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -266,7 +341,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="200dp"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/rounded_ofi_main">
@@ -280,31 +355,6 @@
                         android:layout_marginLeft="20dp"
                         android:text="FUSION"/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="20dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="Work Time"/>
-
-                        <TextView
-                            android:id="@+id/fusion_work_time_tv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:layout_marginLeft="10dp"
-                            android:text="--"/>
-
-                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -344,6 +394,7 @@
                             android:textColor="@color/black"
                             android:layout_weight="1"
                             android:gravity="right"
+                            android:id="@+id/tvLoss"
                             android:text="Loss Estimation"/>
 
                         <TextView
@@ -368,6 +419,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
+                            android:id="@+id/tvAngleLeft"
                             android:layout_weight="1"
                             android:gravity="right"
                             android:text="Cleaved Angle, Left"/>
@@ -395,6 +447,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:layout_weight="1"
+                            android:id="@+id/tvAngleRight"
                             android:gravity="right"
                             android:text="Cleaved Angle, Right"/>
 
@@ -421,6 +474,7 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:layout_weight="1"
+                            android:id="@+id/tvCoreAngle"
                             android:gravity="right"
                             android:text="Core Angle"/>
 
@@ -575,7 +629,6 @@
                     android:layout_height="300dp"
                     android:orientation="vertical"
                     android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
                     android:background="@drawable/rounded_ofi_main">
                     <TextView
                         android:layout_width="match_parent"
@@ -609,6 +662,35 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/rounded_ofi_main">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="17sp"
+                        android:textColor="@color/white"
+                        android:padding="3dp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:text="PASS or FAIL"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:id="@+id/tvPassFail"
+                        android:text="PASS"/>
+                </LinearLayout>
+
                 </LinearLayout>
 
 

@@ -210,6 +210,7 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
         custom_password_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
             if(etPassword.getText().toString().equals("1234")) {
                 showMModeDialog();
+                etNewName.setText("");
             }else {
                 showTextDialog("Check your input information");
             }

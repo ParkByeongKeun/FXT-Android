@@ -4,9 +4,14 @@ import static com.example.fxt.ble.api.util.ByteUtil.getAsciiString;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.fxt.CustomApplication;
+import com.example.fxt.GpsTracker;
+import com.example.fxt.OfiInfoActivity;
 import com.example.fxt.ble.api.bean.BleResultBean;
 import com.example.fxt.ble.api.util.BleHexConvert;
 import com.example.fxt.ble.device.splicer.bean.FiberBean;
@@ -17,7 +22,10 @@ import com.example.fxt.utils.FileUtil;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 熔接机上报数据解析工具类
@@ -31,6 +39,8 @@ public class SpliceDataParseUtil {
      * @param bleDataBean 熔接机上报的数据
      * @return bean
      */
+
+    static Context mContext;
 
     public static InfoBean parseInfo(InfoBean spliceDataBean, BleResultBean bleDataBean) {
         if (spliceDataBean == null){
@@ -71,7 +81,7 @@ public class SpliceDataParseUtil {
             spliceDataBean = new SpliceDataBean();
         }
         customApplication = (CustomApplication) context.getApplicationContext();
-
+        mContext = context;
         String strJson = getAsciiString(bleDataBean.getPayload(),0,bleDataBean.getPayload().length);
         if (strJson == null){
             return spliceDataBean;
@@ -86,15 +96,19 @@ public class SpliceDataParseUtil {
             // 最外层的JSONObject对象
             JSONObject object = new JSONObject(strJson.substring(4));
 
+            GpsTracker gpsTracker = new GpsTracker(context);
+            String address = getAddress(gpsTracker.getLatitude(),gpsTracker.getLongitude());
+            Log.d("yot132","tracker = " + gpsTracker.getLatitude() +"," +gpsTracker.getLongitude());
+
             Log.d("yot132","123 = " + object);
             // 通过MINFO字段获取其所包含的JSONObject对象
 //            JSONObject minfo = object.getJSONObject("MINFO");
             spliceDataBean.setSn(object.getString("serial_num"));
-            spliceDataBean.setAppVer(customApplication.swVersion);//@@@@@@
-            spliceDataBean.setFpgaVer(object.getString("module"));//@@@@@@
+            spliceDataBean.setAppVer(customApplication.swVersion);
+            spliceDataBean.setFpgaVer(address);//@@@@@@
             spliceDataBean.setManufacturer(object.getString("cur_arc_cnt"));
             spliceDataBean.setBrand(object.getString("total_arc_cnt"));
-            spliceDataBean.setModel(object.getString("module"));//@@@@@@
+            spliceDataBean.setModel(object.getString("module"));
 
             FiberBean fiberBean = new FiberBean();
             // 通过RESULT字段获取其所包含的JSONObject对象
@@ -167,5 +181,39 @@ public class SpliceDataParseUtil {
         }
 
         return spliceDataBean;
+    }
+
+    public static String getAddress(double Latitude, double Longitude) {
+        double latitude = Latitude;
+        double longitude = Longitude;
+        String address = getCurrentAddress(latitude, longitude);
+        return address;
+    }
+
+    public static String getCurrentAddress(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
+        List<Address> addresses;
+        try {
+            addresses = geocoder.getFromLocation(
+                    latitude,
+                    longitude,
+                    3);
+            for(int i = 0 ; i< addresses.size() ; i++) {
+                Log.d("yot132","addresses = " + addresses.get(i));
+            }
+        } catch (IOException ioException) {
+            //네트워크 문제
+//            Toast.makeText(this, "geocoder error(network)", Toast.LENGTH_LONG).show();
+            return "geocoder error";
+        } catch (IllegalArgumentException illegalArgumentException) {
+//            Toast.makeText(this, "gps error", Toast.LENGTH_LONG).show();
+            return "gps error";
+        }
+        if (addresses == null || addresses.size() == 0) {
+//            Toast.makeText(this, "No Address", Toast.LENGTH_LONG).show();
+            return "No Address";
+        }
+        Address address = addresses.get(1);
+        return address.getAddressLine(0).toString()+"\n";
     }
 }

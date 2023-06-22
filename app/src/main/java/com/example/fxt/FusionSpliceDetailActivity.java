@@ -123,6 +123,13 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     TextView mTextFusionRightAngle;
     TextView mTextFusionCoreAngle;
     TextView mTextFusionCoreOffset;
+    TextView mTextFusionWorkLocation;
+    TextView mTextFusionWorkUser;
+    TextView mTextViewCoreAngle;
+    TextView mTextViewLeftAngle;
+    TextView mTextViewRightAngle;
+    TextView mTextViewLoss;
+    TextView mTextViewPassFail;
     ImageView mFusionImage;
     CustomApplication customApplication;
     Button btnAnalysis;
@@ -142,7 +149,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     private final android.os.Handler handler = new android.os.Handler();
     int num = 1;
     boolean isFirstStart = false;
-    boolean isAnomaly = true;
+    boolean isAnomaly = false;
+    String strPassFail = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -270,6 +278,13 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionRightAngle = findViewById(R.id.fusion_right_angle_tv);
         mTextFusionCoreAngle = findViewById(R.id.fusion_core_angle_tv);
         mTextFusionCoreOffset = findViewById(R.id.fusion_core_offset_tv);
+        mTextFusionWorkLocation = findViewById(R.id.fusion_work_location_tv);
+        mTextFusionWorkUser = findViewById(R.id.fusion_work_user_tv);
+        mTextViewCoreAngle = findViewById(R.id.tvCoreAngle);
+        mTextViewLeftAngle = findViewById(R.id.tvAngleLeft);
+        mTextViewRightAngle = findViewById(R.id.tvAngleRight);
+        mTextViewLoss = findViewById(R.id.tvLoss);
+        mTextViewPassFail = findViewById(R.id.tvPassFail);
         mFusionImage = findViewById(R.id.fusion_image_iv);
         mTextFusionSn.setText(mSpliceDataBean.getSn());
         mTextFusionCurrentArcCount.setText(String.valueOf(mSpliceDataBean.getManufacturer()));
@@ -287,6 +302,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionRightAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getRightAngle()));
         mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()));
         mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()));
+        mTextFusionWorkLocation.setText(mSpliceDataBean.getFpgaVer());
+        mTextFusionWorkUser.setText("fiberfox");
         if (mSpliceDataBean.getFiberBean().getFuseImagePath() == null){
             return;
         }
@@ -303,7 +320,32 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         float leftAngle = mSpliceDataBean.getFiberBean().getLeftAngle();
         float rightAngle = mSpliceDataBean.getFiberBean().getRightAngle();
         float coreAngle = mSpliceDataBean.getFiberBean().getCoreAngle();
-        if(loss >= customApplication.lossThreshold | leftAngle >= 3.0 | rightAngle >= 3.0 | coreAngle >= customApplication.angleThreshold | isAnomaly) {
+        if(loss >= customApplication.lossThreshold) {
+            mTextFusionLoss.setTextColor(getResources().getColor(R.color.red));
+            mTextViewLoss.setTextColor(getResources().getColor(R.color.red));
+            strPassFail += " (Loss)";
+        }
+        if(leftAngle >= 0.5) {
+            mTextFusionLeftAngle.setTextColor(getResources().getColor(R.color.red));
+            mTextViewLeftAngle.setTextColor(getResources().getColor(R.color.red));
+            strPassFail += " (L.Angle)";
+        }
+        if(rightAngle >= 0.5) {
+            mTextFusionRightAngle.setTextColor(getResources().getColor(R.color.red));
+            mTextViewRightAngle.setTextColor(getResources().getColor(R.color.red));
+            strPassFail += " (R.Angle)";
+        }
+        if(coreAngle >= customApplication.angleThreshold) {
+            mTextFusionCoreAngle.setTextColor(getResources().getColor(R.color.red));
+            mTextViewCoreAngle.setTextColor(getResources().getColor(R.color.red));
+            strPassFail += " (C.Angle)";
+        }
+        if(isAnomaly) {
+            strPassFail += " (AI)";
+        }
+        if(loss >= customApplication.lossThreshold | leftAngle >= 0.5 | rightAngle >= 0.5 | coreAngle >= customApplication.angleThreshold | isAnomaly) {
+            mTextViewPassFail.setText("FAIL : "+strPassFail);
+            mTextViewPassFail.setTextColor(getResources().getColor(R.color.red));
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);
             boolean checkDialog = false;
 
@@ -317,6 +359,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                 showLoadingDialog();
 //                StartMainAlertDialog();
             }
+        }else {
+            mTextViewPassFail.setText("PASS");
         }
     }
 
