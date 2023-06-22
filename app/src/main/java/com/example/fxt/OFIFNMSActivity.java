@@ -59,9 +59,23 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
         mScrollView.setRefreshTime(getTime());
         View content = LayoutInflater.from(this).inflate(R.layout.vw_scroll_view_main, null);
         content.findViewById(R.id.rl_splice).setOnTouchListener((view, motionEvent) -> {
+            if(customApplication.isLogin) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP: {
+                        Intent intent = new Intent(OFIFNMSActivity.this, SpliceActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case MotionEvent.ACTION_DOWN: {
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }else {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:{
-                    Intent intent = new Intent(OFIFNMSActivity.this, SpliceActivity.class);
+                    Intent intent = new Intent(OFIFNMSActivity.this, SignInActivity.class);
                     startActivity(intent);
                     break;
                 }
@@ -71,20 +85,36 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
                 default:
                     break;
             }
+        }
             return true;
         });
         content.findViewById(R.id.rl_ofi).setOnTouchListener((view, motionEvent) -> {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_UP:{
-                    Intent intent = new Intent(OFIFNMSActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    break;
+            if(customApplication.isLogin) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP: {
+                        Intent intent = new Intent(OFIFNMSActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case MotionEvent.ACTION_DOWN: {
+                        break;
+                    }
+                    default:
+                        break;
                 }
-                case MotionEvent.ACTION_DOWN: {
-                    break;
+            }else {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:{
+                        Intent intent = new Intent(OFIFNMSActivity.this, SignInActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                    case MotionEvent.ACTION_DOWN: {
+                        break;
+                    }
+                    default:
+                        break;
                 }
-                default:
-                    break;
             }
             return true;
         });

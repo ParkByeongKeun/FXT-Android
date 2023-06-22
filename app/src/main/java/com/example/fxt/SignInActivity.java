@@ -19,7 +19,7 @@ import com.example.fxt.utils.ProgressGenerator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 
-public class SignInActivity extends AppCompatActivity implements ProgressGenerator.OnCompleteListener {
+public class SignInActivity extends MainAppcompatActivity implements ProgressGenerator.OnCompleteListener {
 
     public static final String EXTRAS_ENDLESS_MODE = "EXTRAS_ENDLESS_MODE";
     String authId = "fiberfox";
@@ -98,9 +98,9 @@ public class SignInActivity extends AppCompatActivity implements ProgressGenerat
 
     @Override
     public void onComplete() {
-        Intent intent = new Intent(SignInActivity.this,FNMSTAGActivity.class);
+        Intent intent = new Intent(SignInActivity.this,OFIFNMSActivity.class);
         startActivity(intent);
-        finish();
+        activityFinish();
     }
 
     public void initDialog() {

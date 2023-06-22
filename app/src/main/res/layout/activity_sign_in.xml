@@ -116,9 +116,9 @@
                     android:textStyle="bold"
                     android:layout_marginTop="40dp"
                     custom:pb_colorComplete="@color/green_complete"
-                    custom:pb_colorNormal="@color/blue_normal"
-                    custom:pb_colorPressed="@color/blue_pressed"
-                    custom:pb_colorProgress="@color/purple_progress"
+                    custom:pb_colorNormal="@color/purple_700"
+                    custom:pb_colorPressed="@color/purple_500"
+                    custom:pb_colorProgress="@color/purple_700"
                     custom:pb_textComplete="SUCCESS"
                     custom:pb_textProgress="LOADING" />
             </LinearLayout>
@@ -144,7 +144,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
                     android:text="Forgot Password?"
-                    android:textColor="@color/blue"
+                    android:textColor="@color/black"
                     android:textSize="15dp" />
 
                 <com.dd.processbutton.iml.ActionProcessButton
@@ -164,9 +164,9 @@
                     android:textSize="16dp"
                     android:textStyle="bold"
                     custom:pb_colorComplete="@color/green_complete"
-                    custom:pb_colorNormal="@color/blue_normal"
-                    custom:pb_colorPressed="@color/blue_pressed"
-                    custom:pb_colorProgress="@color/purple_progress"
+                    custom:pb_colorNormal="@color/purple_700"
+                    custom:pb_colorPressed="@color/purple_500"
+                    custom:pb_colorProgress="@color/purple_700"
                     custom:pb_textComplete="SUCCESS"
                     custom:pb_textProgress="LOADING" />
             </RelativeLayout>

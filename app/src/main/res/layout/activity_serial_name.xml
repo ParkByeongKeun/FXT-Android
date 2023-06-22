@@ -96,7 +96,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:text="Ok"
+                    android:text="Continue"
+                    android:background="@color/purple_700"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="16dp"
@@ -106,11 +107,12 @@
                     android:id="@+id/tvWeb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_below="@+id/btnUpdateUser"
-                    android:text="Logout"
                     android:layout_alignParentRight="true"
-                    android:textColor="@color/blue" />
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:text="Logout"
+                    android:textColor="@color/base_color" />
             </RelativeLayout>
         </RelativeLayout>
         </RelativeLayout>

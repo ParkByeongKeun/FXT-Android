@@ -763,7 +763,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         });
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://123.142.5.131:25410")
+                .baseUrl("http://10.36.30.159:8088")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
                 .build();
