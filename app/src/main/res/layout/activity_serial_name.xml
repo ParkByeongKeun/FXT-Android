@@ -117,5 +117,19 @@
         </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:id="@+id/fab"
+        android:text="M Mode"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp" />
 </RelativeLayout>
 

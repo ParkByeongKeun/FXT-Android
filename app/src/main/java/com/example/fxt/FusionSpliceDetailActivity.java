@@ -303,7 +303,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         float leftAngle = mSpliceDataBean.getFiberBean().getLeftAngle();
         float rightAngle = mSpliceDataBean.getFiberBean().getRightAngle();
         float coreAngle = mSpliceDataBean.getFiberBean().getCoreAngle();
-        if(loss >=  0.2 | leftAngle >= 3.0 | rightAngle >= 3.0 | coreAngle >= 1.0 | isAnomaly) {
+        if(loss >= customApplication.lossThreshold | leftAngle >= 3.0 | rightAngle >= 3.0 | coreAngle >= customApplication.angleThreshold | isAnomaly) {
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);
             boolean checkDialog = false;
 

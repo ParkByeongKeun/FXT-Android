@@ -42,6 +42,9 @@ public class CustomApplication extends Application {
     public String selectCore = "";
     public boolean isLevelCheck;
     public boolean isLogin;
+    public float lossThreshold;
+    public float angleThreshold;
+
     ArrayList<String> arrSpliceBleAddress;
     ArrayList<String> arrSpliceBleSerial;
     public SpliceDataDao database;
@@ -65,6 +68,12 @@ public class CustomApplication extends Application {
         fnmsDataList = new ArrayList<>();
         SharedPreferences sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
         isLogin = sharedPreferences.getBoolean("login",false);
+
+        SharedPreferences sharedPreferencesLoss = this.getSharedPreferences("loss",MODE_PRIVATE);
+        lossThreshold = sharedPreferencesLoss.getFloat("loss",0.2f);
+
+        SharedPreferences sharedPreferencesAngle = this.getSharedPreferences("angle",MODE_PRIVATE);
+        angleThreshold = sharedPreferencesAngle.getFloat("angle",1.0f);
 
         foregroundService = new ForegroundService(this);
         database = new SpliceDataDao(this);

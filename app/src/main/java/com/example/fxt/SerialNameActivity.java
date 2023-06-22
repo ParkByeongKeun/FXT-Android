@@ -6,7 +6,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+
+import com.example.fxt.utils.C_Permission;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 public class SerialNameActivity extends MainAppcompatActivity {
 
@@ -27,6 +33,12 @@ public class SerialNameActivity extends MainAppcompatActivity {
     Dialog custom_dialog;
     ActionBar mTitle;
     Dialog custom_delete_dialog;
+    Dialog custom_mmode_dialog;
+    Dialog custom_password_dialog;
+    ExtendedFloatingActionButton fab;
+    Dialog custom_text_dialog;
+    EditText etPassword;
+    TextView tv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +47,14 @@ public class SerialNameActivity extends MainAppcompatActivity {
         customApplication = (CustomApplication)getApplication();
         initView();
         initDeleteDialog();
+        initMModeDialog();
+        initMModePasswordDialog();
+        initTextDialog();
+        fab = findViewById(R.id.fab);
+        C_Permission.checkPermission(this);
+        initView();
+        fab.setVisibility(View.GONE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         findViewById(R.id.rlRoot).setOnClickListener(v -> imm.hideSoftInputFromWindow(etNewName.getWindowToken(), 0));
         String serial = customApplication.arrMapSerial.get(customApplication.connectBLEAddress);
@@ -116,6 +136,74 @@ public class SerialNameActivity extends MainAppcompatActivity {
             Intent intent = new Intent(SerialNameActivity.this,OFIFNMSActivity.class);
             startActivity(intent);
             activityFinish();
+        });
+    }
+
+    public void initMModeDialog() {
+        custom_mmode_dialog = new Dialog(this);
+        custom_mmode_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        custom_mmode_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        custom_mmode_dialog.setContentView(R.layout.custom_dialog_edit);
+        ImageView iv = custom_mmode_dialog.findViewById(R.id.iv);
+        iv.setImageResource(R.drawable.ic_pop_w);
+        TextView tv = custom_mmode_dialog.findViewById(R.id.tvTitle);
+        TextView subTv = custom_mmode_dialog.findViewById(R.id.tvSubTitle);
+        tv.setText("M Mode");
+        subTv.setText("write the value to be modified");
+    }
+
+    public void showMModeDialog() {
+        custom_mmode_dialog.show();
+        custom_mmode_dialog.findViewById(R.id.btnNo).setOnClickListener(v -> {
+            custom_mmode_dialog.dismiss();
+        });
+        custom_mmode_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
+
+        });
+    }
+
+    public void initMModePasswordDialog() {
+        custom_password_dialog = new Dialog(this);
+        custom_password_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        custom_password_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        custom_password_dialog.setContentView(R.layout.custom_dialog_edit);
+        ImageView iv = custom_password_dialog.findViewById(R.id.iv);
+        iv.setImageResource(R.drawable.ic_pop_w);
+        TextView tv = custom_password_dialog.findViewById(R.id.tvTitle);
+        TextView subTv = custom_password_dialog.findViewById(R.id.tvSubTitle);
+        etPassword = custom_password_dialog.findViewById(R.id.etPassword);
+        tv.setText("M Mode");
+        subTv.setText("input user password");
+    }
+
+    public void showMModePasswordDialog() {
+        custom_password_dialog.show();
+        custom_password_dialog.findViewById(R.id.btnNo).setOnClickListener(v -> {
+            custom_password_dialog.dismiss();
+        });
+        custom_password_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            if(etPassword.getText().toString().equals("1234")) {
+                showMModeDialog();
+            }else {
+                showTextDialog("Check your input information");
+            }
+            custom_password_dialog.dismiss();
+        });
+    }
+
+    public void initTextDialog() {
+        custom_text_dialog = new Dialog(this);
+        custom_text_dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        custom_text_dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        custom_text_dialog.setContentView(R.layout.custom_dialog_completed);
+        tv = custom_text_dialog.findViewById(R.id.tvTitle);
+    }
+
+    public void showTextDialog(String title) {
+        tv.setText(title);
+        custom_text_dialog.show();
+        custom_text_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            custom_text_dialog.dismiss();
         });
     }
 }
