@@ -4,7 +4,6 @@ import static com.example.fxt.ble.api.util.ByteUtil.getAsciiString;
 import static com.example.fxt.utils.ConstantUtil.StrConstant.BEAN;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -16,15 +15,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,16 +33,21 @@ import androidx.core.content.FileProvider;
 import com.example.fxt.ble.api.BleAPI;
 import com.example.fxt.ble.api.bean.BleResultBean;
 import com.example.fxt.ble.api.callback.BleConnectionCallBack;
-import com.example.fxt.ble.api.util.ByteUtil;
 import com.example.fxt.ble.device.BleDeviceFactory;
 import com.example.fxt.ble.device.splicer.BleSplicerCallback;
 import com.example.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.example.fxt.ble.util.SpliceDataParseUtil;
 import com.example.fxt.utils.CustomHistoryList;
-import com.example.fxt.utils.OfiDataAdapter;
 import com.example.fxt.utils.SpliceDataAdapter;
 import com.example.fxt.utils.ToastUtil;
 import com.example.fxt.widget.XListView;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import org.json.JSONObject;
 
@@ -83,6 +81,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
     Dialog custom_dialog;
     Dialog custom_delete_dialog;
     boolean isFirstStart = false;
+    private LineChart chart;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -239,6 +238,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
                 ToastUtil.showToastLong(getApplicationContext(), msg);
             }
         });
+        showData(customApplication.connectSerial);
     }
 
     @Override
@@ -370,6 +370,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
                 mSpliceDataBeanList.add(dataList.get(i));
             }
         }
+        setGraphData();
     }
 
     @Override
@@ -667,6 +668,65 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             showData(customApplication.connectSerial);
             setDoc();
             custom_delete_dialog.dismiss();
+        });
+    }
+
+    private void setGraphData() {
+        runOnUiThread(() -> {
+            chart = findViewById(R.id.chart1);
+            chart.setBackgroundColor(Color.rgb(255, 255, 255));
+            chart.getDescription().setEnabled(false);
+            chart.setTouchEnabled(true);
+            chart.setDragEnabled(true);
+            chart.setScaleEnabled(true);
+            chart.setPinchZoom(false);
+            chart.setDrawGridBackground(false);
+            YAxis right = chart.getAxisRight();
+            right.setTextColor(Color.WHITE);
+            XAxis x = chart.getXAxis();
+            x.setLabelCount(10,false);
+            x.setTextColor(getResources().getColor(R.color.purple_700));
+            x.setAxisLineColor(getResources().getColor(R.color.purple_700));
+            x.setPosition(XAxis.XAxisPosition.BOTTOM);
+            YAxis y = chart.getAxisLeft();
+            y.setLabelCount(6, false);
+
+            y.setTextColor(getResources().getColor(R.color.purple_700));
+            y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+            y.setDrawGridLines(true);
+            y.setAxisLineColor(getResources().getColor(R.color.purple_700));
+            chart.getLegend().setEnabled(false);
+            chart.invalidate();
+        ArrayList<Entry> values = new ArrayList<>();
+        for (int i = 0; i < mSpliceDataBeanList.size(); i++) {
+            values.add(new Entry(i, Float.parseFloat(mSpliceDataBeanList.get(i).getFiberBean().getLoss())));
+        }
+        LineDataSet set1;
+        if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(values);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+        } else {
+            set1 = new LineDataSet(values, "DataSet 1");
+            set1.setMode(LineDataSet.Mode.LINEAR);
+            set1.setCircleColor(getResources().getColor(R.color.purple_700));
+            set1.setLineWidth(1);
+            set1.setColor(getResources().getColor(R.color.purple_700));
+            LineData data = new LineData(set1);
+            data.setValueTextSize(9f);
+            data.setDrawValues(true);
+            ValueFormatter valueFormatter = new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    return super.getFormattedValue(value);
+                }
+            };
+            valueFormatter.getFormattedValue(0.01f);
+            data.setValueFormatter(valueFormatter);
+            chart.setData(data);
+            chart.invalidate();
+            }
         });
     }
 }
