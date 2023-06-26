@@ -140,6 +140,31 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:text="Model"/>
+
+                        <TextView
+                            android:id="@+id/fusion_model_tv"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/white"
+                            android:layout_weight="1"
+                            android:gravity="left"
+                            android:layout_marginLeft="10dp"
+                            android:text="--"/>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <TextView
@@ -166,6 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:layout_marginTop="5dp">
 
                         <TextView
@@ -218,6 +244,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         android:layout_marginTop="5dp">
 
                         <TextView
@@ -308,32 +335,6 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
                             android:layout_weight="1"
-                            android:text="--"/>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="5dp">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:layout_weight="1"
-                            android:gravity="right"
-                            android:text="Model"/>
-
-                        <TextView
-                            android:id="@+id/fusion_model_tv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/white"
-                            android:layout_weight="1"
-                            android:gravity="left"
-                            android:layout_marginLeft="10dp"
                             android:text="--"/>
 
                     </LinearLayout>
@@ -678,6 +679,7 @@
                         android:textColor="@color/white"
                         android:padding="3dp"
                         android:textStyle="bold"
+                        android:id="@+id/tvPassFailTitle"
                         android:layout_marginTop="5dp"
                         android:layout_marginLeft="20dp"
                         android:text="PASS or FAIL"/>
@@ -686,7 +688,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
                         android:layout_weight="1"
-                        android:gravity="center"
+                        android:layout_marginLeft="50dp"
                         android:id="@+id/tvPassFail"
                         android:text="PASS"/>
                 </LinearLayout>

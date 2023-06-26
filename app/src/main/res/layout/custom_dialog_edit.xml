@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="M Mode"
+            android:text="Control Mode"
             android:textSize="20dp"
             android:textColor="@color/purple_700"
             android:layout_marginLeft="10dp"
@@ -117,13 +117,36 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvVersionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llAngle"
+        android:textStyle="bold"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="40dp"
+        android:text="SW Version "
+        android:textColor="@color/purple_500" />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvVersionTitle"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:text="0.001"
+        android:textColor="@color/purple_500"
+        android:layout_marginBottom="20dp"/>
+
     <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llAngle"
+        android:layout_below="@+id/tvVersionTitle"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp">
 

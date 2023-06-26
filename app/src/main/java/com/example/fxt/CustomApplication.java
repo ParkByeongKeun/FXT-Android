@@ -45,8 +45,9 @@ public class CustomApplication extends Application {
     public float lossThreshold;
     public float angleThreshold;
 
-    ArrayList<String> arrSpliceBleAddress;
-    ArrayList<String> arrSpliceBleSerial;
+    public ArrayList<String> arrSpliceBleAddress;
+    public ArrayList<String> arrSpliceBleSerial;
+    public ArrayList<String> arrSpliceBleVersion;
     public SpliceDataDao database;
     ForegroundService foregroundService;
     public final String SERVER = "http://118.67.142.85:8000";
@@ -79,6 +80,7 @@ public class CustomApplication extends Application {
         database = new SpliceDataDao(this);
         arrSpliceBleAddress = getStringArrayPref(this,"arrSpliceBleAddress");
         arrSpliceBleSerial = getStringArrayPref(this,"arrSpliceBleSerial");
+        arrSpliceBleVersion = getStringArrayPref(this,"arrSpliceBleVersion");
     }
 
     public static Context getCurrentContext(){

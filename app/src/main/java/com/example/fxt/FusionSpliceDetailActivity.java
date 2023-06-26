@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -22,16 +23,13 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -67,14 +65,19 @@ import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
+import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
+import com.tom_roush.pdfbox.pdmodel.graphics.color.PDColor;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Picture;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -130,6 +133,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     TextView mTextViewRightAngle;
     TextView mTextViewLoss;
     TextView mTextViewPassFail;
+    TextView tvPassFailTitle;
     ImageView mFusionImage;
     CustomApplication customApplication;
     Button btnAnalysis;
@@ -170,6 +174,32 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTitle.setDisplayShowCustomEnabled(true);
         mTitle.setTitle("Splice History");
         mTitle.setBackgroundDrawable(new ColorDrawable(0xffE56731));
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+// Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_CONTACTS)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        1);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
         btnAnalysis.setOnClickListener(v -> {
             //TODO: AI Analysis
             Toast.makeText(getApplicationContext(),"No data.",Toast.LENGTH_SHORT).show();
@@ -285,6 +315,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextViewRightAngle = findViewById(R.id.tvAngleRight);
         mTextViewLoss = findViewById(R.id.tvLoss);
         mTextViewPassFail = findViewById(R.id.tvPassFail);
+        tvPassFailTitle = findViewById(R.id.tvPassFailTitle);
         mFusionImage = findViewById(R.id.fusion_image_iv);
         mTextFusionSn.setText(mSpliceDataBean.getSn());
         mTextFusionCurrentArcCount.setText(String.valueOf(mSpliceDataBean.getManufacturer()));
@@ -343,9 +374,10 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         if(isAnomaly) {
             strPassFail += " (AI)";
         }
+//        mTextViewPassFail.setTextColor(getResources().getColor(R.color.white));
         if(loss >= customApplication.lossThreshold | leftAngle >= 0.5 | rightAngle >= 0.5 | coreAngle >= customApplication.angleThreshold | isAnomaly) {
-            mTextViewPassFail.setText("FAIL : "+strPassFail);
-            mTextViewPassFail.setTextColor(getResources().getColor(R.color.red));
+            tvPassFailTitle.setText("FAIL");
+            mTextViewPassFail.setText(strPassFail);
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);
             boolean checkDialog = false;
 
@@ -360,7 +392,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
 //                StartMainAlertDialog();
             }
         }else {
-            mTextViewPassFail.setText("PASS");
+            tvPassFailTitle.setText("PASS");
+            mTextViewPassFail.setText("none");
         }
     }
 
@@ -406,13 +439,23 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     private void saveExcel(){
         Workbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet();
+        CellStyle cs = workbook.createCellStyle();
+        CellStyle csBold = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setColor(HSSFColor.RED.index);
+        cs.setFont(font);
+        Font fontBold = workbook.createFont();
+        fontBold.setColor(HSSFColor.BLACK.index);
+        csBold.setFont(fontBold);
+        fontBold.setBold(true);
         Drawing drawing = sheet.createDrawingPatriarch();
         CreationHelper helper = workbook.getCreationHelper();
         ClientAnchor anchor = helper.createClientAnchor();
+        sheet.setDefaultColumnWidth(20);
         anchor.setCol1( 0 );
-        anchor.setRow1( 16 );
-        anchor.setCol2( 2 );
-        anchor.setRow2( 16 );
+        anchor.setRow1( 22 );
+        anchor.setCol2( 1 );
+        anchor.setRow2( 29 );
         anchor.setDx1(0);
         anchor.setDx2(1000);
         anchor.setDy1(0);
@@ -426,7 +469,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         int image_h = (int) (bitmap.getHeight() * scale);
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, image_w, image_h, true);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        resized.compress(Bitmap.CompressFormat.JPEG,0,bos);
+        resized.compress(Bitmap.CompressFormat.JPEG,100,bos);
         byte[] bitmapdata = bos.toByteArray();
         InputStream is = null;
         is = new ByteArrayInputStream(bitmapdata);
@@ -446,16 +489,36 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         Row row = sheet.createRow(0);
         Cell cell;
         cell = row.createCell(0);
+        cell.setCellValue("REPORT");
+        cell.setCellStyle(csBold);
+        row = sheet.createRow(2);
+        cell = row.createCell(0);
         cell.setCellValue("INFO");
-        row = sheet.createRow(6);
+        cell.setCellStyle(csBold);
+        row = sheet.createRow(12);
         cell = row.createCell(0);
         cell.setCellValue("FUSION");
-        row = sheet.createRow(14);
+        cell.setCellStyle(csBold);
+        row = sheet.createRow(20);
         cell = row.createCell(0);
         cell.setCellValue("IMAGE");
+        cell.setCellStyle(csBold);
+        row = sheet.createRow(31);
+        cell = row.createCell(0);
+        cell.setCellStyle(csBold);
+        cell.setCellValue(tvPassFailTitle.getText().toString());
+        row = sheet.createRow(32);
+        cell = row.createCell(0);
+        cell.setCellValue(mTextViewPassFail.getText().toString());
 
         ArrayList<excelItem> mItemsInfo = new ArrayList();
-        excelItem item = new excelItem("Serial Number", mTextFusionSn.getText().toString());
+        excelItem item = new excelItem("Work User", mTextFusionWorkUser.getText().toString());
+        mItemsInfo.add(item);
+        item = new excelItem("Work Location", mTextFusionWorkLocation.getText().toString());
+        mItemsInfo.add(item);
+        item = new excelItem("Work Time", mTextFusionWorkTime.getText().toString());
+        mItemsInfo.add(item);
+        item = new excelItem("Serial Number", mTextFusionSn.getText().toString());
         mItemsInfo.add(item);
         item = new excelItem("Current Arc Count", mTextFusionCurrentArcCount.getText().toString());
         mItemsInfo.add(item);
@@ -467,8 +530,6 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mItemsInfo.add(item);
 
         ArrayList<excelItem> mItemsFusion = new ArrayList();
-        item = new excelItem("Work Time", mTextFusionWorkTime.getText().toString());
-        mItemsFusion.add(item);
         item = new excelItem("Splice Mode", mTextFusionSpliceModel.getText().toString());
         mItemsFusion.add(item);
         item = new excelItem("Loss Estimation", mTextFusionLoss.getText().toString());
@@ -481,19 +542,46 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mItemsFusion.add(item);
         item = new excelItem("Core Offset", mTextFusionCoreOffset.getText().toString());
         mItemsFusion.add(item);
-        for(int i = 0; i < mItemsInfo.size() ; i++){ // 데이터 엑셀에 입력
+        for(int i = 2; i < 2 + mItemsInfo.size() ; i++){ // 데이터 엑셀에 입력
             row = sheet.createRow(i+1);
             cell = row.createCell(0);
-            cell.setCellValue(mItemsInfo.get(i).getTitle());
+            cell.setCellValue(mItemsInfo.get(i- 2).getTitle());
             cell = row.createCell(1);
-            cell.setCellValue(mItemsInfo.get(i).getValue());
+            cell.setCellValue(mItemsInfo.get(i- 2).getValue());
         }
-        for(int i = 6; i < 6 + mItemsFusion.size() ; i++){ // 데이터 엑셀에 입력
+        Cell cellTitle;
+        for(int i = 12; i < 12 + mItemsFusion.size() ; i++){ // 데이터 엑셀에 입력
+            String title;
             row = sheet.createRow(i+1);
-            cell = row.createCell(0);
-            cell.setCellValue(mItemsFusion.get(i- 6).getTitle());
+            cellTitle = row.createCell(0);
+            cellTitle.setCellValue(mItemsFusion.get(i- 12).getTitle());
+            title = mItemsFusion.get(i- 12).getTitle();
             cell = row.createCell(1);
-            cell.setCellValue(mItemsFusion.get(i- 6).getValue());
+            cell.setCellValue(mItemsFusion.get(i- 12).getValue());
+            if(title.equals("Loss Estimation")) {
+                if(mTextFusionLoss.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                    cell.setCellStyle(cs);
+                    cellTitle.setCellStyle(cs);
+                }
+            }
+            if(title.equals("Cleaved Angle, Left")) {
+                if(mTextFusionLeftAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                    cell.setCellStyle(cs);
+                    cellTitle.setCellStyle(cs);
+                }
+            }
+            if(title.equals("Cleaved Angle, Right")) {
+                if(mTextFusionRightAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                    cell.setCellStyle(cs);
+                    cellTitle.setCellStyle(cs);
+                }
+            }
+            if(title.equals("Core Angle")) {
+                if(mTextFusionCoreAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                    cell.setCellStyle(cs);
+                    cellTitle.setCellStyle(cs);
+                }
+            }
         }
         String[] pathName = mTextFusionWorkTime.getText().toString().split(" ");
         String pathTime= pathName[1].replaceAll(":", "_");
@@ -510,7 +598,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
 
     public String createPdf() {
         PDDocument document = new PDDocument();
-        PDPage page = new PDPage();
+        PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
         try{
             font = PDType0Font.load(document, assetManager.open("NanumBarunGothicLight.ttf"));
@@ -520,7 +608,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         }
         PDPageContentStream contentStream;
         try {
-            contentStream = new PDPageContentStream( document, page, true, true);
+            contentStream = new PDPageContentStream( document, page);
             Drawable drawable = mFusionImage.getDrawable();
             if(drawable == null ) {
                 return "error";
@@ -539,24 +627,46 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             float y_pos = page.getCropBox().getHeight();
             float x_adjusted = (float) (( x_pos - image_w ) * 0.5 + page.getCropBox().getLowerLeftX());
             float y_adjusted = (float) ((y_pos - image_h) * 0.9 + page.getCropBox().getLowerLeftY());
-            contentStream.drawImage(pdImage, 70, y_adjusted- 350, image_w, image_h);
+            contentStream.drawImage(pdImage, 70, y_adjusted- 420, image_w, image_h);
+
+//            Bitmap bigPictureBitmap  = BitmapFactory.decodeResource(getResources(), R.drawable.pdf_bg);
+//            PDImageXObject pdImage1 = LosslessFactory.createFromImage(document, bigPictureBitmap);
+//            contentStream.drawImage(pdImage1, 50, 300, 500, 460);
+//            contentStream.drawImage(pdImage1, 0, 665, 545, 790);
+
             int text_width = 470;
             int text_left = 70;
-            String textN = "INFO" + "\n" +
-                    "1. Serial Number          " + mTextFusionSn.getText().toString() + "\n" +
-                    "2. Current Arc Count      " + mTextFusionCurrentArcCount.getText().toString() + "\n" +
-                    "3. Total Arc Count        " + mTextFusionTotalArcCount.getText().toString() + "\n" +
-                    "4. SW Version             " + mTextFusionAppVer.getText().toString() + "\n" +
-                    "5. Model                  " + mTextFusionModel.getText().toString() + "\n" +
-                    "FUSION" + "\n" +
-                    "1. Work Time              " + mTextFusionWorkTime.getText().toString() + "\n" +
-                    "2. Splice Mode            " + mTextFusionSpliceModel.getText().toString() + "\n" +
-                    "3. Loss Estimation        " + mTextFusionLoss.getText().toString() + "\n" +
-                    "4. Cleaved Angle, Left    " + mTextFusionLeftAngle.getText().toString() + "\n" +
-                    "5. Cleaved Angle, Right   " + mTextFusionRightAngle.getText().toString() + "\n" +
-                    "6. Core Angle             " + mTextFusionCoreAngle.getText().toString() + "\n" +
-                    "7. Core Offset            " + mTextFusionCoreOffset.getText().toString() + "\n" +
-                    "IMAGE" + "\n";
+            String[][] contents = {
+                    {"REPORT",    ""},
+                    {"", ""},
+                    {"INFO", ""},
+                    {"Work User", mTextFusionWorkUser.getText().toString()},
+                    {"Work Location", mTextFusionWorkLocation.getText().toString()},
+                    {"Work Time", mTextFusionWorkTime.getText().toString()},
+                    {"Serial Number", mTextFusionSn.getText().toString()},
+                    {"Current Arc Count", mTextFusionCurrentArcCount.getText().toString()},
+                    {"Total Arc Count", mTextFusionTotalArcCount.getText().toString()},
+                    {"SW Version", mTextFusionAppVer.getText().toString()},
+                    {"Model", mTextFusionModel.getText().toString()},
+                    {"",""},
+                    {"FUSION",""},
+                    {"Splice Mode", mTextFusionSpliceModel.getText().toString()},
+                    {"Loss Estimation", mTextFusionLoss.getText().toString()},
+                    {"Cleaved Angle, Left", mTextFusionLeftAngle.getText().toString()},
+                    {"Cleaved Angle, Right", mTextFusionRightAngle.getText().toString()},
+                    {"Core Angle", mTextFusionCoreAngle.getText().toString()},
+                    {"Core Offset", mTextFusionCoreOffset.getText().toString()},
+                    {"",""},
+                    {"IMAGE",""}
+            };
+            drawTable(page, contentStream, 800, 70, contents);
+            String[][] contentsPass = {
+                    {tvPassFailTitle.getText().toString(),    ""},
+                    {mTextViewPassFail.getText().toString(),    ""}
+            };
+            drawTable(page, contentStream, 160, 70, contentsPass);
+
+            String textN = ""+"\n";
             int fontSize = 17;
             float leading = 1.5f * fontSize;
             List<String> lines = new ArrayList<String>();
@@ -601,6 +711,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             return path;
         } catch (IOException e) {
             Log.e("yot132", "Exception thrown while creating PDF", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "error";
     }
@@ -840,5 +952,96 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         Date date = new Date();
         String strDate = simpleDateFormat.format(date);
         return strDate + ".png";
+    }
+
+    private void drawLine(PDPageContentStream contentStream, float xStart, float yStart, float xEnd, float yEnd) throws IOException {
+        contentStream.moveTo(xStart,yStart);
+        contentStream.lineTo(xEnd,yEnd);
+        contentStream.setStrokingColor(255,255,255);
+        contentStream.stroke();
+    }
+
+    boolean isCheck = false;
+    private void drawText(String text, PDFont font, int fontSize, float left, float bottom, PDPageContentStream contentStream) throws Exception {
+        contentStream.beginText();
+        contentStream.setNonStrokingColor(0f,0f,0f);
+        if(isCheck) {
+            isCheck = false;
+            contentStream.setNonStrokingColor(1f,0f,0f);
+        }
+        if(text.equals("Loss Estimation")) {
+            if(mTextFusionLoss.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                contentStream.setNonStrokingColor(1f,0f,0f);
+                isCheck = true;
+            }else {
+                contentStream.setNonStrokingColor(0f,0f,0f);
+            }
+        }
+        if(text.equals("Cleaved Angle, Left")) {
+            if(mTextFusionLeftAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                contentStream.setNonStrokingColor(1f,0f,0f);
+                isCheck = true;
+            }else {
+                contentStream.setNonStrokingColor(0f,0f,0f);
+            }
+        }
+        if(text.equals("Cleaved Angle, Right")) {
+            if(mTextFusionRightAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                contentStream.setNonStrokingColor(1f,0f,0f);
+                isCheck = true;
+            }else {
+                contentStream.setNonStrokingColor(0f,0f,0f);
+            }
+        }
+        if(text.equals("Core Angle")) {
+            if(mTextFusionCoreAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+                contentStream.setNonStrokingColor(1f,0f,0f);
+                isCheck = true;
+            }else {
+                contentStream.setNonStrokingColor(0f,0f,0f);
+            }
+        }
+        contentStream.setFont(font, fontSize);
+        contentStream.newLineAtOffset(left, bottom);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
+
+    public void drawTable(PDPage page, PDPageContentStream contentStream, float y, float margin, String[][] content) throws Exception {
+        final int rows = content.length;
+        final int cols = content[0].length;
+
+        final float rowHeight = 20f;
+        final float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
+        final float tableHeight = rowHeight * rows;
+
+        final float colWidth = tableWidth / (float)cols;
+        final float cellMargin = 5f;
+
+        // 행을 그린다.
+        float nexty = y ;
+        for(int i = 0; i <= rows; i++) {
+            drawLine(contentStream, margin, nexty, margin + tableWidth, nexty);
+            nexty -= rowHeight;
+        }
+
+        // 열을 그린다.
+        float nextx = margin;
+        for(int i = 0; i <= cols; i++) {
+            drawLine(contentStream, nextx, y, nextx, y - tableHeight);
+            nextx += colWidth;
+        }
+
+        float textx = margin + cellMargin;
+        float texty = y - 15;
+        for(int i = 0; i < content.length; i++) {
+            for(int j = 0 ; j < content[i].length; j++) {
+                String text = content[i][j];
+                drawText(text, PDType1Font.HELVETICA_BOLD, 14, textx, texty, contentStream);
+                textx += colWidth;
+            }
+            texty -= rowHeight;
+            textx = margin + cellMargin;
+        }
     }
 }

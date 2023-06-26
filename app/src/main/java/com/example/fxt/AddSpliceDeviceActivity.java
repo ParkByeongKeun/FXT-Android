@@ -96,8 +96,10 @@ public class AddSpliceDeviceActivity extends MainAppcompatActivity implements XL
         mHandler = new Handler();
         customApplication.arrSpliceBleAddress.clear();
         customApplication.arrSpliceBleSerial.clear();
+        customApplication.arrSpliceBleVersion.clear();
         customApplication.arrSpliceBleAddress = getStringArrayPref(this,"arrSpliceBleAddress");
         customApplication.arrSpliceBleSerial = getStringArrayPref(this,"arrSpliceBleSerial");
+        customApplication.arrSpliceBleVersion = getStringArrayPref(this,"arrSpliceBleVersion");
         listView.setPullRefreshEnable(true);
         listView.setPullLoadEnable(true);
         listView.setAutoLoadEnable(true);
@@ -190,7 +192,17 @@ public class AddSpliceDeviceActivity extends MainAppcompatActivity implements XL
                 @Override
                 public void onDeviceFound(BleScanBean bleScanBean, List<BleScanBean> bleScanBeanList) {
                     bleDevices.clear();
-                    bleDevices.addAll(bleScanBeanList);
+                    for(int j = 0 ; j < bleScanBeanList.size() ; j ++) {
+                        boolean isCheck = false;
+                        for(int i = 0 ; i < customApplication.arrSpliceBleAddress.size() ; i ++) {
+                            if(bleScanBeanList.get(j).getAddress().equals(customApplication.arrSpliceBleAddress.get(i))){
+                                isCheck = true;
+                                break;
+                            }
+                        }
+                        if(!isCheck)
+                            bleDevices.add(bleScanBeanList.get(j));
+                    }
                     bleListAdapter.notifyDataSetChanged();
                 }
             });
@@ -299,11 +311,14 @@ public class AddSpliceDeviceActivity extends MainAppcompatActivity implements XL
 
                         Log.d("yot132","sn = " + object.getString("SN"));
                         String SN = object.getString("SN");
+                        String SWVersion = object.getString("machineSoftVersion");
                         rlProgress.setVisibility(View.GONE);
                         customApplication.arrSpliceBleAddress.add(connectBLE);
                         customApplication.arrSpliceBleSerial.add(SN);
+                        customApplication.arrSpliceBleVersion.add(SN +"," +SWVersion);
                         setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
                         setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
+                        setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleVersion",customApplication.arrSpliceBleVersion);
                         onDisconnectClick();
                         finish();
 

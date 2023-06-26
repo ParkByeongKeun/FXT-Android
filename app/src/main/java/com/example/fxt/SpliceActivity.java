@@ -121,6 +121,7 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
         });
         listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
             customApplication.connectBLEAddress = customApplication.arrSpliceBleAddress.get(i-1);
+            customApplication.connectSerial = customApplication.arrSpliceBleSerial.get(i-1);
             Intent intent = new Intent(SpliceActivity.this, SpliceSerialNameActivity.class);
             startActivity(intent);
             return true;
@@ -336,8 +337,13 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                 if(customApplication.arrSpliceBleAddress.get(i).equals(customApplication.connectBLEAddress)) {
                     customApplication.arrSpliceBleAddress.remove(i);
                     customApplication.arrSpliceBleSerial.remove(i);
+                    if(customApplication.arrSpliceBleVersion.size() >= i+1) {
+                        customApplication.arrSpliceBleVersion.remove(i);
+                    }
+
                     setStringArrayPref(getApplicationContext(),"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
                     setStringArrayPref(getApplicationContext(),"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
+                    setStringArrayPref(getApplicationContext(),"arrSpliceBleVersion",customApplication.arrSpliceBleVersion);
                     mHandler.postDelayed(() -> {
                         onLoad();
                     }, 800);

@@ -43,12 +43,23 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
     TextView tv;
     EditText etLoss;
     EditText etAngle;
+    String swVersion;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_serial_name);
         customApplication = (CustomApplication)getApplication();
+        String ver = "";
+        for(int i = 0 ; i < customApplication.arrSpliceBleVersion.size() ; i ++) {
+            String[] av = customApplication.arrSpliceBleVersion.get(i).split(",");
+            if(customApplication.connectSerial.equals(av[0])) {
+                ver = av[1];
+            }else {
+                ver = "0.001";
+            }
+        }
+        swVersion = ver;
         initView();
         initDeleteDialog();
         initMModeDialog();
@@ -153,12 +164,14 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
         iv.setImageResource(R.drawable.ic_save);
         TextView tv = custom_mmode_dialog.findViewById(R.id.tvTitle);
         TextView subTv = custom_mmode_dialog.findViewById(R.id.tvSubTitle);
+        TextView tvVersion = custom_mmode_dialog.findViewById(R.id.tvVersion);
         etLoss = custom_mmode_dialog.findViewById(R.id.etLoss);
         etAngle = custom_mmode_dialog.findViewById(R.id.etAngle);
         etLoss.setText(customApplication.lossThreshold + "");
         etAngle.setText(customApplication.angleThreshold + "");
-        tv.setText("M Mode");
+        tv.setText("Control Mode");
         subTv.setText("write the value to be modified");
+        tvVersion.setText(swVersion);
     }
 
     public void showMModeDialog() {
@@ -198,7 +211,7 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
         TextView tv = custom_password_dialog.findViewById(R.id.tvTitle);
         TextView subTv = custom_password_dialog.findViewById(R.id.tvSubTitle);
         etPassword = custom_password_dialog.findViewById(R.id.etPassword);
-        tv.setText("M Mode");
+        tv.setText("Control Mode");
         subTv.setText("input user password");
     }
 
