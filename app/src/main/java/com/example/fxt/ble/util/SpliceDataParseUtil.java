@@ -123,8 +123,8 @@ public class SpliceDataParseUtil {
             fiberBean.setLoss(fiber_1.getString("loss"));
             fiberBean.setLeftAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("left_angle"))));
             fiberBean.setRightAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("right_angle"))));
-            fiberBean.setCoreAngle(Float.parseFloat("0.0"));//@@@@@@
-            fiberBean.setCoreOffset(Float.parseFloat("0.0"));//@@@@@@
+            fiberBean.setCoreAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("core_angle"))));//@@@@@@
+            fiberBean.setCoreOffset(Float.parseFloat(Double.toString(fiber_1.getDouble("core_offset"))));//@@@@@@
             spliceDataBean.setFiberBean(fiberBean);
 
             // 新增
