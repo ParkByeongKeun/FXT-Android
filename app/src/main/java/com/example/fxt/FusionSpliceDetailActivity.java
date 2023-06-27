@@ -21,9 +21,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -160,6 +162,12 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fusion_detail);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if(!Environment.isExternalStorageManager()){
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+            }
+        }
         customApplication = (CustomApplication)getApplication();
         btnAnalysis = findViewById(R.id.btnAnalysis);
         rlProgress = findViewById(R.id.rlProgress);
@@ -601,7 +609,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         PDPage page = new PDPage(PDRectangle.A4);
         document.addPage(page);
         try{
-            font = PDType0Font.load(document, assetManager.open("NanumBarunGothicLight.ttf"));
+            font = PDType0Font.load(document, assetManager.open("NanumGothicBold.ttf"));
         }
         catch (IOException e){
             Log.e("yot132", "error [font]", e);
@@ -1037,7 +1045,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         for(int i = 0; i < content.length; i++) {
             for(int j = 0 ; j < content[i].length; j++) {
                 String text = content[i][j];
-                drawText(text, PDType1Font.HELVETICA_BOLD, 14, textx, texty, contentStream);
+                drawText(text, font, 14, textx, texty, contentStream);
                 textx += colWidth;
             }
             texty -= rowHeight;

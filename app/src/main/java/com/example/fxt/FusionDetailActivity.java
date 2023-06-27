@@ -3,15 +3,19 @@ package com.example.fxt;
 import static com.example.fxt.utils.ConstantUtil.StrConstant.BEAN;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -45,12 +49,16 @@ import com.tom_roush.pdfbox.pdmodel.PDPage;
 import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
+import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Drawing;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -91,12 +99,36 @@ public class FusionDetailActivity extends MainAppcompatActivity {
     Runnable getNameRunnable;
     Button btnSave;
     Dialog custom_dialog;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    public static void verifyStoragePermissions(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fusion_detail_ofi);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if(!Environment.isExternalStorageManager()){
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+            }
+        }
         customApplication = (CustomApplication)getApplication();
+        verifyStoragePermissions(this);
         mFusionImage = findViewById(R.id.fusion_image_iv);
         rlProgress = findViewById(R.id.rlProgress);
         etMemo = findViewById(R.id.etMemo);
@@ -246,6 +278,14 @@ public class FusionDetailActivity extends MainAppcompatActivity {
         Drawing drawing = sheet.createDrawingPatriarch();
         CreationHelper helper = workbook.getCreationHelper();
         ClientAnchor anchor = helper.createClientAnchor();
+        CellStyle cs = workbook.createCellStyle();
+        CellStyle csBold = workbook.createCellStyle();
+        Font fontBold = workbook.createFont();
+        fontBold.setColor(HSSFColor.BLACK.index);
+        csBold.setFont(fontBold);
+        fontBold.setBold(true);
+        sheet.setDefaultColumnWidth(20);
+
         anchor.setCol1( 0 );
         anchor.setRow1( 16 );
         anchor.setCol2( 2 );
@@ -260,7 +300,13 @@ public class FusionDetailActivity extends MainAppcompatActivity {
         cell.setCellValue("");
 
         ArrayList<excelItem> mItemsInfo = new ArrayList();
-        excelItem item = new excelItem("Date", mTextFusionSn.getText().toString());
+        excelItem item = new excelItem("REPORT", "");
+        mItemsInfo.add(item);
+        item = new excelItem("", "");
+        mItemsInfo.add(item);
+        item = new excelItem("INFO", "");
+        mItemsInfo.add(item);
+        item = new excelItem("Date", mTextFusionSn.getText().toString());
         mItemsInfo.add(item);
         item = new excelItem("Time", mTextFusionCurrentArcCount.getText().toString());
         mItemsInfo.add(item);
@@ -302,7 +348,7 @@ public class FusionDetailActivity extends MainAppcompatActivity {
         PDPage page = new PDPage();
         document.addPage(page);
         try{
-            font = PDType0Font.load(document, assetManager.open("NanumBarunGothicLight.ttf"));
+            font = PDType0Font.load(document, assetManager.open("NanumGothicBold.ttf"));
         }
         catch (IOException e){
             Log.e("yot132", "error [font]", e);
@@ -312,14 +358,22 @@ public class FusionDetailActivity extends MainAppcompatActivity {
             contentStream = new PDPageContentStream( document, page, true, true);
             int text_width = 470;
             int text_left = 70;
-            String textN = "INFO" + "\n" +
-                    "Date          " + mTextFusionSn.getText().toString() + "\n" +
-                    "Time      " + mTextFusionCurrentArcCount.getText().toString() + "\n" +
-                    "Frequency        " + mTextFusionTotalArcCount.getText().toString() + "\n" +
-                    "Direction             " + mTextFusionAppVer.getText().toString() + "\n" +
-                    "Measure                  " + mTextFusionModel.getText().toString() + "\n" +
-                    "Location              " + mTextFusionWorkTime.getText().toString() + "\n" +
-                    "Memo            " + etMemo.getText().toString() + "\n";
+            String textN = "";
+
+            String[][] contents = {
+                    {"REPORT",    ""},
+                    {"", ""},
+                    {"INFO", ""},
+                    {"Date", mTextFusionSn.getText().toString()},
+                    {"Time", mTextFusionCurrentArcCount.getText().toString()},
+                    {"Frequency", mTextFusionTotalArcCount.getText().toString()},
+                    {"Direction", mTextFusionAppVer.getText().toString()},
+                    {"Measure", mTextFusionModel.getText().toString()},
+                    {"Location", mTextFusionWorkTime.getText().toString()},
+                    {"Memo", etMemo.getText().toString()}
+            };
+            drawTable(page, contentStream, 780, 70, contents);
+
             int fontSize = 17;
             float leading = 1.5f * fontSize;
             List<String> lines = new ArrayList<String>();
@@ -366,6 +420,8 @@ public class FusionDetailActivity extends MainAppcompatActivity {
             return path;
         } catch (IOException e) {
             Log.e("yot132", "Exception thrown while creating PDF", e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "error";
     }
@@ -423,5 +479,60 @@ public class FusionDetailActivity extends MainAppcompatActivity {
             saveExcel();
             custom_dialog.dismiss();
         });
+    }
+
+
+    private void drawLine(PDPageContentStream contentStream, float xStart, float yStart, float xEnd, float yEnd) throws IOException {
+        contentStream.moveTo(xStart,yStart);
+        contentStream.lineTo(xEnd,yEnd);
+        contentStream.setStrokingColor(255,255,255);
+        contentStream.stroke();
+    }
+
+    private void drawText(String text, PDFont font, int fontSize, float left, float bottom, PDPageContentStream contentStream) throws Exception {
+        contentStream.beginText();
+        contentStream.setNonStrokingColor(0f,0f,0f);
+        contentStream.setFont(font, fontSize);
+        contentStream.newLineAtOffset(left, bottom);
+        contentStream.showText(text);
+        contentStream.endText();
+    }
+
+    public void drawTable(PDPage page, PDPageContentStream contentStream, float y, float margin, String[][] content) throws Exception {
+        final int rows = content.length;
+        final int cols = content[0].length;
+
+        final float rowHeight = 20f;
+        final float tableWidth = page.getMediaBox().getWidth() - (2 * margin);
+        final float tableHeight = rowHeight * rows;
+
+        final float colWidth = tableWidth / (float)cols;
+        final float cellMargin = 5f;
+
+        // 행을 그린다.
+        float nexty = y ;
+        for(int i = 0; i <= rows; i++) {
+            drawLine(contentStream, margin, nexty, margin + tableWidth, nexty);
+            nexty -= rowHeight;
+        }
+
+        // 열을 그린다.
+        float nextx = margin;
+        for(int i = 0; i <= cols; i++) {
+            drawLine(contentStream, nextx, y, nextx, y - tableHeight);
+            nextx += colWidth;
+        }
+
+        float textx = margin + cellMargin;
+        float texty = y - 15;
+        for(int i = 0; i < content.length; i++) {
+            for(int j = 0 ; j < content[i].length; j++) {
+                String text = content[i][j];
+                drawText(text, font, 14, textx, texty, contentStream);
+                textx += colWidth;
+            }
+            texty -= rowHeight;
+            textx = margin + cellMargin;
+        }
     }
 }

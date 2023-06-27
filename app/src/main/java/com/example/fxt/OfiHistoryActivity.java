@@ -37,6 +37,7 @@ import com.example.fxt.ble.device.splicer.bean.OFIDataBean;
 import com.example.fxt.utils.CustomHistoryList;
 import com.example.fxt.utils.OfiDataAdapter;
 import com.example.fxt.widget.XListView;
+import com.github.mikephil.charting.charts.LineChart;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 
 import java.io.File;
@@ -74,6 +75,8 @@ public class OfiHistoryActivity extends MainAppcompatActivity implements XListVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splice_history);
         requestReadExternalStoragePermission();
+        LineChart chart1 = findViewById(R.id.chart1);
+        chart1.setVisibility(View.GONE);
         menuItemShare = findViewById(R.id.iv_share);
         menuItemDelete = findViewById(R.id.iv_delete);
         menuItemDelete.setVisibility(View.INVISIBLE);
