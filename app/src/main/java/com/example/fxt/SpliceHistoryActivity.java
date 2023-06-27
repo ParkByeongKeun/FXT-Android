@@ -54,6 +54,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -685,6 +686,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             right.setTextColor(Color.WHITE);
             XAxis x = chart.getXAxis();
             x.setLabelCount(10,false);
+            x.setGranularity(1f);
             x.setTextColor(getResources().getColor(R.color.purple_700));
             x.setAxisLineColor(getResources().getColor(R.color.purple_700));
             x.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -697,35 +699,38 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             y.setAxisLineColor(getResources().getColor(R.color.purple_700));
             chart.getLegend().setEnabled(false);
             chart.invalidate();
-        ArrayList<Entry> values = new ArrayList<>();
-        for (int i = 0; i < mSpliceDataBeanList.size(); i++) {
-            values.add(new Entry(i, Float.parseFloat(mSpliceDataBeanList.get(i).getFiberBean().getLoss())));
-        }
-        LineDataSet set1;
-        if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
-            set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
-            set1.setValues(values);
-            chart.getData().notifyDataChanged();
-            chart.notifyDataSetChanged();
-        } else {
-            set1 = new LineDataSet(values, "DataSet 1");
-            set1.setMode(LineDataSet.Mode.LINEAR);
-            set1.setCircleColor(getResources().getColor(R.color.purple_700));
-            set1.setLineWidth(1);
-            set1.setColor(getResources().getColor(R.color.purple_700));
-            LineData data = new LineData(set1);
-            data.setValueTextSize(9f);
-            data.setDrawValues(true);
-            ValueFormatter valueFormatter = new ValueFormatter() {
-                @Override
-                public String getFormattedValue(float value) {
-                    return super.getFormattedValue(value);
-                }
-            };
-            valueFormatter.getFormattedValue(0.01f);
-            data.setValueFormatter(valueFormatter);
-            chart.setData(data);
-            chart.invalidate();
+            ArrayList<Entry> values = new ArrayList<>();
+            List<SpliceDataBean> temp = mSpliceDataBeanList;
+            Collections.reverse(temp);
+            for (int i = 0; i < temp.size(); i++) {
+                values.add(new Entry(i+1, Float.parseFloat(temp.get(i).getFiberBean().getLoss())));
+            }
+            Collections.reverse(temp);
+            LineDataSet set1;
+            if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+                set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+                set1.setValues(values);
+                chart.getData().notifyDataChanged();
+                chart.notifyDataSetChanged();
+            } else {
+                set1 = new LineDataSet(values, "splicer1");
+                set1.setMode(LineDataSet.Mode.LINEAR);
+                set1.setCircleColor(getResources().getColor(R.color.purple_700));
+                set1.setLineWidth(1);
+                set1.setColor(getResources().getColor(R.color.purple_700));
+                LineData data = new LineData(set1);
+                data.setValueTextSize(9f);
+                data.setDrawValues(true);
+                ValueFormatter valueFormatter = new ValueFormatter() {
+                    @Override
+                    public String getFormattedValue(float value) {
+                        return super.getFormattedValue(value);
+                    }
+                };
+                valueFormatter.getFormattedValue(0.01f);
+                data.setValueFormatter(valueFormatter);
+                chart.setData(data);
+                chart.invalidate();
             }
         });
     }
