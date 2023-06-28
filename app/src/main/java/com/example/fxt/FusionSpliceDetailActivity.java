@@ -131,6 +131,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     TextView mTextFusionWorkLocation;
     TextView mTextFusionWorkUser;
     TextView mTextViewCoreAngle;
+    TextView mTextViewCoreOffset;
     TextView mTextViewLeftAngle;
     TextView mTextViewRightAngle;
     TextView mTextViewLoss;
@@ -319,6 +320,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionWorkLocation = findViewById(R.id.fusion_work_location_tv);
         mTextFusionWorkUser = findViewById(R.id.fusion_work_user_tv);
         mTextViewCoreAngle = findViewById(R.id.tvCoreAngle);
+        mTextViewCoreOffset = findViewById(R.id.tvCoreOffset);
         mTextViewLeftAngle = findViewById(R.id.tvAngleLeft);
         mTextViewRightAngle = findViewById(R.id.tvAngleRight);
         mTextViewLoss = findViewById(R.id.tvLoss);
@@ -359,31 +361,43 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         float leftAngle = mSpliceDataBean.getFiberBean().getLeftAngle();
         float rightAngle = mSpliceDataBean.getFiberBean().getRightAngle();
         float coreAngle = mSpliceDataBean.getFiberBean().getCoreAngle();
+        float coreOffset = mSpliceDataBean.getFiberBean().getCoreOffset();
         if(loss >= customApplication.lossThreshold) {
             mTextFusionLoss.setTextColor(getResources().getColor(R.color.red));
             mTextViewLoss.setTextColor(getResources().getColor(R.color.red));
             strPassFail += " (Loss)";
         }
-        if(leftAngle >= 0.5) {
+        if(leftAngle >= customApplication.angleThreshold) {
             mTextFusionLeftAngle.setTextColor(getResources().getColor(R.color.red));
             mTextViewLeftAngle.setTextColor(getResources().getColor(R.color.red));
             strPassFail += " (L.Angle)";
         }
-        if(rightAngle >= 0.5) {
+        if(rightAngle >= customApplication.angleThreshold) {
             mTextFusionRightAngle.setTextColor(getResources().getColor(R.color.red));
             mTextViewRightAngle.setTextColor(getResources().getColor(R.color.red));
             strPassFail += " (R.Angle)";
         }
-        if(coreAngle >= customApplication.angleThreshold) {
+        if(coreAngle >= customApplication.coreAngleThreshold) {
             mTextFusionCoreAngle.setTextColor(getResources().getColor(R.color.red));
             mTextViewCoreAngle.setTextColor(getResources().getColor(R.color.red));
             strPassFail += " (C.Angle)";
         }
+        if(coreOffset >= customApplication.coreOffsetThreshold) {
+            mTextFusionCoreOffset.setTextColor(getResources().getColor(R.color.red));
+            mTextViewCoreOffset.setTextColor(getResources().getColor(R.color.red));
+            strPassFail += " (C.Offset)";
+        }
+
         if(isAnomaly) {
             strPassFail += " (AI)";
         }
 //        mTextViewPassFail.setTextColor(getResources().getColor(R.color.white));
-        if(loss >= customApplication.lossThreshold | leftAngle >= 0.5 | rightAngle >= 0.5 | coreAngle >= customApplication.angleThreshold | isAnomaly) {
+        if(loss >= customApplication.lossThreshold |
+                leftAngle >= customApplication.angleThreshold |
+                rightAngle >= customApplication.angleThreshold |
+                coreAngle >= customApplication.coreAngleThreshold |
+                coreOffset >= customApplication.coreOffsetThreshold |
+                isAnomaly) {
             tvPassFailTitle.setText("FAIL");
             mTextViewPassFail.setText(strPassFail);
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);

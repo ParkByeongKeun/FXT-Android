@@ -43,6 +43,8 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
     TextView tv;
     EditText etLoss;
     EditText etAngle;
+    EditText etCoreAngle;
+    EditText etCoreOffset;
     String swVersion;
 
     @Override
@@ -167,8 +169,13 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
         TextView tvVersion = custom_mmode_dialog.findViewById(R.id.tvVersion);
         etLoss = custom_mmode_dialog.findViewById(R.id.etLoss);
         etAngle = custom_mmode_dialog.findViewById(R.id.etAngle);
+        etCoreAngle = custom_mmode_dialog.findViewById(R.id.etAngle);
+        etCoreOffset = custom_mmode_dialog.findViewById(R.id.etAngle);
+
         etLoss.setText(customApplication.lossThreshold + "");
         etAngle.setText(customApplication.angleThreshold + "");
+        etCoreAngle.setText(customApplication.coreAngleThreshold + "");
+        etCoreOffset.setText(customApplication.coreOffsetThreshold + "");
         tv.setText("Control Mode");
         subTv.setText("write the value to be modified");
         tvVersion.setText(swVersion);
@@ -180,11 +187,16 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
             custom_mmode_dialog.dismiss();
         });
         custom_mmode_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            if (etLoss.getText().toString().equals("") || etAngle.getText().toString().equals("")) {
+            if (etLoss.getText().toString().equals("") ||
+                    etAngle.getText().toString().equals("") ||
+                    etCoreAngle.getText().toString().equals("") ||
+                    etCoreOffset.getText().toString().equals("")) {
                 showTextDialog("Check your input information");
             }else {
                 customApplication.lossThreshold = Float.parseFloat(etLoss.getText().toString());
                 customApplication.angleThreshold = Float.parseFloat(etAngle.getText().toString());
+                customApplication.coreAngleThreshold = Float.parseFloat(etCoreAngle.getText().toString());
+                customApplication.coreOffsetThreshold = Float.parseFloat(etCoreOffset.getText().toString());
 
                 SharedPreferences sharedPreferences = this.getSharedPreferences("loss",MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -195,7 +207,18 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
                 SharedPreferences.Editor editor1 = sharedPreferences1.edit();
                 editor1.putFloat("angle",customApplication.angleThreshold);
                 editor1.apply();
-                Toast.makeText(getApplicationContext(),"Success M Mode",Toast.LENGTH_SHORT).show();
+
+                SharedPreferences sharedPreferences2 = this.getSharedPreferences("coreAngle",MODE_PRIVATE);
+                SharedPreferences.Editor editor2 = sharedPreferences2.edit();
+                editor2.putFloat("coreAngle",customApplication.coreAngleThreshold);
+                editor2.apply();
+
+                SharedPreferences sharedPreferences3 = this.getSharedPreferences("coreOffset",MODE_PRIVATE);
+                SharedPreferences.Editor editor3 = sharedPreferences3.edit();
+                editor3.putFloat("coreOffset",customApplication.coreOffsetThreshold);
+                editor3.apply();
+
+                Toast.makeText(getApplicationContext(),"Success Control Mode",Toast.LENGTH_SHORT).show();
                 custom_mmode_dialog.dismiss();
             }
         });
@@ -218,6 +241,7 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
     public void showMModePasswordDialog() {
         custom_password_dialog.show();
         custom_password_dialog.findViewById(R.id.btnNo).setOnClickListener(v -> {
+            etPassword.setText("");
             custom_password_dialog.dismiss();
         });
         custom_password_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
@@ -227,6 +251,7 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
             }else {
                 showTextDialog("Check your input information");
             }
+            etPassword.setText("");
             custom_password_dialog.dismiss();
         });
     }

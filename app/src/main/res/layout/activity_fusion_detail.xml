@@ -503,6 +503,7 @@
                             android:textColor="@color/black"
                             android:layout_weight="1"
                             android:gravity="right"
+                            android:id="@+id/tvCoreOffset"
                             android:text="Core Offset"/>
 
                         <TextView

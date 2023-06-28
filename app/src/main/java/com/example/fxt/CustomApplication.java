@@ -44,6 +44,8 @@ public class CustomApplication extends Application {
     public boolean isLogin;
     public float lossThreshold;
     public float angleThreshold;
+    public float coreAngleThreshold;
+    public float coreOffsetThreshold;
 
     public ArrayList<String> arrSpliceBleAddress;
     public ArrayList<String> arrSpliceBleSerial;
@@ -74,7 +76,13 @@ public class CustomApplication extends Application {
         lossThreshold = sharedPreferencesLoss.getFloat("loss",0.2f);
 
         SharedPreferences sharedPreferencesAngle = this.getSharedPreferences("angle",MODE_PRIVATE);
-        angleThreshold = sharedPreferencesAngle.getFloat("angle",1.0f);
+        angleThreshold = sharedPreferencesAngle.getFloat("angle",0.5f);
+
+        SharedPreferences sharedPreferencesCoreAngle = this.getSharedPreferences("coreAngle",MODE_PRIVATE);
+        coreAngleThreshold = sharedPreferencesCoreAngle.getFloat("coreAngle",1.0f);
+
+        SharedPreferences sharedPreferencesCoreOffset = this.getSharedPreferences("coreOffset",MODE_PRIVATE);
+        coreOffsetThreshold = sharedPreferencesCoreOffset.getFloat("coreOffset",0.2f);
 
         foregroundService = new ForegroundService(this);
         database = new SpliceDataDao(this);
