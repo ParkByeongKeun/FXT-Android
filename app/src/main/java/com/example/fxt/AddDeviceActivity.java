@@ -163,7 +163,17 @@ public class AddDeviceActivity extends MainAppcompatActivity implements XListVie
                     @Override
                     public void onDeviceFound(BleScanBean bleScanBean, List<BleScanBean> bleScanBeanList) {
                         bleDevices.clear();
-                        bleDevices.addAll(bleScanBeanList);
+                        for(int j = 0 ; j < bleScanBeanList.size() ; j ++) {
+                            boolean isCheck = false;
+                            for(int i = 0 ; i < customApplication.arrBleAddress.size() ; i ++) {
+                                if(bleScanBeanList.get(j).getAddress().equals(customApplication.arrBleAddress.get(i))){
+                                    isCheck = true;
+                                    break;
+                                }
+                            }
+                            if(!isCheck)
+                                bleDevices.add(bleScanBeanList.get(j));
+                        }
                         bleListAdapter.notifyDataSetChanged();
                     }
                 });
@@ -205,7 +215,17 @@ public class AddDeviceActivity extends MainAppcompatActivity implements XListVie
                 @Override
                 public void onDeviceFound(BleScanBean bleScanBean, List<BleScanBean> bleScanBeanList) {
                     bleDevices.clear();
-                    bleDevices.addAll(bleScanBeanList);
+                    for(int j = 0 ; j < bleScanBeanList.size() ; j ++) {
+                        boolean isCheck = false;
+                        for(int i = 0 ; i < customApplication.arrBleAddress.size() ; i ++) {
+                            if(bleScanBeanList.get(j).getAddress().equals(customApplication.arrBleAddress.get(i))){
+                                isCheck = true;
+                                break;
+                            }
+                        }
+                        if(!isCheck)
+                            bleDevices.add(bleScanBeanList.get(j));
+                    }
                     bleListAdapter.notifyDataSetChanged();
                 }
             });
