@@ -338,11 +338,11 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         if (mSpliceDataBean.getFiberBean() == null){
             return;
         }
-        mTextFusionLoss.setText(mSpliceDataBean.getFiberBean().getLoss());
-        mTextFusionLeftAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getLeftAngle()));
-        mTextFusionRightAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getRightAngle()));
-        mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()));
-        mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()));
+        mTextFusionLoss.setText(mSpliceDataBean.getFiberBean().getLoss() + " ("+ customApplication.lossThreshold+")");
+        mTextFusionLeftAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getLeftAngle()) + " ("+ customApplication.angleThreshold+")");
+        mTextFusionRightAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getRightAngle()) + " ("+ customApplication.angleThreshold+")");
+        mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()) + " ("+ customApplication.coreAngleThreshold+")");
+        mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()) + " ("+ customApplication.coreOffsetThreshold+")");
         mTextFusionWorkLocation.setText(mSpliceDataBean.getFpgaVer());
         mTextFusionWorkUser.setText("fiberfox");
         if (mSpliceDataBean.getFiberBean().getFuseImagePath() == null){
