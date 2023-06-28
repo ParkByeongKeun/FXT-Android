@@ -649,7 +649,6 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             float y_pos = page.getCropBox().getHeight();
             float x_adjusted = (float) (( x_pos - image_w ) * 0.5 + page.getCropBox().getLowerLeftX());
             float y_adjusted = (float) ((y_pos - image_h) * 0.9 + page.getCropBox().getLowerLeftY());
-            contentStream.drawImage(pdImage, 70, y_adjusted- 420, image_w, image_h);
 
 //            Bitmap bigPictureBitmap  = BitmapFactory.decodeResource(getResources(), R.drawable.pdf_bg);
 //            PDImageXObject pdImage1 = LosslessFactory.createFromImage(document, bigPictureBitmap);
@@ -679,14 +678,22 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                     {"Core Angle", mTextFusionCoreAngle.getText().toString()},
                     {"Core Offset", mTextFusionCoreOffset.getText().toString()},
                     {"",""},
-                    {"IMAGE",""}
-            };
-            drawTable(page, contentStream, 800, 70, contents);
-            String[][] contentsPass = {
+                    {"IMAGE",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
+                    {"",""},
                     {tvPassFailTitle.getText().toString(),    ""},
                     {mTextViewPassFail.getText().toString(),    ""}
             };
-            drawTable(page, contentStream, 160, 70, contentsPass);
+            drawTable(page, contentStream, 800, 70, contents);
+            contentStream.drawImage(pdImage, 70, y_adjusted- 410, image_w, image_h);
 
             String textN = ""+"\n";
             int fontSize = 17;
@@ -979,7 +986,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
     private void drawLine(PDPageContentStream contentStream, float xStart, float yStart, float xEnd, float yEnd) throws IOException {
         contentStream.moveTo(xStart,yStart);
         contentStream.lineTo(xEnd,yEnd);
-        contentStream.setStrokingColor(255,255,255);
+        contentStream.setStrokingColor(70,70,70);
         contentStream.stroke();
     }
 
