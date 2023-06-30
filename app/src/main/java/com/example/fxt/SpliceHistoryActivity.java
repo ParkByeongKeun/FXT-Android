@@ -38,10 +38,12 @@ import com.example.fxt.ble.device.splicer.BleSplicerCallback;
 import com.example.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.example.fxt.ble.util.SpliceDataParseUtil;
 import com.example.fxt.utils.CustomHistoryList;
+import com.example.fxt.utils.MyValueFormatter;
 import com.example.fxt.utils.SpliceDataAdapter;
 import com.example.fxt.utils.ToastUtil;
 import com.example.fxt.widget.XListView;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -668,6 +670,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             mSpliceDataBeanList.clear();
             showData(customApplication.connectSerial);
             setDoc();
+            setGraphData();
             custom_delete_dialog.dismiss();
         });
     }
@@ -692,43 +695,59 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             x.setPosition(XAxis.XAxisPosition.BOTTOM);
             YAxis y = chart.getAxisLeft();
             y.setLabelCount(6, false);
-
             y.setTextColor(getResources().getColor(R.color.purple_700));
             y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
             y.setDrawGridLines(true);
             y.setAxisLineColor(getResources().getColor(R.color.purple_700));
-            chart.getLegend().setEnabled(false);
+
+            Legend l = chart.getLegend();
+            l.setForm(Legend.LegendForm.LINE);
+            l.setTextSize(11f);
+            l.setTextColor(Color.BLACK);
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+            l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+            l.setDrawInside(false);
+
             chart.invalidate();
             ArrayList<Entry> values = new ArrayList<>();
+            ArrayList<Entry> averageValues = new ArrayList<>();
             List<SpliceDataBean> temp = mSpliceDataBeanList;
             Collections.reverse(temp);
+            float avg = 0;
             for (int i = 0; i < temp.size(); i++) {
                 values.add(new Entry(i+1, Float.parseFloat(temp.get(i).getFiberBean().getLoss())));
+                avg = avg + Float.parseFloat(temp.get(i).getFiberBean().getLoss());
+                averageValues.add(new Entry(i+1, Float.parseFloat(String.format("%.3f", avg / (i+1)))));
             }
             Collections.reverse(temp);
-            LineDataSet set1;
+            LineDataSet set1, set2;
             if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
                 set1 = (LineDataSet) chart.getData().getDataSetByIndex(0);
+                set2 = (LineDataSet) chart.getData().getDataSetByIndex(1);
                 set1.setValues(values);
+                set2.setValues(averageValues);
                 chart.getData().notifyDataChanged();
                 chart.notifyDataSetChanged();
             } else {
-                set1 = new LineDataSet(values, "splicer1");
+                set1 = new LineDataSet(values, "loss");
                 set1.setMode(LineDataSet.Mode.LINEAR);
+
+
                 set1.setCircleColor(getResources().getColor(R.color.purple_700));
                 set1.setLineWidth(1);
                 set1.setColor(getResources().getColor(R.color.purple_700));
-                LineData data = new LineData(set1);
+
+                set2 = new LineDataSet(averageValues, "average");
+                set2.setMode(LineDataSet.Mode.LINEAR);
+                set2.setCircleColor(getResources().getColor(R.color.blue));
+                set2.setLineWidth(1);
+                set2.setColor(getResources().getColor(R.color.blue));
+
+                LineData data = new LineData(set1,set2);
                 data.setValueTextSize(9f);
                 data.setDrawValues(true);
-                ValueFormatter valueFormatter = new ValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value) {
-                        return super.getFormattedValue(value);
-                    }
-                };
-                valueFormatter.getFormattedValue(0.01f);
-                data.setValueFormatter(valueFormatter);
+                data.setValueFormatter(new MyValueFormatter());
                 chart.setData(data);
                 chart.invalidate();
             }
