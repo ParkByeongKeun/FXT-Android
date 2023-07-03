@@ -151,12 +151,12 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                     serial = "No Device Name";
                 }
                 if(getFirstCharacter(customApplication.arrSpliceBleSerial.get(i)).equals("1")) {
-                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini6s,"core Alignment Splicer","MINI6S+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini6s,"core Alignment Splicer","MINI 6S+",""+customApplication.arrSpliceBleSerial.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
                     mItems.add(customDevice2);
                     mAdapter = new DeviceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
                     listView.setAdapter(mAdapter);
                 }else {
-                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"core Alignment Splicer","MINI 100CA+",""+customApplication.arrSpliceBleSerial.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
                     mItems.add(customDevice2);
                     mAdapter = new DeviceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
                     listView.setAdapter(mAdapter);
@@ -189,12 +189,12 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                     serial = "No Device Name";
                 }
                 if(getFirstCharacter(customApplication.arrSpliceBleSerial.get(i)).equals("1")) {
-                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini6s,"core Alignment Splicer","MINI6S+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini6s,"core Alignment Splicer","MINI6S+",""+customApplication.arrSpliceBleSerial.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
                     mItems.add(customDevice2);
                     mAdapter = new DeviceSpliceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
                     listView.setAdapter(mAdapter);
                 }else {
-                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleAddress.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
+                    CustomDevice customDevice2 = new CustomDevice(R.drawable.ic_mini,"core Alignment Splicer","MINI100CA+",""+customApplication.arrSpliceBleSerial.get(i),""+serial, "Total Count : " + getCount(customApplication.arrSpliceBleSerial.get(i)));
                     mItems.add(customDevice2);
                     mAdapter = new DeviceSpliceAdapter(SpliceActivity.this, R.layout.vw_list_item, mItems);
                     listView.setAdapter(mAdapter);

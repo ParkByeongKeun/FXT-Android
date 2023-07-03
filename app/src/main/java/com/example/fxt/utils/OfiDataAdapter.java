@@ -66,7 +66,7 @@ public class OfiDataAdapter extends BaseAdapter {
         holder.ivExcel.setOnClickListener(v -> {
             Toast.makeText(mContext, "Long click to share",Toast.LENGTH_SHORT).show();
         });
-        holder.textId.setText(String.valueOf(position + 1));
+        holder.textId.setText(String.valueOf(mOFIDataBeanList.size() - position));
         if(mOFIDataBeanList.get(position).getDataTime() == null) {
             return convertView;
         }

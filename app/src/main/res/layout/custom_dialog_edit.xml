@@ -63,7 +63,7 @@
                 android:layout_height="match_parent"
                 android:drawablePadding="16dp"
                 android:background="@color/white"
-                android:hint="Loss"
+                android:hint="Loss Estimation"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:maxLength="5"
@@ -100,7 +100,7 @@
                 android:layout_height="match_parent"
                 android:drawablePadding="16dp"
                 android:background="@color/white"
-                android:hint="Cleaved.Angle"
+                android:hint="Cleaved Angle"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:maxLength="5"
@@ -123,6 +123,7 @@
         android:layout_below="@+id/llAngle"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
+        android:visibility="gone"
         android:paddingLeft="32dp"
         android:paddingRight="32dp"
         android:id="@+id/llCoreAngle">
@@ -139,7 +140,7 @@
                 android:layout_height="match_parent"
                 android:drawablePadding="16dp"
                 android:background="@color/white"
-                android:hint="Core.Angle"
+                android:hint="Core Angle"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:maxLength="5"
@@ -157,14 +158,15 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llCoreOffset"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llCoreAngle"
         android:layout_centerHorizontal="true"
         android:orientation="vertical"
+        android:visibility="gone"
         android:paddingLeft="32dp"
-        android:paddingRight="32dp"
-        android:id="@+id/llCoreOffset">
+        android:paddingRight="32dp">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -176,12 +178,12 @@
                 android:id="@+id/etCoreOffset"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:drawablePadding="16dp"
                 android:background="@color/white"
-                android:hint="Core.Offset"
+                android:drawablePadding="16dp"
+                android:hint="Core Offset"
                 android:inputType="numberDecimal"
-                android:maxLines="1"
                 android:maxLength="5"
+                android:maxLines="1"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -190,7 +192,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#96000000"/>
+            android:textColorHint="#96000000" />
 
 
     </LinearLayout>

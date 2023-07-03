@@ -177,7 +177,7 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
         etCoreAngle.setText(customApplication.coreAngleThreshold + "");
         etCoreOffset.setText(customApplication.coreOffsetThreshold + "");
         tv.setText("Control Mode");
-        subTv.setText("write the value to be modified");
+        subTv.setText("Tolerance limit setting");
         tvVersion.setText(swVersion);
     }
 
@@ -187,10 +187,7 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
             custom_mmode_dialog.dismiss();
         });
         custom_mmode_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            if (etLoss.getText().toString().equals("") ||
-                    etAngle.getText().toString().equals("") ||
-                    etCoreAngle.getText().toString().equals("") ||
-                    etCoreOffset.getText().toString().equals("")) {
+            if (etLoss.getText().toString().equals("") || etAngle.getText().toString().equals("")) {
                 showTextDialog("Check your input information");
             }else {
                 customApplication.lossThreshold = Float.parseFloat(etLoss.getText().toString());

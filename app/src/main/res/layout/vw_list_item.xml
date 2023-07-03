@@ -2,80 +2,118 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="120dp"
+    android:layout_height="160dp"
     android:id="@+id/rlTop">
 
 
-    <ImageView
-        android:id="@+id/ivTop"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlMain"
+        android:id="@+id/rlHelp">
+        <ImageView
+            android:id="@+id/ivBottom"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_centerVertical="true"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:src="@drawable/rounded_ofi_main" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+
+            android:text="Long click to edit" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
+        android:id="@+id/rlMain"
         android:layout_marginTop="10dp"
         android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/rounded_ofi_main" />
+        android:paddingRight="10dp">
+        <ImageView
+            android:id="@+id/ivTop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/rounded_ofi_main" />
 
-    <ImageView
-        android:id="@+id/iv_title"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:paddingTop="10dp"
-        android:paddingRight="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_ofi" />
+        <ImageView
+            android:id="@+id/iv_title"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:paddingTop="10dp"
+            android:paddingRight="10dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_ofi" />
 
-    <TextView
-        android:id="@+id/tvTop1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_title"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="40dp"
-        android:text="Optical Fiber Identifier"
-        android:textColor="@color/white"
-        android:textSize="13dp" />
+        <TextView
+            android:id="@+id/tvTop1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/iv_title"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="40dp"
+            android:text="Optical Fiber Identifier"
+            android:textColor="@color/white"
+            android:textSize="13dp" />
 
-    <TextView
-        android:id="@+id/tvTop2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTop1"
-        android:layout_toRightOf="@+id/iv_title"
-        android:textColor="@color/white"
-        android:text="MINI6S+"
-        android:textSize="16dp"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvTop2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTop1"
+            android:layout_toRightOf="@+id/iv_title"
+            android:textColor="@color/white"
+            android:text="MINI6S+"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvTop4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTop2"
-        android:layout_toRightOf="@+id/iv_title"
-        android:text="serial"
-        android:textSize="14dp" />
+        <TextView
+            android:id="@+id/tvTop4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTop2"
+            android:layout_toRightOf="@+id/iv_title"
+            android:text="serial"
+            android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/tvTop3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTop4"
-        android:layout_toRightOf="@+id/iv_title"
-        android:text="Mac"
-        android:textSize="14dp" />
+        <TextView
+            android:id="@+id/tvTop3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTop4"
+            android:layout_toRightOf="@+id/iv_title"
+            android:text="Mac"
+            android:textSize="14dp" />
 
-    <TextView
-        android:id="@+id/tvTop5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTop3"
-        android:layout_toRightOf="@+id/iv_title"
-        android:text="count"
-        android:visibility="gone"
-        android:textSize="15dp" />
+        <TextView
+            android:id="@+id/tvTop5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTop3"
+            android:layout_toRightOf="@+id/iv_title"
+            android:text="count"
+            android:visibility="gone"
+            android:textSize="15dp" />
+
+
+    </RelativeLayout>
+
+
+
 
 </RelativeLayout>

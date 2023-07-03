@@ -331,7 +331,13 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionCurrentArcCount.setText(String.valueOf(mSpliceDataBean.getManufacturer()));
         mTextFusionTotalArcCount.setText(String.valueOf(mSpliceDataBean.getBrand()));
         mTextFusionAppVer.setText(mSpliceDataBean.getAppVer());
-        mTextFusionModel.setText(mSpliceDataBean.getModel());
+        String model = "";
+        if(mSpliceDataBean.getModel().equals("F24")) {
+            model = "MINI 6S+";
+        }else {
+            model = "MINI 100CA+";
+        }
+        mTextFusionModel.setText(model);
         SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         mTextFusionWorkTime.setText(dateformat.format(mSpliceDataBean.getUpdateTime()));
         mTextFusionSpliceModel.setText(mSpliceDataBean.getSpliceName());
@@ -341,8 +347,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionLoss.setText(mSpliceDataBean.getFiberBean().getLoss() + " ("+ customApplication.lossThreshold+")");
         mTextFusionLeftAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getLeftAngle()) + " ("+ customApplication.angleThreshold+")");
         mTextFusionRightAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getRightAngle()) + " ("+ customApplication.angleThreshold+")");
-        mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()) + " ("+ customApplication.coreAngleThreshold+")");
-        mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()) + " ("+ customApplication.coreOffsetThreshold+")");
+        mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()));
+        mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()));
         mTextFusionWorkLocation.setText(mSpliceDataBean.getFpgaVer());
         mTextFusionWorkUser.setText("fiberfox");
         if (mSpliceDataBean.getFiberBean().getFuseImagePath() == null){
@@ -365,44 +371,42 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         if(loss >= customApplication.lossThreshold) {
             mTextFusionLoss.setTextColor(getResources().getColor(R.color.red));
             mTextViewLoss.setTextColor(getResources().getColor(R.color.red));
-            strPassFail += " (Loss)";
+            strPassFail += "(Loss Estimation: " +loss +"("+customApplication.lossThreshold+"))\n";
         }
         if(leftAngle >= customApplication.angleThreshold) {
             mTextFusionLeftAngle.setTextColor(getResources().getColor(R.color.red));
             mTextViewLeftAngle.setTextColor(getResources().getColor(R.color.red));
-            strPassFail += " (L.Angle)";
+            strPassFail += "(Cleaved Angle Left: " +leftAngle +"("+customApplication.angleThreshold+"))\n";
         }
         if(rightAngle >= customApplication.angleThreshold) {
             mTextFusionRightAngle.setTextColor(getResources().getColor(R.color.red));
             mTextViewRightAngle.setTextColor(getResources().getColor(R.color.red));
-            strPassFail += " (R.Angle)";
+            strPassFail += "(Cleaved Angle Right: " +rightAngle +"("+customApplication.angleThreshold+"))\n";
         }
-        if(coreAngle >= customApplication.coreAngleThreshold) {
-            mTextFusionCoreAngle.setTextColor(getResources().getColor(R.color.red));
-            mTextViewCoreAngle.setTextColor(getResources().getColor(R.color.red));
-            strPassFail += " (C.Angle)";
-        }
-        if(coreOffset >= customApplication.coreOffsetThreshold) {
-            mTextFusionCoreOffset.setTextColor(getResources().getColor(R.color.red));
-            mTextViewCoreOffset.setTextColor(getResources().getColor(R.color.red));
-            strPassFail += " (C.Offset)";
-        }
+//        if(coreAngle >= customApplication.coreAngleThreshold) {
+//            mTextFusionCoreAngle.setTextColor(getResources().getColor(R.color.red));
+//            mTextViewCoreAngle.setTextColor(getResources().getColor(R.color.red));
+//            strPassFail += " (C.Angle)";
+//        }
+//        if(coreOffset >= customApplication.coreOffsetThreshold) {
+//            mTextFusionCoreOffset.setTextColor(getResources().getColor(R.color.red));
+//            mTextViewCoreOffset.setTextColor(getResources().getColor(R.color.red));
+//            strPassFail += " (C.Offset)";
+//        }
 
         if(isAnomaly) {
-            strPassFail += " (AI)";
+            strPassFail += "(AI)";
         }
 //        mTextViewPassFail.setTextColor(getResources().getColor(R.color.white));
         if(loss >= customApplication.lossThreshold |
                 leftAngle >= customApplication.angleThreshold |
                 rightAngle >= customApplication.angleThreshold |
-                coreAngle >= customApplication.coreAngleThreshold |
-                coreOffset >= customApplication.coreOffsetThreshold |
                 isAnomaly) {
             tvPassFailTitle.setText("FAIL");
             mTextViewPassFail.setText(strPassFail);
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);
             boolean checkDialog = false;
-
+            tvPassFailTitle.setTextColor(getResources().getColor(R.color.red));
             for(int i = 0 ; i < check.size() ; i++) {
                 if (dialogBean.getId().equals(check.get(i))) {
                     checkDialog = true;
@@ -414,8 +418,9 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
 //                StartMainAlertDialog();
             }
         }else {
+            tvPassFailTitle.setTextColor(getResources().getColor(R.color.blue));
             tvPassFailTitle.setText("PASS");
-            mTextViewPassFail.setText("none");
+            mTextViewPassFail.setText("");
         }
     }
 
@@ -463,6 +468,10 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         Sheet sheet = workbook.createSheet();
         CellStyle cs = workbook.createCellStyle();
         CellStyle csBold = workbook.createCellStyle();
+        CellStyle csPass = workbook.createCellStyle();
+        Font fontPass = workbook.createFont();
+        fontPass.setColor(HSSFColor.BLUE.index);
+        csPass.setFont(fontPass);
         Font font = workbook.createFont();
         font.setColor(HSSFColor.RED.index);
         cs.setFont(font);
@@ -475,13 +484,13 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         ClientAnchor anchor = helper.createClientAnchor();
         sheet.setDefaultColumnWidth(20);
         anchor.setCol1( 0 );
-        anchor.setRow1( 22 );
+        anchor.setRow1( 20 );
         anchor.setCol2( 1 );
-        anchor.setRow2( 29 );
+        anchor.setRow2( 28 );
         anchor.setDx1(0);
-        anchor.setDx2(1000);
+        anchor.setDx2(500);
         anchor.setDy1(0);
-        anchor.setDy2(1000);
+        anchor.setDy2(500);
         Drawable drawable = mFusionImage.getDrawable();
         Bitmap bitmap = ((BitmapDrawable)drawable).getBitmap();
         int image_width = bitmap.getWidth();
@@ -517,21 +526,23 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         cell = row.createCell(0);
         cell.setCellValue("INFO");
         cell.setCellStyle(csBold);
-        row = sheet.createRow(12);
+        row = sheet.createRow(10);
         cell = row.createCell(0);
         cell.setCellValue("FUSION");
         cell.setCellStyle(csBold);
-        row = sheet.createRow(20);
+        row = sheet.createRow(18);
         cell = row.createCell(0);
         cell.setCellValue("IMAGE");
         cell.setCellStyle(csBold);
-        row = sheet.createRow(31);
+        row = sheet.createRow(30);
         cell = row.createCell(0);
         cell.setCellStyle(csBold);
         cell.setCellValue(tvPassFailTitle.getText().toString());
-        row = sheet.createRow(32);
-        cell = row.createCell(0);
-        cell.setCellValue(mTextViewPassFail.getText().toString());
+        if(tvPassFailTitle.getCurrentTextColor() == getResources().getColor(R.color.red)) {
+            cell.setCellStyle(cs);
+        }else {
+            cell.setCellStyle(csPass);
+        }
 
         ArrayList<excelItem> mItemsInfo = new ArrayList();
         excelItem item = new excelItem("Work User", mTextFusionWorkUser.getText().toString());
@@ -540,15 +551,11 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mItemsInfo.add(item);
         item = new excelItem("Work Time", mTextFusionWorkTime.getText().toString());
         mItemsInfo.add(item);
+        item = new excelItem("Model", mTextFusionModel.getText().toString());
+        mItemsInfo.add(item);
         item = new excelItem("Serial Number", mTextFusionSn.getText().toString());
         mItemsInfo.add(item);
-        item = new excelItem("Current Arc Count", mTextFusionCurrentArcCount.getText().toString());
-        mItemsInfo.add(item);
         item = new excelItem("Total Arc Count", mTextFusionTotalArcCount.getText().toString());
-        mItemsInfo.add(item);
-        item = new excelItem("SW Version", mTextFusionAppVer.getText().toString());
-        mItemsInfo.add(item);
-        item = new excelItem("Model", mTextFusionModel.getText().toString());
         mItemsInfo.add(item);
 
         ArrayList<excelItem> mItemsFusion = new ArrayList();
@@ -572,38 +579,57 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             cell.setCellValue(mItemsInfo.get(i- 2).getValue());
         }
         Cell cellTitle;
-        for(int i = 12; i < 12 + mItemsFusion.size() ; i++){ // 데이터 엑셀에 입력
+        int position = 31;
+        for(int i = 10; i < 10 + mItemsFusion.size() ; i++){ // 데이터 엑셀에 입력
             String title;
             row = sheet.createRow(i+1);
             cellTitle = row.createCell(0);
-            cellTitle.setCellValue(mItemsFusion.get(i- 12).getTitle());
-            title = mItemsFusion.get(i- 12).getTitle();
+            cellTitle.setCellValue(mItemsFusion.get(i- 10).getTitle());
+            title = mItemsFusion.get(i- 10).getTitle();
             cell = row.createCell(1);
-            cell.setCellValue(mItemsFusion.get(i- 12).getValue());
+            cell.setCellValue(mItemsFusion.get(i- 10).getValue());
             if(title.equals("Loss Estimation")) {
                 if(mTextFusionLoss.getCurrentTextColor() == getResources().getColor(R.color.red)){
                     cell.setCellStyle(cs);
                     cellTitle.setCellStyle(cs);
+                    row = sheet.createRow(position);
+                    cell = row.createCell(0);
+                    cell.setCellValue("(Loss Estimation: " +mTextFusionLoss.getText().toString()+")");
+                    position = position +1;
                 }
             }
             if(title.equals("Cleaved Angle, Left")) {
                 if(mTextFusionLeftAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
                     cell.setCellStyle(cs);
                     cellTitle.setCellStyle(cs);
+                    row = sheet.createRow(position);
+                    cell = row.createCell(0);
+                    cell.setCellValue("(Cleaved Angle Left: " +mTextFusionLeftAngle.getText().toString()+")");
+                    position = position +1;
                 }
             }
             if(title.equals("Cleaved Angle, Right")) {
                 if(mTextFusionRightAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
                     cell.setCellStyle(cs);
                     cellTitle.setCellStyle(cs);
+                    row = sheet.createRow(position);
+                    cell = row.createCell(0);
+                    cell.setCellValue("(Cleaved Angle Right: " +mTextFusionRightAngle.getText().toString()+")");
+                    position = position +1;
                 }
             }
-            if(title.equals("Core Angle")) {
-                if(mTextFusionCoreAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
-                    cell.setCellStyle(cs);
-                    cellTitle.setCellStyle(cs);
-                }
-            }
+//            if(title.equals("Core Angle")) {
+//                if(mTextFusionCoreAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
+//                    cell.setCellStyle(cs);
+//                    cellTitle.setCellStyle(cs);
+//                }
+//            }
+        }
+        if(isAnomaly) {
+            row = sheet.createRow(position);
+            cell = row.createCell(0);
+            cell.setCellValue("(Cleaved Angle Right: " +mTextFusionRightAngle.getText().toString()+")");
+            position = position +1;
         }
         String[] pathName = mTextFusionWorkTime.getText().toString().split(" ");
         String pathTime= pathName[1].replaceAll(":", "_");
@@ -657,6 +683,30 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
 
             int text_width = 470;
             int text_left = 70;
+            String[] temp = mTextViewPassFail.getText().toString().split("\n");
+            String[] failTemp = new String[4];
+            for(int i = 0 ; i < temp.length ; i ++) {
+                if(temp.length == 4) {
+                    failTemp[i] = temp[i];
+                }else if (temp.length == 3) {
+                    failTemp[i] = temp[i];
+                    failTemp[3] = "";
+                }else if (temp.length == 2) {
+                    failTemp[i] = temp[i];
+                    failTemp[3] = "";
+                    failTemp[2] = "";
+                }else if (temp.length == 1) {
+                    failTemp[i] = temp[i];
+                    failTemp[3] = "";
+                    failTemp[2] = "";
+                    failTemp[1] = "";
+                }else {
+                    failTemp[3] = "";
+                    failTemp[2] = "";
+                    failTemp[1] = "";
+                    failTemp[0] = "";
+                }
+            }
             String[][] contents = {
                     {"REPORT",    ""},
                     {"", ""},
@@ -664,11 +714,10 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                     {"Work User", mTextFusionWorkUser.getText().toString()},
                     {"Work Location", mTextFusionWorkLocation.getText().toString()},
                     {"Work Time", mTextFusionWorkTime.getText().toString()},
-                    {"Serial Number", mTextFusionSn.getText().toString()},
-                    {"Current Arc Count", mTextFusionCurrentArcCount.getText().toString()},
-                    {"Total Arc Count", mTextFusionTotalArcCount.getText().toString()},
-                    {"SW Version", mTextFusionAppVer.getText().toString()},
                     {"Model", mTextFusionModel.getText().toString()},
+                    {"Serial Number", mTextFusionSn.getText().toString()},
+                    {"Total Arc Count", mTextFusionTotalArcCount.getText().toString()},
+
                     {"",""},
                     {"FUSION",""},
                     {"Splice Mode", mTextFusionSpliceModel.getText().toString()},
@@ -688,12 +737,15 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                     {"",""},
                     {"",""},
                     {"",""},
-                    {"",""},
                     {tvPassFailTitle.getText().toString(),    ""},
-                    {mTextViewPassFail.getText().toString(),    ""}
+                    {failTemp[0],    ""},
+                    {failTemp[1],    ""},
+                    {failTemp[2],    ""},
+                    {failTemp[3],    ""}
             };
+
             drawTable(page, contentStream, 800, 70, contents);
-            contentStream.drawImage(pdImage, 70, y_adjusted- 410, image_w, image_h);
+            contentStream.drawImage(pdImage, 70, y_adjusted- 370, image_w, image_h);
 
             String textN = ""+"\n";
             int fontSize = 17;
@@ -1022,13 +1074,14 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                 contentStream.setNonStrokingColor(0f,0f,0f);
             }
         }
-        if(text.equals("Core Angle")) {
-            if(mTextFusionCoreAngle.getCurrentTextColor() == getResources().getColor(R.color.red)){
-                contentStream.setNonStrokingColor(1f,0f,0f);
-                isCheck = true;
-            }else {
-                contentStream.setNonStrokingColor(0f,0f,0f);
-            }
+
+        if(text.equals("FAIL")) {
+            contentStream.setNonStrokingColor(1f,0f,0f);
+            isCheck = true;
+        }
+        if(text.equals("PASS")) {
+            contentStream.setNonStrokingColor(0f,0f,1f);
+            isCheck = true;
         }
         contentStream.setFont(font, fontSize);
         contentStream.newLineAtOffset(left, bottom);

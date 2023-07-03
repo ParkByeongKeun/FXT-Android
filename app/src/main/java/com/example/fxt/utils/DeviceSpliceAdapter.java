@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.fxt.R;
@@ -32,6 +33,7 @@ public class DeviceSpliceAdapter extends ArrayAdapter<CustomDevice> {
         }
         CustomDevice p = items.get(position);
         if (p != null) {
+            RelativeLayout rlHelp = v.findViewById(R.id.rlHelp);
             ImageView img_title = v.findViewById(R.id.iv_title);
             TextView title1 = v.findViewById(R.id.tvTop1);
             TextView title2 = v.findViewById(R.id.tvTop2);
@@ -39,6 +41,8 @@ public class DeviceSpliceAdapter extends ArrayAdapter<CustomDevice> {
             TextView title4 = v.findViewById(R.id.tvTop4);
             TextView title5 = v.findViewById(R.id.tvTop5);
 
+            if(items.size() != (position+1))
+                rlHelp.setVisibility(View.GONE);
             img_title.setImageResource(p.getImgName());
             title1.setText(p.getTitle1());
             title2.setText(p.getTitle2());

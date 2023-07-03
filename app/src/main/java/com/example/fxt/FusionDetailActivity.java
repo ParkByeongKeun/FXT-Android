@@ -485,7 +485,7 @@ public class FusionDetailActivity extends MainAppcompatActivity {
     private void drawLine(PDPageContentStream contentStream, float xStart, float yStart, float xEnd, float yEnd) throws IOException {
         contentStream.moveTo(xStart,yStart);
         contentStream.lineTo(xEnd,yEnd);
-        contentStream.setStrokingColor(255,255,255);
+        contentStream.setStrokingColor(70,70,70);
         contentStream.stroke();
     }
 

@@ -76,7 +76,7 @@ public class CustomApplication extends Application {
         lossThreshold = sharedPreferencesLoss.getFloat("loss",0.2f);
 
         SharedPreferences sharedPreferencesAngle = this.getSharedPreferences("angle",MODE_PRIVATE);
-        angleThreshold = sharedPreferencesAngle.getFloat("angle",0.5f);
+        angleThreshold = sharedPreferencesAngle.getFloat("angle",1.0f);
 
         SharedPreferences sharedPreferencesCoreAngle = this.getSharedPreferences("coreAngle",MODE_PRIVATE);
         coreAngleThreshold = sharedPreferencesCoreAngle.getFloat("coreAngle",1.0f);

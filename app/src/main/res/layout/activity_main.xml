@@ -9,13 +9,14 @@
     <com.example.fxt.widget.XListView
         android:id="@+id/listView_"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:measureAllChildren="true"
         android:divider="@color/white"
+        app:layout_constraintVertical_chainStyle="spread_inside"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toTopOf="@id/fab">
 
 
     </com.example.fxt.widget.XListView>
@@ -35,6 +36,7 @@
         app:icon="@drawable/ic_add"
         app:iconSize="30dp"
         app:iconGravity="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/listView_"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
