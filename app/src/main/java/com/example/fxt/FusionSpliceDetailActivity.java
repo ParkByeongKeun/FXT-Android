@@ -496,8 +496,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         int image_width = bitmap.getWidth();
         int A4_width = (int) PDRectangle.A4.getWidth();
         float scale = (float) (A4_width/(float)image_width*0.4);
-        int image_w = (int) (bitmap.getWidth() * scale);
-        int image_h = (int) (bitmap.getHeight() * scale);
+        int image_w = 230;
+        int image_h = 150;
         Bitmap resized = Bitmap.createScaledBitmap(bitmap, image_w, image_h, true);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         resized.compress(Bitmap.CompressFormat.JPEG,100,bos);
@@ -667,8 +667,9 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             int A4_width = (int) PDRectangle.A4.getWidth();
             int A4_height = (int) PDRectangle.A4.getHeight();
             float scale = (float) (A4_width/(float)image_width*0.4);
-            int image_w = (int) (bitmap.getWidth() * scale);
-            int image_h = (int) (bitmap.getHeight() * scale);
+
+            int image_w = 230;
+            int image_h = 150;
             Bitmap resized = Bitmap.createScaledBitmap(bitmap, image_w, image_h, true);
             PDImageXObject pdImage = LosslessFactory.createFromImage(document, resized);
             float x_pos = page.getCropBox().getWidth();
