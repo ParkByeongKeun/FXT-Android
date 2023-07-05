@@ -57,8 +57,6 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
             String[] av = customApplication.arrSpliceBleVersion.get(i).split(",");
             if(customApplication.connectSerial.equals(av[0])) {
                 ver = av[1];
-            }else {
-                ver = "0.001";
             }
         }
         swVersion = ver;
