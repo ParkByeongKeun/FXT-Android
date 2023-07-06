@@ -23,6 +23,7 @@ import com.example.fxt.utils.FileUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +76,14 @@ public class SpliceDataParseUtil {
     }
 
     private static CustomApplication customApplication;
+    static long mNow;
+    static Date mDate;
+    static SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private static String getTime(){
+        mNow = System.currentTimeMillis();
+        mDate = new Date(mNow);
+        return mFormat.format(mDate);
+    }
 
     public static SpliceDataBean parseSpliceData(Context context,SpliceDataBean spliceDataBean, BleResultBean bleDataBean) {
         if (spliceDataBean == null){
@@ -119,7 +128,7 @@ public class SpliceDataParseUtil {
             // 通过FUSION字段获取其所包含的JSONObject对象
             JSONObject fiber_1 = object.getJSONObject("fiber_1");
             spliceDataBean.setSpliceName(object.getString("splice_mode"));
-            spliceDataBean.setDataTime(object.getString("splice_time"));
+            spliceDataBean.setDataTime(getTime());
             fiberBean.setLoss(fiber_1.getString("loss"));
             fiberBean.setLeftAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("left_angle"))));
             fiberBean.setRightAngle(Float.parseFloat(Double.toString(fiber_1.getDouble("right_angle"))));

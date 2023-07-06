@@ -24,7 +24,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
+                    android:layout_height="200dp"
                     android:orientation="vertical"
                     android:background="@drawable/rounded_ofi_main">
                     <TextView
@@ -65,7 +65,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="20dp">
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:layout_width="match_parent"
@@ -108,6 +108,7 @@
                             android:layout_weight="1"
                             android:gravity="left"
                             android:layout_marginLeft="10dp"
+                            android:maxLines="2"
                             android:text="--"/>
 
                     </LinearLayout>

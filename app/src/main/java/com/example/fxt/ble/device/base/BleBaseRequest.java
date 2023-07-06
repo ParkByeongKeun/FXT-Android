@@ -189,17 +189,17 @@ public abstract class BleBaseRequest<T extends BleResultBean> implements BleCmdC
 //                currentIndex = 0;
 //            }
 
-            if (currentIndex == current){
-                if (gson == null){
-                    gson = new Gson();
-                }
-//                FeedbackBean feedbackBean = new FeedbackBean();
-//                String json = gson.toJson(feedbackBean);
-//                Log.i(TAG, "反馈 json: "+ json);
-//                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
-//                sendCmd(mCommandStr, mAddress, this);
-                return;
-            }
+//            if (currentIndex == current){
+//                if (gson == null){
+//                    gson = new Gson();
+//                }
+////                FeedbackBean feedbackBean = new FeedbackBean();
+////                String json = gson.toJson(feedbackBean);
+////                Log.i(TAG, "反馈 json: "+ json);
+////                setCommandStr(BleHexConvert.strToHexString("ACK"+json));
+////                sendCmd(mCommandStr, mAddress, this);
+//                return;
+//            }
 
             if (allData == null) {
                 allData = newData;

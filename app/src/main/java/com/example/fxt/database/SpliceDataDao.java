@@ -209,7 +209,7 @@ public class SpliceDataDao extends BaseDaoSplice<SpliceDataBean> {
     }
 
     public Date stringToDate(String strDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         // 문자열 -> Date
         Date date = null;

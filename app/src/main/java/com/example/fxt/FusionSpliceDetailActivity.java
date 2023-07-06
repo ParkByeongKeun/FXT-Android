@@ -334,6 +334,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         String model = "";
         if(mSpliceDataBean.getModel().equals("F24")) {
             model = "MINI 6S+";
+        }else if (mSpliceDataBean.getModel().equals("F121B")){
+            model = "MINI 100CA+";
         }else {
             model = "MINI 100CA+";
         }
@@ -397,7 +399,8 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         if(isAnomaly) {
             strPassFail += "(AI)";
         }
-//        mTextViewPassFail.setTextColor(getResources().getColor(R.color.white));
+
+        showLoadingDialog(loss,leftAngle,rightAngle);
         if(loss >= customApplication.lossThreshold |
                 leftAngle >= customApplication.angleThreshold |
                 rightAngle >= customApplication.angleThreshold |
@@ -405,18 +408,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
             tvPassFailTitle.setText("FAIL");
             mTextViewPassFail.setText(strPassFail);
             ArrayList<String> check = getStringArrayPref(this,PREFS_NAME);
-            boolean checkDialog = false;
             tvPassFailTitle.setTextColor(getResources().getColor(R.color.red));
-            for(int i = 0 ; i < check.size() ; i++) {
-                if (dialogBean.getId().equals(check.get(i))) {
-                    checkDialog = true;
-                }
-            }
-            if(!checkDialog) {
-
-                showLoadingDialog();
-//                StartMainAlertDialog();
-            }
         }else {
             tvPassFailTitle.setTextColor(getResources().getColor(R.color.blue));
             tvPassFailTitle.setText("PASS");
@@ -961,7 +953,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         custom_loading_dialog.setCancelable(false);
     }
 
-    public void showLoadingDialog() {
+    public void showLoadingDialog(float loss, float leftAngle, float rightAngle) {
         custom_loading_dialog.show();
         TimerTask timerTask = new TimerTask() {
             @Override
@@ -972,7 +964,24 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                 if(progressBar.getProgress() >= 100) {
                     timer.cancel();
                     custom_loading_dialog.dismiss();
-                    showCheckDialog();
+                    if(loss >= customApplication.lossThreshold |
+                            leftAngle >= customApplication.angleThreshold |
+                            rightAngle >= customApplication.angleThreshold |
+                            isAnomaly) {
+                        tvPassFailTitle.setText("FAIL");
+                        mTextViewPassFail.setText(strPassFail);
+                        ArrayList<String> check = getStringArrayPref(FusionSpliceDetailActivity.this,PREFS_NAME);
+                        tvPassFailTitle.setTextColor(getResources().getColor(R.color.red));
+                        boolean checkDialog = false;
+                        for(int i = 0 ; i < check.size() ; i++) {
+                            if (dialogBean.getId().equals(check.get(i))) {
+                                checkDialog = true;
+                            }
+                        }
+                        if(!checkDialog) {
+                            showCheckDialog();
+                        }
+                    }
                 }
             }
         };
