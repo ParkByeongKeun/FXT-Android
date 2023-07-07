@@ -119,7 +119,7 @@ public class SpliceInfoActivity extends MainAppcompatActivity implements XListVi
             CustomDevice customDevice1 = new CustomDevice(0, "Serial Number", customApplication.connectSerial, " ", "", "");
             CustomDevice customDevice3 = new CustomDevice(0, "Total Count", totalCount, " ", "", "");
             CustomDevice customDevice6 = new CustomDevice(0, "SW Version", swVersion, " ", "", "");
-            CustomDevice customDevice8 = new CustomDevice(0, "Model", "MINI100HA+", " ", "", "");
+            CustomDevice customDevice8 = new CustomDevice(0, "Model", "MINI 100HA+", " ", "", "");
             mItems.add(customDevice1);
             mItems.add(customDevice3);
             mItems.add(customDevice6);
@@ -301,7 +301,7 @@ public class SpliceInfoActivity extends MainAppcompatActivity implements XListVi
                         CustomDevice customDevice1 = new CustomDevice(0, "Serial Number", ByteUtil.getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length), " ", "", "");
                         CustomDevice customDevice3 = new CustomDevice(0, "Total Count", totalCount, " ", "", "");
                         CustomDevice customDevice6 = new CustomDevice(0, "SW Version", swVersion, " ", "", "");
-                        CustomDevice customDevice8 = new CustomDevice(0, "Model", "MINI100HA+", " ", "", "");
+                        CustomDevice customDevice8 = new CustomDevice(0, "Model", "MINI 100HA+", " ", "", "");
                         mItems.add(customDevice1);
                         mItems.add(customDevice3);
                         mItems.add(customDevice6);
