@@ -466,7 +466,7 @@ public class OfiInfoActivity extends MainAppcompatActivity implements BLeSerialP
 
             long now = System.currentTimeMillis();
             Date date = new Date(now);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String getTime = sdf.format(date);
 
             ofiDataBean.setDataTime(getTime);

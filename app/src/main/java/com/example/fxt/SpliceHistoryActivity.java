@@ -339,7 +339,7 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
     }
 
     private String getTime() {
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.KOREA).format(new Date());
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).format(new Date());
     }
 
 //    public void showAlertDialog(String message, String position) {

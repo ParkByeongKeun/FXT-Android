@@ -93,7 +93,7 @@ public class SpliceDataAdapter extends BaseAdapter {
 
         String date = "";
         String time = "";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String strNowDate = simpleDateFormat.format(mSpliceDataBeanList.get(position).getUpdateTime());
         String[] spl = strNowDate.split(" ");
         date = spl[0];

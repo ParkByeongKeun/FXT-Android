@@ -78,7 +78,7 @@ public class SpliceDataParseUtil {
     private static CustomApplication customApplication;
     static long mNow;
     static Date mDate;
-    static SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    static SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static String getTime(){
         mNow = System.currentTimeMillis();
         mDate = new Date(mNow);
