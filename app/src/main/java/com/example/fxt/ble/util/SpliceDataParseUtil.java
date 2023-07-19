@@ -114,7 +114,6 @@ public class SpliceDataParseUtil {
 //            JSONObject minfo = object.getJSONObject("MINFO");
             spliceDataBean.setSn(object.getString("serial_num"));
             spliceDataBean.setAppVer(customApplication.swVersion);
-            spliceDataBean.setFpgaVer(address);//@@@@@@
             spliceDataBean.setManufacturer(object.getString("cur_arc_cnt"));
             spliceDataBean.setBrand(object.getString("total_arc_cnt"));
             spliceDataBean.setModel(object.getString("module"));
@@ -122,9 +121,9 @@ public class SpliceDataParseUtil {
             FiberBean fiberBean = new FiberBean();
             // 通过RESULT字段获取其所包含的JSONObject对象
             JSONObject result = object.getJSONObject("fiber_1");
-            fiberBean.setSpliceResult(0);//@@@@@@
-            fiberBean.setErrorValue(result.getInt("err"));
-
+//            fiberBean.setSpliceResult(0);//@@@@@@
+            fiberBean.setErrorValue(result.getString("err"));
+            fiberBean.setSpliceResult(address);//@@@@@@
             // 通过FUSION字段获取其所包含的JSONObject对象
             JSONObject fiber_1 = object.getJSONObject("fiber_1");
             spliceDataBean.setSpliceName(object.getString("splice_mode"));

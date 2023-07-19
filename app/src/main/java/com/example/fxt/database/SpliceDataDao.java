@@ -133,8 +133,8 @@ public class SpliceDataDao extends BaseDaoSplice<SpliceDataBean> {
                         fiberValue.setRightAngle(c.getFloat(4));
                         fiberValue.setCoreAngle(c.getFloat(5));
                         fiberValue.setCoreOffset(c.getFloat(6));
-                        fiberValue.setSpliceResult(c.getInt(7));
-                        fiberValue.setErrorValue(c.getInt(8));
+                        fiberValue.setSpliceResult(c.getString(7));
+                        fiberValue.setErrorValue(c.getString(8));
                         fiberValue.setFuseImagePath(c.getString(9));
                         fiberBeanList.add(fiberValue);
 

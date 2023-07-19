@@ -12,12 +12,12 @@ public class FiberBean implements Serializable {
     /**
      * 熔接结果 1成功，0失败
      */
-    private Integer spliceResult;
+    private String spliceResult;
 
     /**
      * 错误值
      */
-    private Integer errorValue;
+    private String errorValue;
 
     /**
      * 熔接损耗
@@ -49,19 +49,19 @@ public class FiberBean implements Serializable {
      */
     private String fuseImagePath;
 
-    public Integer getSpliceResult() {
+    public String getSpliceResult() {
         return this.spliceResult;
     }
 
-    public void setSpliceResult(Integer spliceResult) {
+    public void setSpliceResult(String spliceResult) {
         this.spliceResult = spliceResult;
     }
 
-    public Integer getErrorValue() {
+    public String getErrorValue() {
         return this.errorValue;
     }
 
-    public void setErrorValue(Integer errorValue) {
+    public void setErrorValue(String errorValue) {
         this.errorValue = errorValue;
     }
 

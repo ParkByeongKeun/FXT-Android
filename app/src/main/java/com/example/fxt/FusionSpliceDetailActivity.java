@@ -351,7 +351,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionRightAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getRightAngle()) + " ("+ customApplication.angleThreshold+")");
         mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()));
         mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()));
-        mTextFusionWorkLocation.setText(mSpliceDataBean.getFpgaVer());
+        mTextFusionWorkLocation.setText(mSpliceDataBean.getFiberBean().getSpliceResult());
         mTextFusionWorkUser.setText("fiberfox");
         if (mSpliceDataBean.getFiberBean().getFuseImagePath() == null){
             return;
