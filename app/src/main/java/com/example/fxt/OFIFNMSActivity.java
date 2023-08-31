@@ -58,6 +58,10 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
         mScrollView.setIXScrollViewListener(this);
         mScrollView.setRefreshTime(getTime());
         View content = LayoutInflater.from(this).inflate(R.layout.vw_scroll_view_main, null);
+        content.findViewById(R.id.tvInfo).setOnClickListener(v -> {
+            Intent intent = new Intent(OFIFNMSActivity.this,SettingActivity.class);
+            startActivity(intent);
+        });
         content.findViewById(R.id.rl_splice).setOnTouchListener((view, motionEvent) -> {
             if(customApplication.isLogin) {
                 switch (motionEvent.getAction()) {

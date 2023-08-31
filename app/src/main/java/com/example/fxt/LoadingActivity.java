@@ -26,8 +26,6 @@ public class LoadingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         customApplication = (CustomApplication)getApplication();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         view = getWindow().getDecorView();
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         TedPermission.create()
@@ -35,20 +33,27 @@ public class LoadingActivity extends Activity {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE).check();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         loadingThread = new Thread(() -> {
             try {
-                Thread.sleep(1000);
-                Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
-                startActivity(intent);
-                finish();
+                Thread.sleep(2000);
+                if(customApplication.isLogin) {
+                    Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else {
+                    Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
         loadingThread.start();
-        getWindow().setStatusBarColor(Color.parseColor("#ffEA8235"));//statusBar
-        getWindow().setNavigationBarColor(Color.parseColor("#ffEA8235"));//bottom
+        getWindow().setStatusBarColor(Color.parseColor("#EA8235"));//statusBar
+        getWindow().setNavigationBarColor(Color.parseColor("#EA8235"));//bottom
     }
 
     @Override
@@ -66,10 +71,16 @@ public class LoadingActivity extends Activity {
         public void onPermissionGranted() {
             loadingThread = new Thread(() -> {
                 try {
-                    Thread.sleep(1000);
-                    Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
-                    startActivity(intent);
-                    finish();
+                    Thread.sleep(2000);
+                    if(customApplication.isLogin) {
+                        Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else {
+                        Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

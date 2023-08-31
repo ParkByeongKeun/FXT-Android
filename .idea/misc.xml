@@ -9,8 +9,13 @@
         <entry key="app/src/main/res/drawable/background_selector.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/border.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/btn_excel.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/btn_pdf.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.2415" />
+        <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/ic_chevron_right.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/loading_progressbar.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_btn_white.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_frequency.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/rounded_ofi.xml" value="0.2415" />
@@ -22,6 +27,7 @@
         <entry key="app/src/main/res/layout/activity_add_device.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_company.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/activity_default.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_device_info.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_device_list.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_device_location.xml" value="0.2558876811594203" />
@@ -32,7 +38,8 @@
         <entry key="app/src/main/res/layout/activity_fusion_detail_ofi.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_gender.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_help.xml" value="0.2558876811594203" />
-        <entry key="app/src/main/res/layout/activity_join.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/activity_join.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_join_email.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_loading.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2558876811594203" />
@@ -40,6 +47,8 @@
         <entry key="app/src/main/res/layout/activity_o_f_i.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_ofi_fnms.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_serial_name.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.159375" />
+        <entry key="app/src/main/res/layout/activity_setting_detail.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splice_history.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_sw_version.xml" value="0.2558876811594203" />
@@ -54,13 +63,16 @@
         <entry key="app/src/main/res/layout/custom_dialog_Loading.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/custom_dialog_Print.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/custom_dialog_base.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/custom_dialog_change_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_checker.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_dialog_completed.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_dialog_edit.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_loading.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/custom_dialog_nickname.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_password.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_print.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_share.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/custom_dialog_withdrawal.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_content_normal.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/dialog_loading_view.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/fnms_data_element.xml" value="0.2558876811594203" />

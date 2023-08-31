@@ -1,0 +1,247 @@
+syntax = "proto3";
+
+option go_package = "github.com/dinobei/idl/auth";
+option java_multiple_files = true;
+option java_package = "net.ijoon.auth";
+option java_outer_classname = "AuthProto";
+
+import "google/api/annotations.proto";
+
+package auth;
+
+service Auth {
+  rpc Join(JoinRequest) returns (JoinResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/user"
+      body: "*"
+    };
+  }
+  rpc Withdrawal(WithdrawalRequest) returns (WithdrawalResponse) {
+    option (google.api.http) = {
+      delete: "/api/auth/v1/user"
+      body: "*"
+    };
+  }
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/login"
+      body: "*"
+    };
+  }
+  rpc LoginInfo(LoginInfoRequest) returns (LoginInfoResponse) {
+    option (google.api.http) = {
+      get: "/api/auth/v1/logininfo"
+    };
+  }
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/logout"
+      body: "*"
+    };
+  }
+  rpc LogoutWithAccount(LogoutWithAccountRequest) returns (LogoutWithAccountResponse) {
+    option (google.api.http) = {
+      delete: "/api/auth/v1/logout-with-account"
+      body: "*"
+    };
+  }
+  rpc UpdateToken(UpdateTokenRequest) returns (UpdateTokenResponse) {
+    option (google.api.http) = {
+      get: "/api/auth/v1/access-token"
+    };
+  }
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      put: "/api/auth/v1/user"
+      body: "*"
+    };
+  }
+  rpc GetUser(UserRequest) returns (UserResponse) {
+    option (google.api.http) = {
+      get: "/api/auth/v1/user"
+    };
+  }
+  rpc GetUsers(UsersRequest) returns (UsersResponse) {
+    option (google.api.http) = {
+      get: "/api/auth/v1/users/{emailPartial}"
+    };
+  }
+  rpc SendJoinCode(SendCodeRequest) returns (SendCodeResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/join/code"
+      body: "*"
+    };
+  }
+  rpc VerifyJoin(VerifyJoinRequest) returns (VerifyJoinResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/join/verification"
+      body: "*"
+    };
+  }
+  rpc SendResetCode(SendCodeRequest) returns (SendCodeResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/reset/code"
+      body: "*"
+    };
+  }
+  rpc VerifyResetCode(VerifyResetCodeRequest) returns (VerifyResetCodeResponse) {
+    option (google.api.http) = {
+      post: "/api/auth/v1/reset/code/verification"
+      body: "*"
+    };
+  }
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {
+    option (google.api.http) = {
+      put: "/api/auth/v1/reset"
+      body: "*"
+    };
+  }
+}
+
+
+enum EmailStatus {
+  EMAIL_STATUS_UNSPECIFIED = 0; // 상태 정의 안한 경우 (default)
+  EMAIL_STATUS_NOT_EXIST = 5001; // 이메일 없음
+
+  EMAIL_STATUS_VERIFICATION_READY = 5002; // 인증번호 발송 완료 후 인증 대기중
+  EMAIL_STATUS_NORMAL = 5003; // 정상 상태
+}
+
+
+// 이메일 인증번호 인증 요청
+message VerifyJoinRequest{
+  string email = 1;
+  string code = 2;
+}
+message VerifyJoinResponse{
+  string access_token = 1;
+}
+
+
+// 회원가입
+message JoinRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string phone_number = 4;
+}
+message JoinResponse {
+}
+
+
+// 회원탈퇴
+message WithdrawalRequest {
+  string password = 1;
+}
+message WithdrawalResponse {
+}
+
+
+// 로그인
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+message LoginResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  string login_key = 3;
+}
+
+// 로그인 정보
+message LoginInfo {
+    string login_key = 1;
+    string info = 2;
+}
+message LoginInfoRequest {
+}
+message LoginInfoResponse {
+    repeated LoginInfo infos = 1;
+}
+
+// 로그아웃
+message LogoutRequest {
+    string login_key = 1;
+}
+message LogoutResponse {
+}
+
+// 토큰 삭제
+message LogoutWithAccountRequest {
+    string email = 1;
+    string password = 2;
+    string login_key = 3;
+}
+message LogoutWithAccountResponse {
+}
+
+// 토큰 갱신
+message UpdateTokenRequest {
+}
+message UpdateTokenResponse {
+  string access_token = 1;
+}
+
+
+// 정보 수정
+message UpdateUserRequest {
+  string old_password = 1;
+  string password = 2;
+  string name = 3;
+  string phone_number = 4;
+}
+message UpdateUserResponse {
+}
+
+
+message UserInfo {
+  string email = 1;
+  string name = 2;
+  string phone_number = 3;
+}
+
+
+// 유저 정보 요청
+message UserRequest {
+}
+message UserResponse {
+  UserInfo users = 1;
+}
+
+
+// 유저 목록 요청
+message UsersRequest {
+  string emailPartial = 1;
+}
+message UsersResponse {
+  repeated UserInfo users = 1;
+}
+
+// 회원가입/비밀번호재설정 인증코드 전송
+message SendCodeRequest {
+  string email = 1;
+  string from = 2;
+  string subject = 3;
+  string contentType = 4;
+  string charset = 5;
+  string body = 6;
+}
+message SendCodeResponse {
+}
+
+// 비밀번호 재설정 인증번호 확인
+message VerifyResetCodeRequest {
+  string email = 1;
+  string code = 2;
+}
+message VerifyResetCodeResponse {
+}
+
+// 비밀번호 재설정 요청
+message ResetPasswordRequest {
+  string email = 1;
+  string code = 2;
+  string password = 3;
+}
+message ResetPasswordResponse {
+}

@@ -9,4 +9,11 @@
 
     <dimen name="three_grid_unit">24dp</dimen>
     <dimen name="one_and_a_half_grid_unit">12dp</dimen>
+
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+
+    <dimen name="dialog_margin">20dp</dimen>
+    <dimen name="size_default_height">160dp</dimen>
 </resources>

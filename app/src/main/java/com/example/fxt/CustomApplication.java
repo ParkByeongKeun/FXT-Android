@@ -15,14 +15,21 @@ import com.example.fxt.utils.VideoDO;
 import com.google.gson.internal.LinkedTreeMap;
 import com.kongzue.dialogx.DialogX;
 
+import net.ijoon.auth.AuthGrpc;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 public class CustomApplication extends Application {
 
@@ -55,9 +62,23 @@ public class CustomApplication extends Application {
     public final String SERVER = "http://118.67.142.85:8000";
     public String swVersion;
 
+    InputStream authIS;
+    AuthGrpc.AuthBlockingStub authStub;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        try {
+            authIS = getResources().getAssets().open("server.crt");
+            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("192.168.13.40", 9001).usePlaintext().build();
+//            ManagedChannel auth_channel = ChannelBuilder.buildTls("192.168.13.30", 8090, authIS);
+            authStub = AuthGrpc.newBlockingStub(auth_channel);
+            authIS.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         DialogX.init(this);
         ofiDatabase = new OFIDatabase(this);
         arrVideoList = new ArrayList<>();

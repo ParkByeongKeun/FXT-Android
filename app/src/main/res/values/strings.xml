@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">FXT</string>
-
+    <string name="server">http://1.246.219.189:20217</string>
 
     <string name="title_home">Devices</string>
     <string name="title_dashboard">Dashboard</string>

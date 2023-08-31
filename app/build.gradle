@@ -1,7 +1,36 @@
 plugins {
     id 'com.android.application'
+    id "com.google.protobuf"
 }
 
+protobuf {
+    protoc {
+        if (osdetector.os == "osx") {
+            artifact = 'com.google.protobuf:protoc:3.17.3:osx-x86_64'
+        } else {
+            artifact = 'com.google.protobuf:protoc:3.17.3'
+        }
+    }
+    plugins {
+        grpc {
+            if (osdetector.os == "osx") {
+                artifact = 'io.grpc:protoc-gen-grpc-java:1.40.1:osx-x86_64'
+            } else {
+                artifact = 'io.grpc:protoc-gen-grpc-java:1.40.1'
+            }
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                java { option 'lite' }
+            }
+            task.plugins {
+                grpc { option 'lite' }
+            }
+        }
+    }
+}
 android {
     compileSdk 32
 
@@ -10,7 +39,8 @@ android {
         minSdk 21
         targetSdk 32
         versionCode 1
-        versionName "1.0"
+        versionName "1.1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,13 +56,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+def grpcVersion = '1.40.1'
 
 dependencies {
     implementation 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
     implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
     def dialogx_version = "0.0.47"
     implementation "com.kongzue.dialogx:DialogX:${dialogx_version}"
-//    implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
@@ -60,4 +90,13 @@ dependencies {
 
     implementation 'com.tom-roush:pdfbox-android:2.0.25.0'
     implementation group: 'org.apache.poi', name: 'poi', version: '3.14'
+
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-auth:${grpcVersion}"
+    implementation "io.grpc:grpc-census:${grpcVersion}"
+    implementation "io.grpc:grpc-okhttp:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation 'io.grpc:grpc-netty-shaded:1.41.0'
+
 }

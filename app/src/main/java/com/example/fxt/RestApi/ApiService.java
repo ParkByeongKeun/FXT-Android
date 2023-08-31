@@ -1,7 +1,13 @@
 package com.example.fxt.RestApi;
 
+import com.example.fxt.login.RegPushTokenRequest;
+import com.example.fxt.login.RegPushTokenResponse;
+import com.example.fxt.login.UnRegPushTokenRequest;
+import com.example.fxt.login.UnRegPushTokenResponse;
+
 import okhttp3.MultipartBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Multipart;
@@ -94,4 +100,9 @@ public interface ApiService {
     @Multipart
     @POST("/image")
     Call<ResponseImage> upload(@Part MultipartBody.Part image);
+
+    @POST("/api/auth/regPushToken")
+    Call<RegPushTokenResponse> regPushToken(@Body RegPushTokenRequest request);
+    @POST("/api/auth/unRegPushToken")
+    Call<UnRegPushTokenResponse> unRegPushToken(@Body UnRegPushTokenRequest request);
 }

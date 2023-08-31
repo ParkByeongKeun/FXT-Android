@@ -12,6 +12,7 @@
         android:maxSdkVersion="30" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
@@ -78,6 +79,14 @@
         <activity android:name=".TutorialActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".SpliceSerialNameActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SettingActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".JoinEmailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".JoinActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DefaultActivity"
             android:screenOrientation="portrait"/>
     <meta-data
         android:name="com.google.android.geo.API_KEY"

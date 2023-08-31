@@ -177,6 +177,9 @@ public class SpliceDataParseUtil {
 //            System.arraycopy(bleDataBean.getPayload(), 0, newByteArray, 0, bleDataBean.getPayload().length);
             Log.d("yot132","@@@@@@  img = " + BleHexConvert.bytesToHexString(bleDataBean.getPayload()));
             Bitmap bitmap = Byte2Image.getPicFromBytes(bleDataBean.getPayload(),null);
+            int imageWidth = bitmap.getWidth();
+            int imageHeight = bitmap.getHeight();
+            Log.d("yot132", "이미지 너비: " + imageWidth + " 픽셀, 이미지 높이: " + imageHeight + " 픽셀");
 
             // 保存图片到沙盒
             String fileName = bleDataBean.getIdStr() + "_" + String.valueOf(System.currentTimeMillis())+ ".png";

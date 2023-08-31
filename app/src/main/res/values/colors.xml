@@ -23,4 +23,5 @@
     <color name="main_item">#EDAA7D</color>
     <color name="main_bottom">#E48E58</color>
     <color name="main_color">#FFE2D1</color>
+    <color name="colorHint">#cbcbcb</color>
 </resources>
