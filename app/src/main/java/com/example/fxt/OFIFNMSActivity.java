@@ -2,24 +2,30 @@ package com.example.fxt;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-
 import androidx.appcompat.app.ActionBar;
 import com.example.fxt.utils.BackPressCloseHandler;
 import com.example.fxt.utils.C_Permission;
 import com.example.fxt.utils.CustomDevice;
 import com.example.fxt.widget.XScrollView;
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import io.grpc.StatusRuntimeException;
 
 public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollView.IXScrollViewListener {
 
@@ -39,6 +45,33 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
         C_Permission.checkPermission(this);
         mBackPressCloseHandler = new BackPressCloseHandler(this);
         customApplication = (CustomApplication)getApplication();
+        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        SharedPreferences.Editor editor =  preferences.edit();
+        try {
+            UserRequest req = UserRequest.newBuilder().build();
+            UserResponse res = customApplication.authStub.getUser(req);
+            editor.putString("email", res.getUsers().getId());
+            editor.apply();
+            customApplication.token = preferences.getString("token","");
+            customApplication.login_id = res.getUsers().getId();
+            customApplication.loginKey = preferences.getString("loginKey","");
+        }  catch (StatusRuntimeException ee) {
+
+            Log.d("yot132","ee = " + ee.getStatus().toString());
+            ee.printStackTrace();
+        }
+
+
+
+        //splice
+        customApplication.arrSpliceBleAddress = customApplication.getStringArrayPref(this,customApplication.login_id);
+        customApplication.arrSpliceBleSerial = customApplication.getStringArrayPref(this,customApplication.login_id+"serial");
+        customApplication.arrSpliceBleVersion = customApplication.getStringArrayPref(this,customApplication.login_id+"version");
+        //ofi
+        customApplication.arrBleAddress = customApplication.getStringArrayPref(this,customApplication.login_id+"ofi");
+        customApplication.arrBleSerial = customApplication.getStringArrayPref(this,customApplication.login_id+"ofi_serial");
+
+        Log.d("yot132","customApplication.token = " + customApplication.token);
         mTitle = getSupportActionBar();
         getWindow().setStatusBarColor(Color.parseColor("#FFE2D1"));//statusBar
         mTitle.hide();
@@ -62,8 +95,9 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
             Intent intent = new Intent(OFIFNMSActivity.this,SettingActivity.class);
             startActivity(intent);
         });
+
         content.findViewById(R.id.rl_splice).setOnTouchListener((view, motionEvent) -> {
-            if(customApplication.isLogin) {
+            if(!customApplication.token.equals("")) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP: {
                         Intent intent = new Intent(OFIFNMSActivity.this, SpliceActivity.class);
@@ -79,7 +113,7 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
             }else {
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_UP:{
-                    Intent intent = new Intent(OFIFNMSActivity.this, SignInActivity.class);
+                    Intent intent = new Intent(OFIFNMSActivity.this, LoginEmailActivity.class);
                     startActivity(intent);
                     break;
                 }
@@ -93,7 +127,7 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
             return true;
         });
         content.findViewById(R.id.rl_ofi).setOnTouchListener((view, motionEvent) -> {
-            if(customApplication.isLogin) {
+            if(!customApplication.token.equals("")) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP: {
                         Intent intent = new Intent(OFIFNMSActivity.this, MainActivity.class);
@@ -109,7 +143,7 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
             }else {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:{
-                        Intent intent = new Intent(OFIFNMSActivity.this, SignInActivity.class);
+                        Intent intent = new Intent(OFIFNMSActivity.this, LoginEmailActivity.class);
                         startActivity(intent);
                         break;
                     }
@@ -124,7 +158,7 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
         });
 
         content.findViewById(R.id.rl_fnms).setOnTouchListener((view, motionEvent) -> {
-            if(customApplication.isLogin) {
+            if(!customApplication.token.equals("")) {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:{
                         Intent intent = new Intent(OFIFNMSActivity.this,FNMSTAGActivity.class);
@@ -140,7 +174,7 @@ public class OFIFNMSActivity extends MainAppcompatActivity implements XScrollVie
             }else {
                 switch (motionEvent.getAction()) {
                     case MotionEvent.ACTION_UP:{
-                        Intent intent = new Intent(OFIFNMSActivity.this, SignInActivity.class);
+                        Intent intent = new Intent(OFIFNMSActivity.this, LoginEmailActivity.class);
                         startActivity(intent);
                         break;
                     }

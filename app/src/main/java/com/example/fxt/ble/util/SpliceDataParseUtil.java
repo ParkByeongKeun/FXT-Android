@@ -20,6 +20,9 @@ import com.example.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.example.fxt.utils.Byte2Image;
 import com.example.fxt.utils.FileUtil;
 
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -102,6 +105,9 @@ public class SpliceDataParseUtil {
         spliceDataBean.setUpdateTime(new Date());
         Log.d("yot132","@#@#@@@@@@@@121212  = = = " + strJson.substring(4));
         try {
+            UserRequest req = UserRequest.newBuilder().build();
+            UserResponse res = customApplication.authStub.getUser(req);
+
             // 最外层的JSONObject对象
             JSONObject object = new JSONObject(strJson.substring(4));
 
@@ -118,6 +124,7 @@ public class SpliceDataParseUtil {
             spliceDataBean.setBrand(object.getString("total_arc_cnt"));
             spliceDataBean.setModel(object.getString("module"));
 
+            spliceDataBean.setUser(res.getUsers().getId());
             FiberBean fiberBean = new FiberBean();
             // 通过RESULT字段获取其所包含的JSONObject对象
             JSONObject result = object.getJSONObject("fiber_1");

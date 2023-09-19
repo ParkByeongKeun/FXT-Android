@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 
@@ -70,9 +68,9 @@ public class SerialNameActivity extends MainAppcompatActivity {
                 tvName.setText(etNewName.getText().toString());
                 customApplication.arrMapSerial.put(customApplication.connectBLEAddress,etNewName.getText().toString());
                 customApplication.setMap(this,customApplication.arrMapSerial);
-                Toast.makeText(getApplicationContext(),"Success Edit Serial",Toast.LENGTH_SHORT).show();
+                showTextDialog("Success Edit Serial");
             }else {
-                Toast.makeText(getApplicationContext(),"Failed Edit Serial",Toast.LENGTH_SHORT).show();
+                showTextDialog("Failed Edit Serial");
             }
         });
 
@@ -127,7 +125,6 @@ public class SerialNameActivity extends MainAppcompatActivity {
             custom_delete_dialog.dismiss();
         });
         custom_delete_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            customApplication.isLogin = false;
             SharedPreferences sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("login",false);
@@ -174,21 +171,6 @@ public class SerialNameActivity extends MainAppcompatActivity {
         etPassword = custom_password_dialog.findViewById(R.id.etPassword);
         tv.setText("M Mode");
         subTv.setText("input user password");
-    }
-
-    public void showMModePasswordDialog() {
-        custom_password_dialog.show();
-        custom_password_dialog.findViewById(R.id.btnNo).setOnClickListener(v -> {
-            custom_password_dialog.dismiss();
-        });
-        custom_password_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            if(etPassword.getText().toString().equals("1234")) {
-                showMModeDialog();
-            }else {
-                showTextDialog("Check your input information");
-            }
-            custom_password_dialog.dismiss();
-        });
     }
 
     public void initTextDialog() {

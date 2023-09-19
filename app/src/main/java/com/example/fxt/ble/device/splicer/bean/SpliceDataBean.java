@@ -80,6 +80,8 @@ public class SpliceDataBean implements Serializable {
      */
     private FiberBean fiberBean;
 
+    private String user;
+
     public String getId() {
         return this.id;
     }
@@ -190,5 +192,13 @@ public class SpliceDataBean implements Serializable {
 
     public void setFiberBean(FiberBean fiberBean) {
         this.fiberBean = fiberBean;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

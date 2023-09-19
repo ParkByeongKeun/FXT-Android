@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -67,8 +66,6 @@ import com.tom_roush.pdfbox.pdmodel.PDPageContentStream;
 import com.tom_roush.pdfbox.pdmodel.common.PDRectangle;
 import com.tom_roush.pdfbox.pdmodel.font.PDFont;
 import com.tom_roush.pdfbox.pdmodel.font.PDType0Font;
-import com.tom_roush.pdfbox.pdmodel.font.PDType1Font;
-import com.tom_roush.pdfbox.pdmodel.graphics.color.PDColor;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.LosslessFactory;
 import com.tom_roush.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
@@ -352,7 +349,7 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
         mTextFusionCoreAngle.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreAngle()));
         mTextFusionCoreOffset.setText(String.valueOf(mSpliceDataBean.getFiberBean().getCoreOffset()));
         mTextFusionWorkLocation.setText(mSpliceDataBean.getFiberBean().getSpliceResult());
-        mTextFusionWorkUser.setText("fiberfox");
+        mTextFusionWorkUser.setText(customApplication.login_id);
         if (mSpliceDataBean.getFiberBean().getFuseImagePath() == null){
             return;
         }
@@ -968,10 +965,13 @@ public class FusionSpliceDetailActivity extends MainAppcompatActivity {
                             leftAngle >= customApplication.angleThreshold |
                             rightAngle >= customApplication.angleThreshold |
                             isAnomaly) {
-                        tvPassFailTitle.setText("FAIL");
-                        mTextViewPassFail.setText(strPassFail);
+                        runOnUiThread(() -> {
+                            tvPassFailTitle.setText("FAIL");
+                            mTextViewPassFail.setText(strPassFail);
+                            tvPassFailTitle.setTextColor(getResources().getColor(R.color.red));
+                        });
+
                         ArrayList<String> check = getStringArrayPref(FusionSpliceDetailActivity.this,PREFS_NAME);
-                        tvPassFailTitle.setTextColor(getResources().getColor(R.color.red));
                         boolean checkDialog = false;
                         for(int i = 0 ; i < check.size() ; i++) {
                             if (dialogBean.getId().equals(check.get(i))) {

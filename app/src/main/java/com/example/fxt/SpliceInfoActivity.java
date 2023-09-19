@@ -394,8 +394,8 @@ public class SpliceInfoActivity extends MainAppcompatActivity implements XListVi
                 if(customApplication.arrSpliceBleAddress.get(i).equals(customApplication.connectBLEAddress)) {
                     customApplication.arrSpliceBleAddress.remove(i);
                     customApplication.arrSpliceBleSerial.remove(i);
-                    setStringArrayPref(getApplicationContext(),"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
-                    setStringArrayPref(getApplicationContext(),"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id,customApplication.arrSpliceBleAddress);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"serial",customApplication.arrSpliceBleSerial);
                     finish();
                 }
             }

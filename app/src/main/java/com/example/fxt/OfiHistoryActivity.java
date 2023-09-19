@@ -12,21 +12,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.ActivityCompat;
@@ -38,7 +32,6 @@ import com.example.fxt.utils.CustomHistoryList;
 import com.example.fxt.utils.OfiDataAdapter;
 import com.example.fxt.widget.XListView;
 import com.github.mikephil.charting.charts.LineChart;
-import com.kongzue.dialogx.dialogs.MessageDialog;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -265,7 +258,9 @@ public class OfiHistoryActivity extends MainAppcompatActivity implements XListVi
     public void showData(String serial) {
         List<OFIDataBean> dataList = new ArrayList<>();
         dataList.addAll(customApplication.ofiDatabase.selectAllSpliceData());
+        Log.d("yot132","dataList.size() = " + dataList.size());
         for(int i = 0 ; i < dataList.size() ; i ++) {
+            Log.d("yot132","?1 = " + dataList.get(i).getSerial() + ", " + customApplication.connectBLEAddress);
             if(dataList.get(i).getSerial().equals(customApplication.connectBLEAddress)) {
                 mOFIDataBeanList.add(dataList.get(i));
             }

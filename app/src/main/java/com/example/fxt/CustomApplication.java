@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.example.fxt.database.OFIDatabase;
 import com.example.fxt.database.SpliceDataDao;
@@ -30,6 +31,8 @@ import java.util.List;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.stub.MetadataUtils;
 
 public class CustomApplication extends Application {
 
@@ -48,7 +51,6 @@ public class CustomApplication extends Application {
     public boolean isFNMSCheck;
     public String selectCore = "";
     public boolean isLevelCheck;
-    public boolean isLogin;
     public float lossThreshold;
     public float angleThreshold;
     public float coreAngleThreshold;
@@ -63,14 +65,24 @@ public class CustomApplication extends Application {
     public String swVersion;
 
     InputStream authIS;
-    AuthGrpc.AuthBlockingStub authStub;
+    public AuthGrpc.AuthBlockingStub authStub;
+    Metadata header;
+    String token;
+    String login_id;
+    String loginKey;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+        token = preferences.getString("token","");
+        login_id = preferences.getString("email","");
+        loginKey = preferences.getString("loginKey","");
+        Log.d("yot132","token = " + token);
         try {
             authIS = getResources().getAssets().open("server.crt");
-            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("192.168.13.40", 9001).usePlaintext().build();
+            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("123.142.5.131", 33919).usePlaintext().build();
+//            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("123.142.5.131", 23915).usePlaintext().build(); //fiberfox
 //            ManagedChannel auth_channel = ChannelBuilder.buildTls("192.168.13.30", 8090, authIS);
             authStub = AuthGrpc.newBlockingStub(auth_channel);
             authIS.close();
@@ -85,13 +97,11 @@ public class CustomApplication extends Application {
         arrMac = new ArrayList<>();
         arrFused = new ArrayList<>();
         instance = this;
-        arrBleAddress = getStringArrayPref(this,"arrBleAddress");
-        arrBleSerial = getStringArrayPref(this,"arrBleSerial");
+        arrBleAddress = getStringArrayPref(this,login_id+"ofi");
+        arrBleSerial = getStringArrayPref(this,login_id+"ofi_serial");
         arrMapSerial = getMap(this);
         arrMapSpliceSerial = getMap(this);
         fnmsDataList = new ArrayList<>();
-        SharedPreferences sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
-        isLogin = sharedPreferences.getBoolean("login",false);
 
         SharedPreferences sharedPreferencesLoss = this.getSharedPreferences("loss",MODE_PRIVATE);
         lossThreshold = sharedPreferencesLoss.getFloat("loss",0.2f);
@@ -107,16 +117,17 @@ public class CustomApplication extends Application {
 
         foregroundService = new ForegroundService(this);
         database = new SpliceDataDao(this);
-        arrSpliceBleAddress = getStringArrayPref(this,"arrSpliceBleAddress");
-        arrSpliceBleSerial = getStringArrayPref(this,"arrSpliceBleSerial");
-        arrSpliceBleVersion = getStringArrayPref(this,"arrSpliceBleVersion");
+        Log.d("yot132","loginid = "+ login_id);
+        arrSpliceBleAddress = getStringArrayPref(this,login_id);
+        arrSpliceBleSerial = getStringArrayPref(this,login_id+"serial");
+        arrSpliceBleVersion = getStringArrayPref(this,login_id+"version");
     }
 
     public static Context getCurrentContext(){
         return instance;
     }
 
-    private ArrayList<String> getStringArrayPref(Context context, String key) {
+    public ArrayList<String> getStringArrayPref(Context context, String key) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String json = prefs.getString(key, null);
         ArrayList<String> urls = new ArrayList<String>();
@@ -179,5 +190,14 @@ public class CustomApplication extends Application {
 
     public ArrayList<VideoDO> getVideoList() {
         return arrVideoList;
+    }
+
+    public void setMetaData() {
+        header=new Metadata();
+        Metadata.Key<String> key =
+                Metadata.Key.of("Authorization", Metadata.ASCII_STRING_MARSHALLER);
+        header.put(key, token);
+//        stub = MetadataUtils.attachHeaders(stub,header);
+        authStub = MetadataUtils.attachHeaders(authStub,header);
     }
 }

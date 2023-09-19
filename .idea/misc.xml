@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable-v24/background.xml" value="0.2415" />
+        <entry key="app/src/main/res/drawable-v24/ic_confirm.xml" value="0.174" />
+        <entry key="app/src/main/res/drawable-v24/ic_email_white_24dp.xml" value="0.174" />
+        <entry key="app/src/main/res/drawable-v24/ic_lock_white_24dp.xml" value="0.174" />
+        <entry key="app/src/main/res/drawable-v24/ic_nickname.xml" value="0.174" />
         <entry key="app/src/main/res/drawable-v24/rounded_frequency.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/arrow.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/background_selector.xml" value="0.2415" />
@@ -16,6 +20,7 @@
         <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/loading_progressbar.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/rounded_btn_default.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/rounded_btn_white.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_frequency.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/rounded_ofi.xml" value="0.2415" />
@@ -32,7 +37,9 @@
         <entry key="app/src/main/res/layout/activity_device_list.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_device_location.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_fnms_nfc_tag.xml" value="0.2558876811594203" />
-        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/activity_forgot_email.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_forgot_password_reset.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_fused_info.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_fusion_detail.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_fusion_detail_ofi.xml" value="0.33" />
@@ -42,12 +49,14 @@
         <entry key="app/src/main/res/layout/activity_join_email.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_loading.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/activity_login_email.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_login_password.xml" value="0.3302083333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_nickname.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_o_f_i.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_ofi_fnms.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_serial_name.xml" value="0.2558876811594203" />
-        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.159375" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_setting_detail.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splice_history.xml" value="0.33" />
@@ -67,6 +76,7 @@
         <entry key="app/src/main/res/layout/custom_dialog_checker.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_dialog_completed.xml" value="0.25" />
         <entry key="app/src/main/res/layout/custom_dialog_edit.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/custom_dialog_forcedlogout.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_loading.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_nickname.xml" value="0.33" />
         <entry key="app/src/main/res/layout/custom_dialog_password.xml" value="0.33" />

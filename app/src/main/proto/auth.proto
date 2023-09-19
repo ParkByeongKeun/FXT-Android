@@ -63,7 +63,7 @@ service Auth {
   }
   rpc GetUsers(UsersRequest) returns (UsersResponse) {
     option (google.api.http) = {
-      get: "/api/auth/v1/users/{emailPartial}"
+      get: "/api/auth/v1/users/{idPartial}"
     };
   }
   rpc SendJoinCode(SendCodeRequest) returns (SendCodeResponse) {
@@ -120,10 +120,11 @@ message VerifyJoinResponse{
 
 // 회원가입
 message JoinRequest {
-  string email = 1;
-  string password = 2;
-  string name = 3;
-  string phone_number = 4;
+  string id = 1;
+  string email = 2;
+  string password = 3;
+  string name = 4;
+  string phone_number = 5;
 }
 message JoinResponse {
 }
@@ -139,7 +140,7 @@ message WithdrawalResponse {
 
 // 로그인
 message LoginRequest {
-  string email = 1;
+  string id = 1;
   string password = 2;
 }
 message LoginResponse {
@@ -168,7 +169,7 @@ message LogoutResponse {
 
 // 토큰 삭제
 message LogoutWithAccountRequest {
-    string email = 1;
+    string id = 1;
     string password = 2;
     string login_key = 3;
 }
@@ -195,9 +196,10 @@ message UpdateUserResponse {
 
 
 message UserInfo {
-  string email = 1;
-  string name = 2;
-  string phone_number = 3;
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string phone_number = 4;
 }
 
 
@@ -211,7 +213,7 @@ message UserResponse {
 
 // 유저 목록 요청
 message UsersRequest {
-  string emailPartial = 1;
+  string idPartial = 1;
 }
 message UsersResponse {
   repeated UserInfo users = 1;

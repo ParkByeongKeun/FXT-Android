@@ -62,6 +62,7 @@ public class OFIDatabase extends BaseDao<OFIDataBean> {
         values.put("note", bean.getNote());
         values.put("data_time", bean.getDataTime());
         values.put("serial", bean.getSerial());
+        values.put("user", bean.getUser());
 
         db.insert("tb_ofi_data", null, values);
 
@@ -102,6 +103,7 @@ public class OFIDatabase extends BaseDao<OFIDataBean> {
         values.put("note", ofiDataBean.getNote());
         values.put("data_time", ofiDataBean.getDataTime());
         values.put("serial", ofiDataBean.getSerial());
+        values.put("user", ofiDataBean.getUser());
 
         db.update("tb_ofi_data",values,"_id = ?", new String[] {ofiDataBean.getId()});
 //        db.execSQL(sql_ofi_data);
@@ -172,6 +174,7 @@ public class OFIDatabase extends BaseDao<OFIDataBean> {
                         spliceValue.setNote(cur.getString(6));
                         spliceValue.setDataTime(cur.getString(7));
                         spliceValue.setSerial(cur.getString(8));
+                        spliceValue.setUser(cur.getString(9));
 //                        Log.d("yot132","11 = " + cur.getString(7) + ", 2 = " + cur.getString(8));
 //                        spliceValue.setUpdateTime(stringToDate(cur.getString(9)));
 //                        spliceValue.setCreateTime(stringToDate(cur.getString(10)));

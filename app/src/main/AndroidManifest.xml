@@ -60,9 +60,7 @@
         android:screenOrientation="portrait"/>
     <activity android:name=".OFIFNMSActivity"
         android:screenOrientation="portrait"/>
-    <activity android:name=".SignInActivity"
-        android:screenOrientation="portrait"/>
-    <activity android:name=".FNMSTAGActivity"
+        <activity android:name=".FNMSTAGActivity"
         android:screenOrientation="portrait"/>
         <activity android:name=".SerialNameActivity"
         android:screenOrientation="portrait"/>
@@ -82,12 +80,19 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".SettingActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".JoinEmailActivity"
+        <activity android:name=".LoginEmailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ForgotPasswordResetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LoginPasswordActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".JoinActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".DefaultActivity"
+        <activity android:name=".ForgotEmailActivity"
             android:screenOrientation="portrait"/>
+
     <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyC2o46gM_QGsj9eMVDzW6TrGkHeJU1X1z0" />

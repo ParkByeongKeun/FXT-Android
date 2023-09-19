@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class MySQLiteOpenHelperSplice extends SQLiteOpenHelper {
     private static final String DB_NAME = "fiberfox_ble.db";
-    private static final int VERSION = 12;
+    private static final int VERSION = 13;
 
     public MySQLiteOpenHelperSplice(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -22,7 +22,7 @@ public class MySQLiteOpenHelperSplice extends SQLiteOpenHelper {
                 "_id INTEGER primary key autoincrement, " +
                 "id REAL," +
                 "sn TEXT,app_ver TEXT,fpga_ver TEXT,manufacturer TEXT," +
-                "model TEXT,brand TEXT,splice_name TEXT,data_time TEXT," +
+                "model TEXT,brand TEXT,splice_name TEXT,data_time TEXT,user TEXT," +
                 "updateTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime'))," +
                 "createTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))";
 

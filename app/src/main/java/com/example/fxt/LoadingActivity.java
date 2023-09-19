@@ -3,15 +3,23 @@ package com.example.fxt;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+
+import net.ijoon.auth.UpdateTokenRequest;
+import net.ijoon.auth.UpdateTokenResponse;
 
 import java.util.List;
 
@@ -20,6 +28,7 @@ public class LoadingActivity extends Activity {
     View view;
     Thread loadingThread;
     CustomApplication customApplication;
+    String mToken;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,17 +45,33 @@ public class LoadingActivity extends Activity {
 
         loadingThread = new Thread(() -> {
             try {
-                Thread.sleep(2000);
-                if(customApplication.isLogin) {
-                    Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
-                    startActivity(intent);
-                    finish();
+                Thread.sleep(1000);
+                if(!customApplication.token.equals("")) {
+                    try {
+//                        UpdateTokenRequest updateTokenRequest = net.ijoon.auth.UpdateTokenRequest.newBuilder().build();
+//                        UpdateTokenResponse updateTokenResponse = customApplication.authStub.updateToken(updateTokenRequest);
+//                        customApplication.token = updateTokenResponse.getAccessToken();
+//                        SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+//                        SharedPreferences.Editor editor =  preferences.edit();
+//                        editor.putString("token", customApplication.token);
+//                        editor.apply();
+                        customApplication.setMetaData();
+                        Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }catch (RuntimeException e) {
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.postDelayed(() -> Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show(), 0);
+
+                        Intent intent = new Intent(LoadingActivity.this, LoginEmailActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }else {
-                    Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                    Intent intent = new Intent(LoadingActivity.this, LoginEmailActivity.class);
                     startActivity(intent);
                     finish();
                 }
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -71,13 +96,32 @@ public class LoadingActivity extends Activity {
         public void onPermissionGranted() {
             loadingThread = new Thread(() -> {
                 try {
-                    Thread.sleep(2000);
-                    if(customApplication.isLogin) {
-                        Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
-                        startActivity(intent);
-                        finish();
+                    Thread.sleep(1000);
+                    if(!customApplication.token.equals("")) {
+                        try {
+                            Log.d("yot132","123 = " + customApplication.token);
+
+//                            UpdateTokenRequest updateTokenRequest = net.ijoon.auth.UpdateTokenRequest.newBuilder().build();
+//                            UpdateTokenResponse updateTokenResponse = customApplication.authStub.updateToken(updateTokenRequest);
+//                            customApplication.token = updateTokenResponse.getAccessToken();
+//                            SharedPreferences preferences = getSharedPreferences("preferences",MODE_PRIVATE);
+//                            SharedPreferences.Editor editor =  preferences.edit();
+//                            editor.putString("token", customApplication.token);
+//                            editor.apply();
+                            customApplication.setMetaData();
+                            Intent intent = new Intent(LoadingActivity.this, OFIFNMSActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }catch (RuntimeException e) {
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.postDelayed(() -> Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show(), 0);
+
+                            Intent intent = new Intent(LoadingActivity.this, LoginEmailActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }else {
-                        Intent intent = new Intent(LoadingActivity.this, DefaultActivity.class);
+                        Intent intent = new Intent(LoadingActivity.this, LoginEmailActivity.class);
                         startActivity(intent);
                         finish();
                     }

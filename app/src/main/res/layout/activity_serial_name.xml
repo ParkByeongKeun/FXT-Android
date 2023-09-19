@@ -113,6 +113,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginTop="10dp"
                         android:text="Logout"
+                        android:visibility="gone"
                         android:textColor="@color/base_color" />
                 </RelativeLayout>
             </RelativeLayout>

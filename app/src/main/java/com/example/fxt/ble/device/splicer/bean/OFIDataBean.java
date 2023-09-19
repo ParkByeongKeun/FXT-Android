@@ -48,6 +48,8 @@ public class OFIDataBean implements Serializable {
 
     private String dataTime;
 
+    private String user;
+
     /**
      * 更新时间
      */
@@ -144,5 +146,13 @@ public class OFIDataBean implements Serializable {
 
     public String getSerial() {
         return serial;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

@@ -40,8 +40,6 @@ import com.example.fxt.ble.device.splicer.bean.OFIDataBean;
 import com.example.fxt.ofi.GlobalVariable;
 import com.example.fxt.ofi.OFIData;
 import com.example.fxt.utils.ToastUtil;
-import com.kongzue.dialogx.dialogs.TipDialog;
-import com.kongzue.dialogx.dialogs.WaitDialog;
 
 import org.json.JSONArray;
 
@@ -512,6 +510,7 @@ public class OfiInfoActivity extends MainAppcompatActivity implements BLeSerialP
             ofiDataBean.setMemo("");
             ofiDataBean.setNote("");
             ofiDataBean.setSerial(customApplication.connectBLEAddress);
+            ofiDataBean.setUser(customApplication.login_id);
             if(!customApplication.isFNMSCheck) {
                 mOFIList.add(ofiDataBean);
                 customApplication.ofiDatabase.insert(mOFIList.get(0));
@@ -645,8 +644,8 @@ public class OfiInfoActivity extends MainAppcompatActivity implements BLeSerialP
                 if(customApplication.arrBleAddress.get(i).equals(customApplication.connectBLEAddress)) {
                     customApplication.arrBleAddress.remove(i);
                     customApplication.arrBleSerial.remove(i);
-                    setStringArrayPref(getApplicationContext(),"arrBleAddress",customApplication.arrBleAddress);
-                    setStringArrayPref(getApplicationContext(),"arrBleSerial",customApplication.arrBleSerial);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"ofi",customApplication.arrBleAddress);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"ofi_serial",customApplication.arrBleSerial);
                     if(customApplication.isFNMSCheck) {
                         Intent intent = new Intent(OfiInfoActivity.this, MainActivity.class);
                         startActivity(intent);

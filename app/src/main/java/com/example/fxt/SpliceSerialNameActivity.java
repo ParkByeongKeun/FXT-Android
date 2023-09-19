@@ -1,13 +1,11 @@
 package com.example.fxt;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -16,13 +14,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.kongzue.dialogx.dialogs.TipDialog;
-import com.kongzue.dialogx.dialogs.WaitDialog;
+import net.ijoon.auth.UpdateUserRequest;
+import net.ijoon.auth.UpdateUserResponse;
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
 
 public class SpliceSerialNameActivity extends MainAppcompatActivity {
 
@@ -142,7 +140,6 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
             custom_delete_dialog.dismiss();
         });
         custom_delete_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            customApplication.isLogin = false;
             SharedPreferences sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("login",false);
@@ -240,12 +237,26 @@ public class SpliceSerialNameActivity extends MainAppcompatActivity {
             custom_password_dialog.dismiss();
         });
         custom_password_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
-            if(etPassword.getText().toString().equals("1234")) {
+
+            String name = "";
+            String pw = etPassword.getText().toString();
+
+            try {
+                UserRequest userRequest = UserRequest.newBuilder().build();
+                UserResponse userResponse = customApplication.authStub.getUser(userRequest);
+                name = userResponse.getUsers().getName();
+            }catch (RuntimeException e) {
+                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
+            }
+            try {
+                UpdateUserRequest userRequest = UpdateUserRequest.newBuilder().setName(name).setPassword(pw).setOldPassword(pw).build();
+                UpdateUserResponse userResponse = customApplication.authStub.updateUser(userRequest);
                 showMModeDialog();
                 etNewName.setText("");
-            }else {
-                showTextDialog("Check your input information");
+            }catch (RuntimeException e) {
+                Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
             }
+
             etPassword.setText("");
             custom_password_dialog.dismiss();
         });

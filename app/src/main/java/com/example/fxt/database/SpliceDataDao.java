@@ -64,6 +64,7 @@ public class SpliceDataDao extends BaseDaoSplice<SpliceDataBean> {
         values.put("brand", bean.getBrand());
         values.put("splice_name", bean.getSpliceName());
         values.put("data_time", bean.getDataTime());
+        values.put("user", bean.getUser());
 //        values.put("createTime", bean.getCreateTime());
 
         db.insert("tb_splice_data", null, values);
@@ -164,7 +165,8 @@ public class SpliceDataDao extends BaseDaoSplice<SpliceDataBean> {
                         spliceValue.setBrand(cur.getString(7));
                         spliceValue.setSpliceName(cur.getString(8));
                         spliceValue.setUpdateTime(stringToDate(cur.getString(9)));
-                        spliceValue.setCreateTime(stringToDate(cur.getString(10)));
+                        spliceValue.setCreateTime(stringToDate(cur.getString(11)));
+                        spliceValue.setUser(cur.getString(10));
 
                         spliceDataBeanList.add(spliceValue);
 //                        Log.d("yot132","123");

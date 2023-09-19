@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,10 +19,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import androidx.appcompat.app.ActionBar;
-
-import com.example.fxt.ble.device.splicer.bean.OFIDataBean;
 import com.example.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.example.fxt.utils.BackPressCloseHandler;
 import com.example.fxt.utils.CustomDevice;
@@ -31,9 +27,9 @@ import com.example.fxt.utils.DeviceAdapter;
 import com.example.fxt.utils.DeviceSpliceAdapter;
 import com.example.fxt.widget.XListView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
 import org.json.JSONArray;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -328,9 +324,13 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
         custom_delete_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
             List<SpliceDataBean> dataList = new ArrayList<>();
             dataList.addAll(customApplication.database.selectAllSpliceData());
+            UserRequest req = UserRequest.newBuilder().build();
+            UserResponse res = customApplication.authStub.getUser(req);
             for(int i = 0 ; i < dataList.size() ; i ++) {
                 if(dataList.get(i).getSn().equals(customApplication.connectSerial)) {
-                    customApplication.database.deleteById(Integer.parseInt(dataList.get(i).getId()));
+                    if(dataList.get(i).getUser().equals(res.getUsers().getId())) {
+                        customApplication.database.deleteById(Integer.parseInt(dataList.get(i).getId()));
+                    }
                 }
             }
             for(int i = 0 ; i < customApplication.arrSpliceBleAddress.size() ; i ++) {
@@ -341,9 +341,9 @@ public class SpliceActivity extends MainAppcompatActivity implements XListView.I
                         customApplication.arrSpliceBleVersion.remove(i);
                     }
 
-                    setStringArrayPref(getApplicationContext(),"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
-                    setStringArrayPref(getApplicationContext(),"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
-                    setStringArrayPref(getApplicationContext(),"arrSpliceBleVersion",customApplication.arrSpliceBleVersion);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id,customApplication.arrSpliceBleAddress);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"serial",customApplication.arrSpliceBleSerial);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"version",customApplication.arrSpliceBleVersion);
                     mHandler.postDelayed(() -> {
                         onLoad();
                     }, 800);

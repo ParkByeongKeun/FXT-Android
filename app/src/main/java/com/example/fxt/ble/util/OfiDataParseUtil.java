@@ -2,8 +2,14 @@ package com.example.fxt.ble.util;
 
 import static com.example.fxt.ble.api.util.ByteUtil.getAsciiString;
 
+import android.content.Context;
+
+import com.example.fxt.CustomApplication;
 import com.example.fxt.ble.api.bean.BleResultBean;
 import com.example.fxt.ble.device.splicer.bean.OFIDataBean;
+
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
 
 import org.json.JSONObject;
 
@@ -21,7 +27,12 @@ public class OfiDataParseUtil {
      * @param bleDataBean 熔接机上报的数据
      * @return bean
      */
-    public static OFIDataBean parseSpliceData(OFIDataBean OFIDataBean, BleResultBean bleDataBean) {
+    private static CustomApplication customApplication;
+
+
+    public static OFIDataBean parseSpliceData(Context context, OFIDataBean OFIDataBean, BleResultBean bleDataBean) {
+        customApplication = (CustomApplication) context.getApplicationContext();
+
         if (OFIDataBean == null){
             OFIDataBean = new OFIDataBean();
         }
@@ -60,6 +71,7 @@ public class OfiDataParseUtil {
 //            spliceDataBean.setBrand(minfo.getString("totalArcCnt"));
             OFIDataBean.setNote(minfo.getString("model"));
             OFIDataBean.setDataTime(minfo.getString("data_time"));
+            OFIDataBean.setUser(minfo.getString("user"));
 //            FiberBean fiberBean = new FiberBean();
 //            // 通过RESULT字段获取其所包含的JSONObject对象
 //            JSONObject result = object.getJSONObject("RESULT");

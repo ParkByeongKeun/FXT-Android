@@ -97,9 +97,9 @@ public class AddSpliceDeviceActivity extends MainAppcompatActivity implements XL
         customApplication.arrSpliceBleAddress.clear();
         customApplication.arrSpliceBleSerial.clear();
         customApplication.arrSpliceBleVersion.clear();
-        customApplication.arrSpliceBleAddress = getStringArrayPref(this,"arrSpliceBleAddress");
-        customApplication.arrSpliceBleSerial = getStringArrayPref(this,"arrSpliceBleSerial");
-        customApplication.arrSpliceBleVersion = getStringArrayPref(this,"arrSpliceBleVersion");
+        customApplication.arrSpliceBleAddress = getStringArrayPref(this,customApplication.login_id);
+        customApplication.arrSpliceBleSerial = getStringArrayPref(this,customApplication.login_id+"serial");
+        customApplication.arrSpliceBleVersion = getStringArrayPref(this,customApplication.login_id+"version");
         listView.setPullRefreshEnable(true);
         listView.setPullLoadEnable(true);
         listView.setAutoLoadEnable(true);
@@ -326,9 +326,9 @@ public class AddSpliceDeviceActivity extends MainAppcompatActivity implements XL
                         customApplication.arrSpliceBleAddress.add(connectBLE);
                         customApplication.arrSpliceBleSerial.add(SN);
                         customApplication.arrSpliceBleVersion.add(SN +"," +SWVersion);
-                        setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleAddress",customApplication.arrSpliceBleAddress);
-                        setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleSerial",customApplication.arrSpliceBleSerial);
-                        setStringArrayPref(AddSpliceDeviceActivity.this,"arrSpliceBleVersion",customApplication.arrSpliceBleVersion);
+                        setStringArrayPref(AddSpliceDeviceActivity.this,customApplication.login_id,customApplication.arrSpliceBleAddress);
+                        setStringArrayPref(AddSpliceDeviceActivity.this,customApplication.login_id+"serial",customApplication.arrSpliceBleSerial);
+                        setStringArrayPref(AddSpliceDeviceActivity.this,customApplication.login_id+"version",customApplication.arrSpliceBleVersion);
                         onDisconnectClick();
                         finish();
 

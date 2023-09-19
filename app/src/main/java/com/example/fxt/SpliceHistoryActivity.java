@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,7 +50,8 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
 
 import org.json.JSONObject;
 
@@ -366,11 +368,17 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
 //    }
 
     public void showData(String serial) {
+        UserRequest req = UserRequest.newBuilder().build();
+        UserResponse res = customApplication.authStub.getUser(req);
+
         List<SpliceDataBean> dataList = new ArrayList<>();
         dataList.addAll(customApplication.database.selectAllSpliceData());
         for(int i = 0 ; i < dataList.size() ; i ++) {
             if(dataList.get(i).getSn().equals(customApplication.connectSerial)) {
-                mSpliceDataBeanList.add(dataList.get(i));
+                Log.d("yot132","? = " + dataList.get(i).getUser());
+                if(dataList.get(i).getUser().equals(res.getUsers().getId())) {
+                    mSpliceDataBeanList.add(dataList.get(i));
+                }
             }
         }
         setGraphData();

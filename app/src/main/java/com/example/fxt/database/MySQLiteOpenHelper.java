@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "fiberfox_ofi.db";
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     public MySQLiteOpenHelper(Context context) {
         super(context, DB_NAME, null, VERSION);
@@ -19,7 +19,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql_splice_data = "create table tb_ofi_data (" +
                 "_id INTEGER primary key autoincrement, " +
-                "frequency TEXT,direction TEXT,measure TEXT,location TEXT,memo TEXT,note TEXT,data_time TEXT,serial TEXT" +
+                "frequency TEXT,direction TEXT,measure TEXT,location TEXT,memo TEXT,note TEXT,data_time TEXT,serial TEXT, user TEXT" +
                 "createTime TimeStamp NOT NULL DEFAULT (datetime('now','localtime')))";
 
         String sql_splice_fiber_data = "create table tb_fnms_data (" +

@@ -35,6 +35,9 @@ import com.example.fxt.widget.XListView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.kongzue.dialogx.dialogs.MessageDialog;
 
+import net.ijoon.auth.UserRequest;
+import net.ijoon.auth.UserResponse;
+
 import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
@@ -340,19 +343,23 @@ public class MainActivity extends MainAppcompatActivity implements XListView.IXL
             custom_delete_dialog.dismiss();
         });
         custom_delete_dialog.findViewById(R.id.btnOk).setOnClickListener(v -> {
+            UserRequest req = UserRequest.newBuilder().build();
+            UserResponse res = customApplication.authStub.getUser(req);
             List<OFIDataBean> dataList = new ArrayList<>();
             dataList.addAll(customApplication.ofiDatabase.selectAllSpliceData());
             for(int i = 0 ; i < dataList.size() ; i ++) {
                 if(dataList.get(i).getSerial().equals(customApplication.connectBLEAddress)) {
-                    customApplication.ofiDatabase.deleteById(Integer.parseInt(dataList.get(i).getId()));
+                    if(dataList.get(i).getUser().equals(res.getUsers().getId())) {
+                        customApplication.ofiDatabase.deleteById(Integer.parseInt(dataList.get(i).getId()));
+                    }
                 }
             }
             for(int i = 0 ; i < customApplication.arrBleAddress.size() ; i ++) {
                 if(customApplication.arrBleAddress.get(i).equals(customApplication.connectBLEAddress)) {
                     customApplication.arrBleAddress.remove(i);
                     customApplication.arrBleSerial.remove(i);
-                    setStringArrayPref(getApplicationContext(),"arrBleAddress",customApplication.arrBleAddress);
-                    setStringArrayPref(getApplicationContext(),"arrBleSerial",customApplication.arrBleSerial);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"ofi",customApplication.arrBleAddress);
+                    setStringArrayPref(getApplicationContext(),customApplication.login_id+"ofi_serial",customApplication.arrBleSerial);
                     mHandler.postDelayed(() -> {
                         onLoad();
                     }, 800);

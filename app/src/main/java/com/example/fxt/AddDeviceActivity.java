@@ -111,8 +111,8 @@ public class AddDeviceActivity extends MainAppcompatActivity implements XListVie
         mHandler = new Handler();
         customApplication.arrBleAddress.clear();
         customApplication.arrBleSerial.clear();
-        customApplication.arrBleAddress = getStringArrayPref(this,"arrBleAddress");
-        customApplication.arrBleSerial = getStringArrayPref(this,"arrBleSerial");
+        customApplication.arrBleAddress = getStringArrayPref(this,customApplication.login_id+"ofi");
+        customApplication.arrBleSerial = getStringArrayPref(this,customApplication.login_id+"ofi_serial");
         listView.setPullRefreshEnable(true);
         listView.setPullLoadEnable(true);
         listView.setAutoLoadEnable(true);
@@ -298,8 +298,8 @@ public class AddDeviceActivity extends MainAppcompatActivity implements XListVie
                     String SN = "serial";
                     customApplication.arrBleAddress.add(connectBLE);
                     customApplication.arrBleSerial.add(SN);
-                    setStringArrayPref(AddDeviceActivity.this,"arrBleAddress",customApplication.arrBleAddress);
-                    setStringArrayPref(AddDeviceActivity.this,"arrBleSerial",customApplication.arrBleSerial);
+                    setStringArrayPref(AddDeviceActivity.this,customApplication.login_id+"ofi",customApplication.arrBleAddress);
+                    setStringArrayPref(AddDeviceActivity.this,customApplication.login_id+"ofi_serial",customApplication.arrBleSerial);
                     onDisconnectClick();
                     Intent intent = new Intent(AddDeviceActivity.this, MainActivity.class);
                     startActivity(intent);
@@ -334,14 +334,14 @@ public class AddDeviceActivity extends MainAppcompatActivity implements XListVie
                 String id = bleResultBean.getIdStr();
                 if (bleResultBean.getType() == 1){
                 }else if (bleResultBean.getType() == 0){
-                    mSpliceDataBeanMap.put(id, OfiDataParseUtil.parseSpliceData(mSpliceDataBeanMap.get(id), bleResultBean));
+                    mSpliceDataBeanMap.put(id, OfiDataParseUtil.parseSpliceData(getApplicationContext(),mSpliceDataBeanMap.get(id), bleResultBean));
                 }else if (bleResultBean.getType() == 2){
                     String SN = ByteUtil.getAsciiString(bleResultBean.getPayload(),0,bleResultBean.getPayload().length);
                     rlProgress.setVisibility(View.GONE);
                     customApplication.arrBleAddress.add(connectBLE);
                     customApplication.arrBleSerial.add(SN);
-                    setStringArrayPref(AddDeviceActivity.this,"arrBleAddress",customApplication.arrBleAddress);
-                    setStringArrayPref(AddDeviceActivity.this,"arrBleSerial",customApplication.arrBleSerial);
+                    setStringArrayPref(AddDeviceActivity.this,customApplication.login_id+"ofi",customApplication.arrBleAddress);
+                    setStringArrayPref(AddDeviceActivity.this,customApplication.login_id+"ofi_serial",customApplication.arrBleSerial);
                     onDisconnectClick();
                     finish();
                 }
