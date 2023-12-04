@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/main_color">
 
-    <com.example.fxt.widget.XScrollView
+    <com.fiberfox.fxt.widget.XScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
@@ -15,7 +15,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
-    </com.example.fxt.widget.XScrollView>
+    </com.fiberfox.fxt.widget.XScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

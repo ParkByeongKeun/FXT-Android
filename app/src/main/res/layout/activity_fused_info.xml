@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:id="@+id/cl_main">
 
-    <com.example.fxt.widget.XScrollView
+    <com.fiberfox.fxt.widget.XScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,5 +18,5 @@
 
 
 
-    </com.example.fxt.widget.XScrollView>
+    </com.fiberfox.fxt.widget.XScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

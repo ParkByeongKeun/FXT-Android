@@ -16,13 +16,18 @@
         <entry key="app/src/main/res/drawable/btn_pdf.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_add.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/ic_baseline_camera_24.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/ic_baseline_info_24.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_chevron_right.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_info.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/loading_progressbar.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_btn_default.xml" value="0.174" />
         <entry key="app/src/main/res/drawable/rounded_btn_white.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable/rounded_enclosure.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_frequency.xml" value="0.2415" />
+        <entry key="app/src/main/res/drawable/rounded_list_enclosure.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_ofi.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/rounded_ofi_main.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_tag.xml" value="0.2415" />
@@ -33,9 +38,12 @@
         <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_company.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_default.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_detail_enclosure.xml" value="0.31875" />
         <entry key="app/src/main/res/layout/activity_device_info.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_device_list.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_device_location.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/activity_enclosure.xml" value="0.159375" />
+        <entry key="app/src/main/res/layout/activity_enclosure_history.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_fnms_nfc_tag.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_forgot_email.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.5" />
@@ -67,6 +75,7 @@
         <entry key="app/src/main/res/layout/adapter_ble_list_item.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/adapter_device.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/adapter_splice_data_list_item.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/camera_bottom_layout.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/checkbox.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/custom_dialog.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/custom_dialog_Loading.xml" value="0.159375" />
@@ -91,6 +100,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/fragment_tutorial.xml" value="0.159375" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/ofi_data_element.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/spinner_item.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/spinner_list_item.xml" value="0.2558876811594203" />
@@ -103,7 +113,7 @@
         <entry key="app/src/main/res/layout/vw_list_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/vw_scroll_fused_info.xml" value="0.159375" />
         <entry key="app/src/main/res/layout/vw_scroll_view_content.xml" value="0.2558876811594203" />
-        <entry key="app/src/main/res/layout/vw_scroll_view_main.xml" value="0.2558876811594203" />
+        <entry key="app/src/main/res/layout/vw_scroll_view_main.xml" value="0.67" />
         <entry key="app/src/main/res/layout/vw_scroll_view_user_info.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/vw_video_list_item.xml" value="0.33" />
         <entry key="app/src/main/res/layout/vw_xscrollview_layout.xml" value="0.2558876811594203" />

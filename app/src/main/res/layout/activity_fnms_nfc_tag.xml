@@ -142,7 +142,7 @@
                             android:layout_marginBottom="10dp"
 
                             android:layout_weight="0.3"/>
-                        <com.example.fxt.spinner.NiceSpinner
+                        <com.fiberfox.fxt.spinner.NiceSpinner
                             android:id="@+id/spinnerCable1"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -167,7 +167,7 @@
                             android:layout_marginRight="3dp"
                             android:layout_marginBottom="10dp"
                             android:layout_weight="0.3"/>
-                        <com.example.fxt.spinner.NiceSpinner
+                        <com.fiberfox.fxt.spinner.NiceSpinner
                             android:id="@+id/spinnerCable2"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
@@ -187,7 +187,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:orientation="horizontal">
-                    <com.example.fxt.spinner.NiceSpinner
+                    <com.fiberfox.fxt.spinner.NiceSpinner
                         android:id="@+id/spinnerUnit"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                         app:arrowTint="@color/purple_700"
                         app:backgroundSelector="@drawable/background_selector"
                         app:textTint="@color/purple_700" />
-                    <com.example.fxt.spinner.NiceSpinner
+                    <com.fiberfox.fxt.spinner.NiceSpinner
                         android:id="@+id/spinnerLeft"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -207,7 +207,7 @@
                         android:textAlignment="center"
                         app:backgroundSelector="@drawable/background_selector"
                         app:textTint="@color/purple_700" />
-                    <com.example.fxt.spinner.NiceCoreSpinner
+                    <com.fiberfox.fxt.spinner.NiceCoreSpinner
                         android:id="@+id/spinnerRight"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

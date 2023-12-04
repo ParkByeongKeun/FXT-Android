@@ -6,14 +6,14 @@
     android:orientation="horizontal">
 
 
-    <com.example.fxt.widget.XListView
+    <com.fiberfox.fxt.widget.XListView
         android:id="@+id/listView_"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:measureAllChildren="true"
         android:divider="@color/white">
 
-    </com.example.fxt.widget.XListView>
+    </com.fiberfox.fxt.widget.XListView>
 
 
 </LinearLayout>

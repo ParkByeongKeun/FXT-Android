@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_color">
-    <com.example.fxt.widget.XListView
+    <com.fiberfox.fxt.widget.XListView
         android:id="@+id/listView_"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,7 +14,7 @@
         android:layout_above="@id/fab">
 
 
-    </com.example.fxt.widget.XListView>
+    </com.fiberfox.fxt.widget.XListView>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
