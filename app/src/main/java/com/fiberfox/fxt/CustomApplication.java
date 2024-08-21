@@ -1,10 +1,14 @@
 package com.fiberfox.fxt;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.fiberfox.fxt.database.EnclosureDatabase;
 import com.fiberfox.fxt.database.OFIDatabase;
@@ -13,6 +17,7 @@ import com.fiberfox.fxt.utils.FNMSData;
 import com.fiberfox.fxt.utils.ForegroundService;
 import com.fiberfox.fxt.utils.FusedList;
 import com.fiberfox.fxt.utils.MacList;
+import com.fiberfox.fxt.utils.UsbService;
 import com.fiberfox.fxt.utils.VideoDO;
 import com.google.gson.internal.LinkedTreeMap;
 import com.kongzue.dialogx.DialogX;
@@ -83,7 +88,7 @@ public class CustomApplication extends Application {
         Log.d("yot132","token = " + token);
         try {
             authIS = getResources().getAssets().open("server.crt");
-            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("123.142.5.131", 33919).usePlaintext().build();
+            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("ijoon.iptime.org", 33919).usePlaintext().build();
 //            ManagedChannel auth_channel = ManagedChannelBuilder.forAddress("123.142.5.131", 23915).usePlaintext().build(); //fiberfox
 //            ManagedChannel auth_channel = ChannelBuilder.buildTls("192.168.13.30", 8090, authIS);
             authStub = AuthGrpc.newBlockingStub(auth_channel);

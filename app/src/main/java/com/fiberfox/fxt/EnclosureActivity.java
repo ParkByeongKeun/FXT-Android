@@ -500,7 +500,7 @@ public class EnclosureActivity extends Activity {
         });
         Gson gson = new GsonBuilder().setLenient().create();
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://123.142.5.131:15039")
+                .baseUrl("http://ijoon.iptime.org:15039")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(httpClient.build())
                 .build();
