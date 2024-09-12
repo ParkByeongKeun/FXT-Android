@@ -32,14 +32,14 @@ protobuf {
     }
 }
 android {
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.fiberfox.fxt"
         minSdk 21
-        targetSdk 33
-        versionCode 5
-        versionName "1.1.1"
+        targetSdk 34
+        versionCode 7
+        versionName "1.1.2"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
