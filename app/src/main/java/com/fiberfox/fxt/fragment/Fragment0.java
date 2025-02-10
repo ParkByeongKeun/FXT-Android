@@ -70,6 +70,7 @@ public class Fragment0 extends Fragment implements XListView.IXListViewListener{
         listView.setRefreshTime(getTime());
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(customApplication.SERVER + customApplication.getVideoList().get(position-1).getEnVideoUrl()));
+            Log.d("yot132","url = " + customApplication.SERVER + customApplication.getVideoList().get(position-1).getEnVideoUrl());
             startActivity(intent);
         });
     }

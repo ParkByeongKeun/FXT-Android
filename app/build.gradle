@@ -32,17 +32,22 @@ protobuf {
     }
 }
 android {
-    compileSdk 34
+    namespace 'com.fiberfox.fxt'
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.fiberfox.fxt"
         minSdk 21
-        targetSdk 34
+        targetSdk 35
         versionCode 7
         versionName "1.1.2"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
@@ -52,8 +57,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 def grpcVersion = '1.40.1'
@@ -65,6 +70,7 @@ dependencies {
     implementation "com.kongzue.dialogx:DialogX:${dialogx_version}"
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.felHR85:UsbSerial:6.0.6'
 
     implementation 'com.github.bumptech.glide:glide:4.13.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'

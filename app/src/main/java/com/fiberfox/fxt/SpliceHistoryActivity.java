@@ -7,7 +7,12 @@ import android.Manifest;
 import android.app.Dialog;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -15,11 +20,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,14 +43,20 @@ import com.fiberfox.fxt.R;
 import com.fiberfox.fxt.ble.api.BleAPI;
 import com.fiberfox.fxt.ble.api.bean.BleResultBean;
 import com.fiberfox.fxt.ble.api.callback.BleConnectionCallBack;
+import com.fiberfox.fxt.ble.api.util.ArrayUtils;
+import com.fiberfox.fxt.ble.api.util.BleCmdUtil;
+import com.fiberfox.fxt.ble.api.util.BleHexConvert;
+import com.fiberfox.fxt.ble.api.util.ByteUtil;
 import com.fiberfox.fxt.ble.device.BleDeviceFactory;
 import com.fiberfox.fxt.ble.device.splicer.BleSplicerCallback;
 import com.fiberfox.fxt.ble.device.splicer.bean.SpliceDataBean;
 import com.fiberfox.fxt.ble.util.SpliceDataParseUtil;
+import com.fiberfox.fxt.ble.util.USBSpliceDataParseUtil;
 import com.fiberfox.fxt.utils.CustomHistoryList;
 import com.fiberfox.fxt.utils.MyValueFormatter;
 import com.fiberfox.fxt.utils.SpliceDataAdapter;
 import com.fiberfox.fxt.utils.ToastUtil;
+import com.fiberfox.fxt.utils.UsbService;
 import com.fiberfox.fxt.widget.XListView;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -54,20 +68,28 @@ import com.github.mikephil.charting.data.LineDataSet;
 import net.ijoon.auth.UserRequest;
 import net.ijoon.auth.UserResponse;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class SpliceHistoryActivity extends MainAppcompatActivity implements XListView.IXListViewListener{
 
+    private UsbService usbService;
+    private MyHandler usbHandler;
     private Handler mHandler;
     private int mIndex = 0;
     private int mRefreshIndex = 0;
@@ -89,11 +111,25 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
     boolean isFirstStart = false;
     private LineChart chart;
 
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            usbService = ((UsbService.UsbBinder) arg1).getService();
+            usbService.setHandler(usbHandler);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            usbService = null;
+        }
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splice_history);
         requestReadExternalStoragePermission();
+        usbHandler = new MyHandler(this);
         customApplication = (CustomApplication) getApplication();
         menuItemShare = findViewById(R.id.iv_share);
         menuItemDelete = findViewById(R.id.iv_delete);
@@ -254,6 +290,42 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
         mSpliceDataBeanList.clear();
         showData(customApplication.connectSerial);
         setDoc();
+        setFilters();  // Start listening notifications from UsbService
+        startService(UsbService.class, usbConnection, null); // Start UsbService(if it was not started before) and Bind it
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(mUsbReceiver);
+        unbindService(usbConnection);
+    }
+
+    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+        if (!UsbService.SERVICE_CONNECTED) {
+            Intent startService = new Intent(this, service);
+            if (extras != null && !extras.isEmpty()) {
+                Set<String> keys = extras.keySet();
+                for (String key : keys) {
+                    String extra = extras.getString(key);
+                    startService.putExtra(key, extra);
+                }
+            }
+
+            startService(startService);
+        }
+        Intent bindingIntent = new Intent(this, service);
+        bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+    private void setFilters() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED);
+        filter.addAction(UsbService.ACTION_NO_USB);
+        filter.addAction(UsbService.ACTION_USB_DISCONNECTED);
+        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED);
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED);
+        filter.addAction(UsbService.ACTION_USB_READY);
+        registerReceiver(mUsbReceiver, filter);
     }
 
     public void setDoc() {
@@ -762,4 +834,245 @@ public class SpliceHistoryActivity extends MainAppcompatActivity implements XLis
             }
         });
     }
+
+
+    class MyHandler extends Handler {
+        byte[] payload;
+        byte[] length;
+        int lengthInt;
+        byte[] header;
+        byte type;
+        byte[] id;
+        String idStr;
+        byte[] totalPackage;
+        byte[] currentPackage;
+        byte[] receiveBytes = null;
+        final WeakReference<Context> mActivity;
+
+        public MyHandler(Context activity) {
+            mActivity = new WeakReference<>(activity);
+        }
+
+        private boolean isJSONValid(String test) {
+            try {
+                new JSONObject(test);
+            } catch (JSONException e) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UsbService.MESSAGE_FROM_SERIAL_PORT:
+                    receiveBytes = null;
+                    byte[] data = (byte[]) msg.obj;
+                    if (data == null || data.length <= 0) {
+                        return;
+                    }
+                    Log.i("yot132", "prev：" + BleHexConvert.bytesToHexString(data));
+
+                    receiveBytes = ArrayUtils.addAll(receiveBytes, data);
+
+                    String res = BleHexConvert.bytesToHexString(receiveBytes);
+                    byte[] realData = new byte[data.length];
+                    System.arraycopy(receiveBytes, 0, realData, 0, data.length);
+
+//                        byte[] test = new byte[]{receiveBytes[0],receiveBytes[1],receiveBytes[2],receiveBytes[3],receiveBytes[4],receiveBytes[5],receiveBytes[6],receiveBytes[7],receiveBytes[8],receiveBytes[9],receiveBytes[10],receiveBytes[11],receiveBytes[12],receiveBytes[13],receiveBytes[14]};
+//                        String testData = BleHexConvert.bytesToHexString(test);
+//                        Log.d("yot132","test = " + testData);
+
+                    this.header = new byte[]{receiveBytes[1]};
+                    this.id = new byte[8];
+                    this.id =  Integer.toHexString(1).getBytes();
+                    this.idStr = String.valueOf(id);
+
+                    this.totalPackage = new byte[]{receiveBytes[6], receiveBytes[7]};
+                    this.currentPackage = new byte[]{receiveBytes[8], receiveBytes[9]};
+                    byte[] t = new byte[]{receiveBytes[2],receiveBytes[3]};
+                    String encodedData = BleHexConvert.bytesToHexString(t);
+
+                    if(encodedData.contains("0001")) {
+                        this.type = 4;
+                    }else if (encodedData.contains("1101")){
+                        this.type = 2;
+                    }else {
+                        this.type = 1;
+                    }
+
+                    Log.d("yot132","encodedData = " + encodedData);
+                    String strData = null;
+//                    strData = new String(receiveBytes, StandardCharsets.UTF_8);
+//                    mActivity.get().display.append(strData);
+
+                    this.length = new byte[]{receiveBytes[4], receiveBytes[5]};
+
+                    this.lengthInt = ByteUtil.byteArrayToHex(length);
+
+
+
+                    if(encodedData.equals("1102")) {
+                        byte[] newByte = lastElementRemove(receiveBytes);
+                        this.payload = newByte;
+//                            String aa = new String(payload, StandardCharsets.UTF_8);
+//                            Log.d("yot132","aa = " + aa);
+                    }else {
+                        this.payload = new byte[lengthInt -4];
+                        System.arraycopy(receiveBytes, 10, payload, 0, lengthInt -4);
+//                            String dd = new String(payload, StandardCharsets.UTF_8);
+//                            Log.d("yot132","bb = " + dd);
+                    }
+
+
+                    boolean isLock = false;
+                    if (isLock) {
+                        if (res != null && !res.startsWith("aa19")) {
+                            if (res.contains("aa19")) {
+                                int index = res.indexOf("aa19");
+                                receiveBytes = Arrays.copyOfRange(receiveBytes, index / 2, receiveBytes.length);
+                            } else {
+                                return;
+                            }
+                        }
+
+                        while (receiveBytes != null && receiveBytes.length >= 5) {
+                            short length = ByteBuffer.wrap(receiveBytes, 3, 2).getShort();
+                            if (receiveBytes.length >= 7 + length) {
+                                receiveBytes = null;
+                                usbService.write(BleHexConvert.parseHexStringToBytes("aa11b8000000c9"));
+                            } else {
+                                break;
+                            }
+                        }
+                    } else {
+                        if (res.contains("be11")) {
+                            int index = res.indexOf("BE11");
+                            receiveBytes = Arrays.copyOfRange(receiveBytes, index / 2, receiveBytes.length);
+                            while (receiveBytes != null && receiveBytes.length >= 5) {
+                                short length = ByteBuffer.wrap(receiveBytes, 3, 2).getShort();
+                                if (receiveBytes.length >= 8 + length) {
+                                    String cmd = "";
+                                    String cmdType = BleHexConvert.bytesToHexString(new byte[]{receiveBytes[2], receiveBytes[3]});
+                                    cmd = cmd + cmdType + "0004" + "0006";
+                                    String currentPackage = BleHexConvert.bytesToHexString(new byte[]{receiveBytes[8], receiveBytes[9]});
+                                    cmd = cmd + currentPackage;
+
+                                    receiveBytes = null;
+                                    Log.d("yot132","img call  =" + currentPackage);
+                                    usbService.write(BleHexConvert.parseHexStringToBytes("BE" + cmd + BleCmdUtil.getCRCStr(cmd) + "EB"));
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    BleResultBean bleResultBean = new BleResultBean();
+                    bleResultBean.setCommand(data);
+                    bleResultBean.setHeader(header);
+                    bleResultBean.setCurrentPackage(currentPackage);
+                    bleResultBean.setId(id);
+                    bleResultBean.setLength(length);
+                    bleResultBean.setIdStr(idStr);
+                    bleResultBean.setTotalPackage(totalPackage);
+                    bleResultBean.setPayload(payload);
+
+                    rlProgress.setVisibility(View.VISIBLE);
+                    String id = idStr;
+                    if (type == 1){
+                        mSpliceDataBeanMap.put(id, USBSpliceDataParseUtil.parseSpliceImage(getApplicationContext(), mSpliceDataBeanMap.get(id), bleResultBean));
+                    }else if (type == 0){
+                    }else if (type == 2){
+                        mSpliceDataBeanMap.put(id, USBSpliceDataParseUtil.parseSpliceData(getApplicationContext(),mSpliceDataBeanMap.get(id), bleResultBean));
+                    }else if (type == 4) {
+                        if(!isFirstStart) {
+                            String strJson = getAsciiString(payload,0,payload.length);
+                            try {
+                                // 最外层的JSONObject对象
+                                JSONObject object = new JSONObject(strJson);
+                                String SN = object.getString("SN");
+                                customApplication.swVersion = object.getString("machineSoftVersion");
+                                rlProgress.setVisibility(View.GONE);
+                                customApplication.connectSerial = SN;
+                                mSpliceDataBeanList.clear();
+                                for (Map.Entry<String, SpliceDataBean> map : mSpliceDataBeanMap.entrySet()) {
+                                    mSpliceDataBeanList.add(map.getValue());
+                                }
+                                showData(customApplication.connectSerial);
+                                isFirstStart = true;
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    mSpliceDataBeanList.clear();
+                    for (Map.Entry<String, SpliceDataBean> map : mSpliceDataBeanMap.entrySet()) {
+                        mSpliceDataBeanList.add(map.getValue());
+                    }
+                    if(mSpliceDataBeanList.size() != 0) {
+                        if(mSpliceDataBeanList.get(0).getFiberBean() != null) {
+                            if(mSpliceDataBeanList.get(0).getFiberBean().getFuseImagePath() != null) {
+                                customApplication.database.insert(mSpliceDataBeanList.get(0));
+                                mSpliceDataBeanList.clear();
+                                mSpliceDataBeanMap.clear();
+                                rlProgress.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                    showData(customApplication.connectSerial);
+                    setDoc();
+
+
+
+                    break;
+                case UsbService.CTS_CHANGE:
+                    Toast.makeText(mActivity.get(), "CTS_CHANGE",Toast.LENGTH_LONG).show();
+                    break;
+                case UsbService.DSR_CHANGE:
+                    Toast.makeText(mActivity.get(), "DSR_CHANGE",Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    }
+
+    public static byte[] lastElementRemove(byte[] srcArray) {
+        byte[] newArray = new byte[srcArray.length - 3]; //2byte = CRC16 //1byte = tail
+        for(int index = 0; index < srcArray.length - 3; index++) {
+            newArray[index] = srcArray[index];
+        }
+        byte[] tempArray = new byte[newArray.length - 11]; //1byte = header, 2byte cmd, 2byte = length, 2byte = total num, 2byte = current num, 2byte = img index
+        for(int i = 11 ; i < newArray.length ; i ++) {
+            tempArray[i-11] = newArray[i];
+        }
+        return tempArray;
+    }
+
+
+    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            switch (intent.getAction()) {
+                case UsbService.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
+                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
+                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_NO_USB: // NO USB CONNECTED
+                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
+                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
+                    break;
+                case UsbService.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
+                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
+                    break;
+
+                case UsbService.ACTION_USB_READY:
+                    Log.d("yot132","usb connected");
+                    break;
+            }
+        }
+    };
 }

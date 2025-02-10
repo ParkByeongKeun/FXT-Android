@@ -102,7 +102,6 @@ public class EnclosureDetailActivity extends MainAppcompatActivity {
     OFIDataBean dialogBean;
     String PREFS_NAME = "donotshow";
     InputMethodManager imm;
-    LinearLayout llMain;
     boolean isBlockSearch;
     Handler handler;
     Runnable getNameRunnable;
@@ -161,7 +160,6 @@ public class EnclosureDetailActivity extends MainAppcompatActivity {
         mTitle.setTitle("Enclosure");
         mTitle.setBackgroundDrawable(new ColorDrawable(0xffE56731));
         imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        llMain = findViewById(R.id.llMain);
         initData();
         initCheckDialog();
 

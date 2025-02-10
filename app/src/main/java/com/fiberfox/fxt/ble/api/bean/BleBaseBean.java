@@ -123,4 +123,51 @@ public class BleBaseBean {
     public String getIdStr() {
         return idStr;
     }
+
+
+
+    public void setId(byte[] id) {
+        this.id = id;
+    }
+
+    public void setCommand(byte[] command) {
+        this.command = command;
+    }
+
+    public void setCommands(String[] commands) {
+        this.commands = commands;
+    }
+
+    public void setCommandStr(String commandStr) {
+        this.commandStr = commandStr;
+    }
+
+    public void setCurrentPackage(byte[] currentPackage) {
+        this.currentPackage = currentPackage;
+    }
+
+    public void setHeader(byte[] header) {
+        this.header = header;
+    }
+
+    public void setType(byte type) {
+        this.type = type;
+    }
+
+    public void setTotalPackage(byte[] totalPackage) {
+        this.totalPackage = totalPackage;
+    }
+
+    public void setPayload(byte[] payload) {
+        this.payload = payload;
+    }
+
+    public void setLength(byte[] length) {
+        this.length = length;
+    }
+
+    public void setIdStr(String idStr) {
+        this.idStr = idStr;
+    }
+
 }
